@@ -1,6 +1,7 @@
 package no.salvesen.assignment1;
 
-import com.mysql.cj.jdbc.MysqlDataSource;
+
+import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -9,15 +10,11 @@ import java.sql.Statement;
 public class DatabaseConnector {
 
 
+    private MysqlDataSource ds;
 
-    MysqlDataSource ds;
 
 
-    public static void main(String[] args) throws SQLException {
-        DatabaseConnector dbc = new DatabaseConnector();
-        dbc.databaseBuilder();
-    }
-
+    //// TODO: 19.09.2017 needs to be set in another class? Maybe in a property file?
     public void databaseBuilder() throws SQLException {
         ds = new MysqlDataSource();
         ds.setServerName("localhost");
@@ -27,14 +24,15 @@ public class DatabaseConnector {
          *  and ask if user wants to delete, if user wants to delete,
          *  ask for password, if password is correct, delete?
          **/
-        createDatabase();
 
         //ds.setDatabaseName("westerdals_schedule");
         ds.setDatabaseName("pgr200_assignment_1");
         // TODO: Ask user for password or nah?
         ds.setUser("pgr200");
         ds.setPassword("pgr200");
-
+        createDatabase();
+        createSubjectTable();
+        System.out.println("Database connected.");
     }
 
     private void createDatabase() throws SQLException{
@@ -58,9 +56,5 @@ public class DatabaseConnector {
                     "duration FLOAT(11),\n" +
                     "PRIMARY KEY(id));");
         }
-    }
-
-    public void close() throws Exception {
-
     }
 }

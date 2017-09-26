@@ -1,13 +1,11 @@
 package no.salvesen.assignment1;
 
-/**
- * Hello world!
- *
- */
-public class App 
+import java.sql.SQLException;
+
+public class App
 {
-    public static void main( String[] args )
-    {
-        System.out.println( "Hello World!" );
+    public static void main(String[] args) throws SQLException {
+        DatabaseConnector dbc = new DatabaseConnector();
+        dbc.databaseBuilder();
     }
 }
