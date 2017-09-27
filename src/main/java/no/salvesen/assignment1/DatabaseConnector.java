@@ -9,15 +9,12 @@ import java.sql.Statement;
 
 public class DatabaseConnector {
 
-
-    private MysqlDataSource ds;
-
-
+    private MysqlDataSource dataSource;
 
     //// TODO: 19.09.2017 needs to be set in another class? Maybe in a property file?
     public void databaseBuilder() throws SQLException {
-        ds = new MysqlDataSource();
-        ds.setServerName("localhost");
+        dataSource = new MysqlDataSource();
+        dataSource.setServerName("localhost");
 
         /**
          *  TODO: If database exists, print out number if lines in database, ++
@@ -25,18 +22,18 @@ public class DatabaseConnector {
          *  ask for password, if password is correct, delete?
          **/
 
-        //ds.setDatabaseName("westerdals_schedule");
-        ds.setDatabaseName("pgr200_assignment_1");
+        //dataSource.setDatabaseName("westerdals_schedule");
+        dataSource.setDatabaseName("pgr200_assignment_1");
         // TODO: Ask user for password or nah?
-        ds.setUser("pgr200");
-        ds.setPassword("pgr200");
+        dataSource.setUser("pgr200");
+        dataSource.setPassword("pgr200");
         createDatabase();
         createSubjectTable();
         System.out.println("Database connected.");
     }
 
     private void createDatabase() throws SQLException{
-        try (Connection connection = ds.getConnection()) {
+        try (Connection connection = dataSource.getConnection()) {
             Statement stmt = connection.createStatement();
             //stmt.execute("CREATE SCHEMA IF NOT EXISTS woact_schedule;");
             stmt.execute("CREATE SCHEMA IF NOT EXISTS pgr200_assignment_1;");
@@ -45,7 +42,7 @@ public class DatabaseConnector {
     }
 
     private void createSubjectTable() throws SQLException {
-        try(Connection connection = ds.getConnection()) {
+        try(Connection connection = dataSource.getConnection()) {
             Statement stmt = connection.createStatement();
 
             stmt.executeUpdate("CREATE TABLE IF NOT EXISTS subject (\n" +
@@ -56,5 +53,9 @@ public class DatabaseConnector {
                     "duration FLOAT(11),\n" +
                     "PRIMARY KEY(id));");
         }
+    }
+
+    public MysqlDataSource getDataSource() {
+        return dataSource;
     }
 }
