@@ -4,13 +4,13 @@ package no.salvesen.assignment1;
  * Created by Bjørn Olav Salvesen on 04.09.2017.
  */
 public class Subject {
-    private int id;
+    private String id;
     private String name;
     private String duration;
     private String teaching_form;
     private int attending_students;
 
-    public Subject(int id, String name, String duration, String teaching_form, int attending_students) {
+    public Subject(String id, String name, String duration, String teaching_form, int attending_students) {
         this.id = id;
 
         this.name = name;
@@ -19,11 +19,11 @@ public class Subject {
         this.attending_students = attending_students;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

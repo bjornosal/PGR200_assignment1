@@ -1,7 +1,5 @@
 package no.salvesen.assignment1;
 
-import com.sun.org.apache.xpath.internal.SourceTree;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -13,6 +11,7 @@ public class InputHandler {
     private File subjectFile;
     private File roomFile;
     private File lecturerFile;
+
     private int tablePick;
     private String tableName;
     private String filePath;
@@ -23,40 +22,99 @@ public class InputHandler {
         System.out.println("1: Subject");
         System.out.println("2: Room");
         System.out.println("3: Lecturer");
+        System.out.println("4: Use existing files in files folder");
         tablePick = userInput.nextInt();
 
-        switch(tablePick) {
+
+        switch (tablePick) {
             case 1:
-                tableName = "subject";
+                setTableName("subject");
                 break;
             case 2:
-                tableName = "room";
+                setTableName("room");
                 break;
             case 3:
-                tableName = "lecturer";
+                setTableName("subject");
+                break;
+            case 4:
+                System.out.println("Existing files chosen.");
                 break;
             default:
-                tableName = "subject";
+                System.out.println("Existing files chosen.");
                 break;
 
         }
-        System.out.println("Please copy the file-path to the csv file for " + tableName + "s.");
-        userInput.nextLine();
+        if(tablePick == 1 || tablePick == 2 || tablePick == 3) {
+            System.out.println("Please copy the file-path to the csv file for " + tableName + "s.");
+            userInput.nextLine();
+            setFilePath(userInput.nextLine());
+        }
+
+        //TODO Need check if File.exists() - how to do easiest possible way with multiple files?
         //TODO: Test required to check that file is actually a file
-        filePath = userInput.nextLine();
-        switch(tablePick) {
+        switch (tablePick) {
             case 1:
-                subjectFile = new File(filePath);
+                setSubjectFile(new File(filePath));
                 break;
             case 2:
-                roomFile = new File(filePath);
+                setRoomFile(new File(filePath));
                 break;
             case 3:
-                lecturerFile = new File(filePath);
+                setLecturerFile(new File(filePath));
                 break;
+            case 4:
+                setSubjectFile(new File("src/files/subject.csv"));
+                setRoomFile(new File("src/files/room.csv"));
+                setLecturerFile(new File("src/files/lecturer.csv"));
         }
-        System.out.println(filePath);
     }
 
+    public int getTablePick() {
+        return tablePick;
+    }
 
+    public void setTablePick(int tablePick) {
+        this.tablePick = tablePick;
+    }
+
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
+    }
+
+    public String getTableName() {
+        return tableName;
+
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
+    public File getSubjectFile() {
+        return subjectFile;
+    }
+
+    public void setSubjectFile(File subjectFile) {
+        this.subjectFile = subjectFile;
+    }
+
+    public File getRoomFile() {
+        return roomFile;
+    }
+
+    public void setRoomFile(File roomFile) {
+        this.roomFile = roomFile;
+    }
+
+    public File getLecturerFile() {
+        return lecturerFile;
+    }
+
+    public void setLecturerFile(File lecturerFile) {
+        this.lecturerFile = lecturerFile;
+    }
 }
