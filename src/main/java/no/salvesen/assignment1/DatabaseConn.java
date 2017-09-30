@@ -59,6 +59,29 @@ public class DatabaseConn {
         }
     }
 
+    private void createLecturerTable() throws SQLException {
+        try(Connection connection = dataSource.getConnection()) {
+            Statement stmt = connection.createStatement();
+            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS lecturer (\n" +
+                    "id int(11) auto_increment,\n" +
+                    "name varchar (255),\n" +
+                    "unavailability_id int(11),\n" +
+                    "PRIMARY KEY (id)\n" +
+                    ");");
+        }
+    }
+
+    private void createRoomTable() throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            Statement stmt = connection.createStatement();
+            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS room (\n" +
+                    "name varchar(255) UNIQUE, \n" +
+                    "type ENUM('SMALLROOM', 'LARGEROOM', 'LARGEAUD', 'SMALLAUD'),\n" +
+                    "facilities varchar(255)\n" +
+                    ");");
+        }
+    }
+
     public MysqlDataSource getDataSource() {
         return dataSource;
     }

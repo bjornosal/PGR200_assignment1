@@ -90,7 +90,7 @@ public class DatabaseHandler {
     }
 
     //What does file name print out?
-    public void fillTable(File tableInformation, String tableName, String filePath) throws SQLException, FileNotFoundException {
+    public void fillTable(File tableInformation, String tableName) throws SQLException, FileNotFoundException {
         //Needed - Need to loop through file, and run query for each line found, stop at the column count
         Scanner fileStream = new Scanner(tableInformation);
         fileStream.useDelimiter(";|\\r\\n");
@@ -127,7 +127,8 @@ public class DatabaseHandler {
         return prpStatement;
     }
 
-    private int findAutoIncrement(ResultSetMetaData rsmd) throws SQLException {
+    //Consider using it to get better functionality
+  /*  private int findAutoIncrement(ResultSetMetaData rsmd) throws SQLException {
         int columnNumber = -1;
 
         for(int i = 1; i < rsmd.getColumnCount(); i ++) {
@@ -137,7 +138,7 @@ public class DatabaseHandler {
         }
 
         return columnNumber;
-    }
+    }*/
 
 
     private ResultSetMetaData getFullResultSetMetaData(String tableName) throws SQLException {
