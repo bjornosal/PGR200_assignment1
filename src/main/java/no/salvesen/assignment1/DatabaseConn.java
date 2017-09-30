@@ -7,9 +7,13 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class DatabaseConnector {
+public class DatabaseConn {
 
     private MysqlDataSource dataSource;
+
+    public DatabaseConn() throws SQLException {
+        databaseBuilder();
+    }
 
     //// TODO: 19.09.2017 needs to be set in another class? Maybe in a property file?
     public void databaseBuilder() throws SQLException {
@@ -46,7 +50,7 @@ public class DatabaseConnector {
             Statement stmt = connection.createStatement();
             //TODO Instead of creating if not existing, think of other solution
             stmt.executeUpdate("CREATE TABLE IF NOT EXISTS subject (\n" +
-                    "id INT(11) AUTO_INCREMENT UNIQUE,\n" +
+                    "id VARCHAR(255) UNIQUE,\n" +
                     "name varchar(255) UNIQUE NOT NULL,\n" +
                     "attending_students INT(6),\n" +
                     "teaching_form varchar(50) NOT NULL,\n" +
