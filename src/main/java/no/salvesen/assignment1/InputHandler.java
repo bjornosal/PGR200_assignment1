@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class InputHandler {
 
     //TODO Method for checking that file is correct format
-    //TODO Method for parsing file
+    //TODO Method for parsing file, should that be here or handled in database class?
     private File subjectFile;
     private File roomFile;
     private File lecturerFile;
@@ -23,7 +23,7 @@ public class InputHandler {
         System.out.println("2: Room");
         System.out.println("3: Lecturer");
         System.out.println("4: Use existing files in files folder");
-        tablePick = userInput.nextInt();
+        setTablePick(userInput.nextInt());
 
 
         switch (tablePick) {
@@ -46,6 +46,7 @@ public class InputHandler {
         }
         if(tablePick == 1 || tablePick == 2 || tablePick == 3) {
             System.out.println("Please copy the file-path to the csv file for " + tableName + "s.");
+            //To get input correctly.
             userInput.nextLine();
             setFilePath(userInput.nextLine());
         }
@@ -66,6 +67,12 @@ public class InputHandler {
                 setSubjectFile(new File("src/files/subject.csv"));
                 setRoomFile(new File("src/files/room.csv"));
                 setLecturerFile(new File("src/files/lecturer.csv"));
+                break;
+            default:
+                setSubjectFile(new File("src/files/subject.csv"));
+                setRoomFile(new File("src/files/room.csv"));
+                setLecturerFile(new File("src/files/lecturer.csv"));
+                break;
         }
     }
 

@@ -44,7 +44,7 @@ public class DatabaseConnector {
     private void createSubjectTable() throws SQLException {
         try(Connection connection = dataSource.getConnection()) {
             Statement stmt = connection.createStatement();
-
+            //TODO Instead of creating if not existing, think of other solution
             stmt.executeUpdate("CREATE TABLE IF NOT EXISTS subject (\n" +
                     "id INT(11) AUTO_INCREMENT UNIQUE,\n" +
                     "name varchar(255) UNIQUE NOT NULL,\n" +
