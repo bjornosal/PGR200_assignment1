@@ -24,12 +24,6 @@ public class DatabaseConn {
         dataSource = new MysqlDataSource();
         dataSource.setServerName("localhost");
 
-        /**
-         *  TODO: If database exists, print out number if lines in database, ++
-         *  and ask if user wants to delete, if user wants to delete,
-         *  ask for password, if password is correct, delete?
-         **/
-
         //dataSource.setDatabaseName("westerdals_schedule");
         dataSource.setDatabaseName("pgr200_assignment_1");
         // TODO: Ask user for password or nah?

@@ -1,7 +1,6 @@
 package no.salvesen.assignment1;
 
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
-import org.netbeans.modules.db.explorer.node.ProcedureNode;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -36,6 +35,7 @@ public class DatabaseHandler {
         return columnCount;
     }*/
 
+//Shorter version
     public int findColumnCount(String tableName) throws SQLException {
         int columnCount = getFullResultSetMetaData(tableName).getColumnCount();
         return columnCount;
