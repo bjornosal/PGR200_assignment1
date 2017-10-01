@@ -1,13 +1,15 @@
 package no.salvesen.assignment1;
 
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class InputHandler {
 
     //TODO Method for checking that file is correct format
     //TODO Method for parsing file, should that be here or handled in database class?
+    DatabaseConn dbc;
+
     private File subjectFile;
     private File roomFile;
     private File lecturerFile;
@@ -15,6 +17,10 @@ public class InputHandler {
     private int tablePick;
     private String tableName;
     private String filePath;
+
+    public InputHandler() throws SQLException {
+        dbc = new DatabaseConn();
+    }
 
     public void fileFinder() {
         Scanner userInput = new Scanner(System.in);
@@ -72,6 +78,36 @@ public class InputHandler {
                 setSubjectFile(new File("src/files/subject.csv"));
                 setRoomFile(new File("src/files/room.csv"));
                 setLecturerFile(new File("src/files/lecturer.csv"));
+                break;
+        }
+    }
+
+
+    public void existingTable(int rowCount) throws SQLException {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Table " + getTableName() + " already exists. ");
+        System.out.println("Table contains " + rowCount + " rows");
+        System.out.println("Drop table and use file information to recreate? (Y/N)");
+        String answer = sc.next();
+
+        switch (answer) {
+            case "Y":
+                System.out.println("Dropping table " + getTableName());
+                dbc.dropTable(getTableName());
+                dbc.createTable(getTableName());
+                break;
+            case "y":
+                System.out.println("Dropping table " + getTableName());
+                dbc.dropTable(getTableName());
+                break;
+            case "N":
+                System.out.println("You chose to not drop table.");
+                break;
+            case "n":
+                System.out.println("You chose to not drop table.");
+                break;
+            default:
+                System.out.println("You chose to not drop table.");
                 break;
         }
     }
