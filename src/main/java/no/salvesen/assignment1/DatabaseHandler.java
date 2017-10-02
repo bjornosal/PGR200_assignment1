@@ -1,5 +1,6 @@
 package no.salvesen.assignment1;
 
+import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 import java.io.File;
@@ -19,9 +20,9 @@ public class DatabaseHandler {
 
     public DatabaseHandler() throws SQLException {
         databaseConn = new DatabaseConn();
+
     }
-/*
-    public int findColumnCount(String tableName) throws SQLException {
+/*    public int findColumnCount(String tableName) throws SQLException {
         MysqlDataSource dataSource = databaseConn.getDataSource();
         String selectAllQuery = "SELECT * FROM " + tableName + ";";
         int columnCount;
@@ -35,7 +36,7 @@ public class DatabaseHandler {
         return columnCount;
     }*/
 
-//Shorter version
+    //Shorter version
     public int findColumnCount(String tableName) throws SQLException {
         int columnCount = getFullResultSetMetaData(tableName).getColumnCount();
         return columnCount;
@@ -57,7 +58,6 @@ public class DatabaseHandler {
         return rowCount;
     }
 
-    //MetaData can be used for finding all column names as well - method to parse through column names maybe?
     private String[] getColumnNames(String tableName) throws SQLException {
         String[] columnNames = new String[findColumnCount(tableName)];
         String query = "SELECT * FROM " + tableName + ";";
@@ -78,6 +78,7 @@ public class DatabaseHandler {
     }
 
     //SOURCE: https://stackoverflow.com/questions/12367828/how-can-i-get-different-datatypes-from-resultsetmetadata-in-java
+    // Ment to be used to make mostly generic. Resolved using objects instead of 17 if's
     private String[] getDataTypes(String tableName) throws SQLException {
         String[] dataTypes = new String[findColumnCount(tableName)];
         String query = "SELECT * FROM " + tableName + ";";
@@ -96,10 +97,9 @@ public class DatabaseHandler {
         return dataTypes;
     }
 
-    public void fillTable(File tableInformation, String tableName, String filePath) throws SQLException, FileNotFoundException {
+    public void fillTable(File tableInformation, String tableName) throws SQLException, FileNotFoundException {
         Scanner fileStream = new Scanner(tableInformation);
         fileStream.useDelimiter(";|\\r\\n");
-        String[] dataTypes = getDataTypes(tableName);
 
         MysqlDataSource dataSource = databaseConn.getDataSource();
         try(Connection connection = dataSource.getConnection()) {
@@ -110,9 +110,7 @@ public class DatabaseHandler {
                 for(int i = 1; i < findColumnCount(tableName)+1; i++) {
                     preparedStatement.setObject(i, fileStream.next());
                 }
-                System.out.println(preparedStatement.toString());
                 preparedStatement.executeUpdate();
-
             }
         }
     }
@@ -131,7 +129,9 @@ public class DatabaseHandler {
 
     /***
      * Implement usage for more generic methods
-     * @param rsmd
+     * Should return column numbers, maybe column names to skip those?
+     *
+     * @param rsmd Takes in ResultSetMetaData to se which column number has an autoincrement, for now only one column.
      * @return int
      * @throws SQLException
      */
@@ -145,6 +145,58 @@ public class DatabaseHandler {
         }
 
         return columnNumber;
+    }
+
+    public String getSubject(String subject) throws SQLException {
+        String result = "";
+        String query = "SELECT id as 'Kode', name as 'Navn', attending_students as 'Studenter', teaching_form as 'Laeringsform', duration as 'Lengde'\n" +
+                "FROM subject\n" +
+                "WHERE id = '"+ subject + "';";
+        System.out.println("Kode    |   Navn    |   Studenter   |   Laeringsform    |   Lengde");
+
+        MysqlDataSource dataSource = databaseConn.getDataSource();
+        try(Connection connection = dataSource.getConnection()) {
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+
+            while(rs.next()) {
+                for(int i = 1; i <= findColumnCount("subject"); i++) {
+                    if(i <= findColumnCount("subject") && i > 1) {
+                        result += "\t|\t";
+                    }
+                    result += rs.getObject(i);
+                }
+            }
+        }
+        return result;
+    }
+
+    public String getAllSubjects() throws SQLException {
+        String result = "";
+        String query = "SELECT id as 'Kode', name as 'Navn', attending_students as 'Studenter', teaching_form as 'Laeringsform', duration as 'Lengde'\n" +
+                "FROM subject;";
+        System.out.println("\nKode    |   Navn    |   Studenter   |   Laeringsform    |   Lengde\n");
+        MysqlDataSource dataSource = databaseConn.getDataSource();
+        try (Connection connection = dataSource.getConnection()) {
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+
+            while(rs.next()) {
+                for(int i = 1; i <= findColumnCount("subject"); i++) {
+                    if(i <= findColumnCount("subject") && i > 1) {
+                        result += "\t|\t";
+                    }
+
+                    result += rs.getObject(i);
+
+                    if(i == findColumnCount("subject")) {
+                        result += "\n";
+                    }
+                }
+            }
+
+        }
+        return result;
     }
 
 

@@ -11,26 +11,25 @@ import java.sql.Statement;
 public class DatabaseConn {
 
     private MysqlDataSource dataSource;
-    private InputHandler inputHandler;
-    private DatabaseHandler dbh;
+    // private InputHandler inputHandler;
+    // private DatabaseHandler dbh;
+
     public DatabaseConn() throws SQLException {
         databaseBuilder();
-        inputHandler = new InputHandler();
-        dbh = new DatabaseHandler();
     }
 
-    //// TODO: 19.09.2017 needs to be set in another class? Maybe in a property file?
     public void databaseBuilder() throws SQLException {
         dataSource = new MysqlDataSource();
-        dataSource.setServerName("localhost");
 
-        //dataSource.setDatabaseName("westerdals_schedule");
-        dataSource.setDatabaseName("pgr200_assignment_1");
-        // TODO: Ask user for password or nah?
-        dataSource.setUser("pgr200");
-        dataSource.setPassword("pgr200");
-        createDatabase();
-        System.out.println("Database connected.");
+        dataSource.setServerName("tek.westerdals.no");
+        dataSource.setDatabaseName("salbjo16_pgr200_assignment1");
+        dataSource.setUser("salbjo16_pgr200");
+        dataSource.setPassword("pgr200!");
+
+        //Temporary - prepared statement needs to be implemented with ON DUPLICATE KEY
+        dropTable("subject");
+        createSubjectTable();
+        //    createDatabase();
     }
 
     protected void createTable(String tableName) throws SQLException {
@@ -41,6 +40,7 @@ public class DatabaseConn {
         }
     }
 
+    //Not in use as of right now
     private boolean checkIfTableExists(String tableName) throws SQLException {
         boolean exists = false;
         try (Connection connection = dataSource.getConnection()) {
@@ -56,16 +56,14 @@ public class DatabaseConn {
     protected void dropTable(String tableName) throws SQLException {
         try(Connection connection = dataSource.getConnection()) {
             Statement stmt = connection.createStatement();
-            stmt.executeUpdate("DROP TABLE "+tableName);
+            stmt.executeUpdate("DROP TABLE IF EXISTS "+tableName);
         }
     }
 
     private void createDatabase() throws SQLException{
         try (Connection connection = dataSource.getConnection()) {
             Statement stmt = connection.createStatement();
-            //stmt.execute("CREATE SCHEMA IF NOT EXISTS woact_schedule;");
             stmt.execute("CREATE SCHEMA IF NOT EXISTS pgr200_assignment_1;");
-
         }
     }
 

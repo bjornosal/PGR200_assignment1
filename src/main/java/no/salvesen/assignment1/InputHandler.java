@@ -7,8 +7,7 @@ import java.util.Scanner;
 
 public class InputHandler {
 
-    //TODO Method for checking that file is correct format
-    //TODO Method for parsing file, should that be here or handled in database class?
+
     private DatabaseConn dbc;
     private DatabaseHandler databaseHandler;
 
@@ -24,9 +23,12 @@ public class InputHandler {
     public InputHandler() throws SQLException {
         dbc = new DatabaseConn();
         databaseHandler = new DatabaseHandler();
+        setSubjectFile(new File("src/files/subject.csv"));
+        setRoomFile(new File("src/files/room.csv"));
+        setLecturerFile(new File("src/files/lecturer.csv"));
     }
 
-    public void fileFinder() {
+    public void fileChooser() {
         Scanner userInput = new Scanner(System.in);
         System.out.println("Please choose which table you are entering information for: ");
         System.out.println("1: Subject");
@@ -91,6 +93,7 @@ public class InputHandler {
         }
     }
 
+    //To be implemented
     public void existingTable() throws SQLException, FileNotFoundException {
         Scanner sc = new Scanner(System.in);
         System.out.println("Table " + getTableName() + " already exists. ");
@@ -103,13 +106,13 @@ public class InputHandler {
                 System.out.println("Dropping table " + getTableName());
                 dbc.dropTable(getTableName());
                 dbc.createTable(getTableName());
-                databaseHandler.fillTable(getSubjectFile(), tableName, getFilePath());
+                databaseHandler.fillTable(getCurrentFile(), getTableName());
                 break;
             case "y":
                 System.out.println("Dropping table " + getTableName());
                 dbc.dropTable(getTableName());
                 dbc.createTable(getTableName());
-                databaseHandler.fillTable(getSubjectFile(), tableName, getFilePath());
+                databaseHandler.fillTable(getCurrentFile(), getTableName());
                 break;
             case "N":
                 System.out.println("You chose to not drop table.");
@@ -122,11 +125,55 @@ public class InputHandler {
                 break;
         }
     }
+    //TODO ADD QUIT OPTION
+    public void choices() throws SQLException {
+        Scanner userInput = new Scanner(System.in);
+        boolean finished = false;
+        while(!finished) {
+            System.out.println("What would you like to do? Enter the number before action and press enter");
+            System.out.println("1: Read in information for tables");
+            System.out.println("2: Search for subject");
+            System.out.println("3: Get information on all subjects");
+            System.out.println("4: Quit");
+
+            int choice = userInput.nextInt();
+
+            switch (choice) {
+                case 1:
+                    fileChooser();
+                    break;
+                case 2:
+                    System.out.print("Enter subject code: ");
+                    String subjectCode = userInput.next();
+                    searchSubject(subjectCode);
+                    break;
+                case 3:
+                    getAllSubjects();
+                    break;
+                case 4:
+                    finished = true;
+                    break;
+            }
+        }
+    }
+
+    private void searchSubject(String subject) throws SQLException {
+        System.out.println("Searching for subject " + subject);
+        String result = databaseHandler.getSubject(subject);
+        if(!result.equals("")) {
+            System.out.println(result);
+        }
+    }
+
+    private void getAllSubjects() throws SQLException {
+        System.out.println("Getting information on all subjects.");
+        String result = databaseHandler.getAllSubjects();
+        if(!result.equals("")) {
+            System.out.println(result);
+        }
+    }
 
 
-    //TODO Create method to search for a subject
-
-    //TODO Create method for getting all table information
     public int getTablePick() {
         return tablePick;
     }
