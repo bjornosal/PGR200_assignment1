@@ -2,12 +2,17 @@ package no.salvesen.assignment1;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class InputHandler {
 
     //TODO Method for checking that file is correct format
     //TODO Method for parsing file, should that be here or handled in database class?
+    private DatabaseConn dbc;
+    private DatabaseHandler databaseHandler;
+
+    private File currentFile;
     private File subjectFile;
     private File roomFile;
     private File lecturerFile;
@@ -15,6 +20,11 @@ public class InputHandler {
     private int tablePick;
     private String tableName;
     private String filePath;
+
+    public InputHandler() throws SQLException {
+        dbc = new DatabaseConn();
+        databaseHandler = new DatabaseHandler();
+    }
 
     public void fileFinder() {
         Scanner userInput = new Scanner(System.in);
@@ -34,7 +44,7 @@ public class InputHandler {
                 setTableName("room");
                 break;
             case 3:
-                setTableName("subject");
+                setTableName("lecturer");
                 break;
             case 4:
                 System.out.println("Existing files chosen.");
@@ -56,26 +66,67 @@ public class InputHandler {
         switch (tablePick) {
             case 1:
                 setSubjectFile(new File(filePath));
+                setCurrentFile(getSubjectFile());
                 break;
             case 2:
                 setRoomFile(new File(filePath));
+                setCurrentFile(getRoomFile());
                 break;
             case 3:
                 setLecturerFile(new File(filePath));
+                setCurrentFile(getLecturerFile());
                 break;
             case 4:
                 setSubjectFile(new File("src/files/subject.csv"));
                 setRoomFile(new File("src/files/room.csv"));
                 setLecturerFile(new File("src/files/lecturer.csv"));
+                setCurrentFile(getSubjectFile());
                 break;
             default:
                 setSubjectFile(new File("src/files/subject.csv"));
                 setRoomFile(new File("src/files/room.csv"));
                 setLecturerFile(new File("src/files/lecturer.csv"));
+                setCurrentFile(getSubjectFile());
                 break;
         }
     }
 
+    public void existingTable() throws SQLException, FileNotFoundException {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Table " + getTableName() + " already exists. ");
+        System.out.println("Table contains " + databaseHandler.getRowCount(getTableName()) + " rows");
+        System.out.println("Drop table and use file information to recreate? (Y/N)");
+        String answer = sc.next();
+
+        switch (answer) {
+            case "Y":
+                System.out.println("Dropping table " + getTableName());
+                dbc.dropTable(getTableName());
+                dbc.createTable(getTableName());
+                databaseHandler.fillTable(getSubjectFile(), tableName, getFilePath());
+                break;
+            case "y":
+                System.out.println("Dropping table " + getTableName());
+                dbc.dropTable(getTableName());
+                dbc.createTable(getTableName());
+                databaseHandler.fillTable(getSubjectFile(), tableName, getFilePath());
+                break;
+            case "N":
+                System.out.println("You chose to not drop table.");
+                break;
+            case "n":
+                System.out.println("You chose to not drop table.");
+                break;
+            default:
+                System.out.println("You chose to not drop table.");
+                break;
+        }
+    }
+
+
+    //TODO Create method to search for a subject
+
+    //TODO Create method for getting all table information
     public int getTablePick() {
         return tablePick;
     }
@@ -123,5 +174,13 @@ public class InputHandler {
 
     public void setLecturerFile(File lecturerFile) {
         this.lecturerFile = lecturerFile;
+    }
+
+    public File getCurrentFile() {
+        return currentFile;
+    }
+
+    public void setCurrentFile(File currentFile) {
+        this.currentFile = currentFile;
     }
 }
