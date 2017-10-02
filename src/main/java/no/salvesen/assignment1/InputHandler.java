@@ -63,8 +63,6 @@ public class InputHandler {
             setFilePath(userInput.nextLine());
         }
 
-        //TODO Need check if File.exists() - how to do easiest possible way with multiple files?
-        //TODO: Test required to check that file is actually a file
         switch (tablePick) {
             case 1:
                 setSubjectFile(new File(filePath));
@@ -125,7 +123,7 @@ public class InputHandler {
                 break;
         }
     }
-    //TODO ADD QUIT OPTION
+
     public void choices() throws SQLException {
         Scanner userInput = new Scanner(System.in);
         boolean finished = false;

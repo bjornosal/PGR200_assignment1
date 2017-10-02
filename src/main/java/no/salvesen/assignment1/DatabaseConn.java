@@ -21,14 +21,32 @@ public class DatabaseConn {
     public void databaseBuilder() throws SQLException {
         dataSource = new MysqlDataSource();
 
+        /**
+         * Login to webserver.
+         * If local server wantet, comment out next four lines and
+         * remove comment on next lines. Fill in proper information.
+         */
         dataSource.setServerName("tek.westerdals.no");
         dataSource.setDatabaseName("salbjo16_pgr200_assignment1");
         dataSource.setUser("salbjo16_pgr200");
         dataSource.setPassword("pgr200!");
 
-        //Temporary - prepared statement needs to be implemented with ON DUPLICATE KEY
+
+        //
+        /*
+        dataSource.setServerName("localhost");
+        dataSource.setDatabaseName("pgr200_assignment_1");
+        dataSource.setUser("pgr200");
+        dataSource.setPassword("pgr200");
+        */
+        //Temporary - prepared statement needs to be implemented with ON DUPLICATE KEY for these to be removed
         dropTable("subject");
+        dropTable("room");
+        dropTable("lecturer");
+
         createSubjectTable();
+        createRoomTable();
+        createLecturerTable();
         //    createDatabase();
     }
 
@@ -87,7 +105,6 @@ public class DatabaseConn {
             stmt.executeUpdate("CREATE TABLE IF NOT EXISTS lecturer (\n" +
                     "id int(11) auto_increment,\n" +
                     "name varchar (255),\n" +
-                    "unavailability_id int(11),\n" +
                     "PRIMARY KEY (id)\n" +
                     ");");
         }
