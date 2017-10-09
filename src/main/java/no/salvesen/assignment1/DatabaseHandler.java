@@ -20,8 +20,18 @@ public class DatabaseHandler {
 
     public DatabaseHandler() throws SQLException {
         databaseConn = new DatabaseConn();
+        //Temporary - prepared statement needs to be implemented with ON DUPLICATE KEY for these to be removed
+        dropTable("subject");
+        dropTable("room");
+        dropTable("lecturer");
 
+        createSubjectTable();
+        createRoomTable();
+        createLecturerTable();
+        //    createDatabase();
     }
+
+
 /*    public int findColumnCount(String tableName) throws SQLException {
         MysqlDataSource dataSource = databaseConn.getDataSource();
         String selectAllQuery = "SELECT * FROM " + tableName + ";";
@@ -212,5 +222,83 @@ public class DatabaseHandler {
         }
         return rsmd;
     }
+
+
+    /**
+     * This part is methods that creates all stuff required.
+     *
+     *
+     */
+    protected void createTable(String tableName) throws SQLException {
+        switch (tableName) {
+            case "subject":
+                createSubjectTable();
+                break;
+        }
+    }
+
+    //Not in use as of right now
+    private boolean checkIfTableExists(String tableName) throws SQLException {
+        boolean exists = false;
+        try (Connection connection = databaseConn.getDataSource().getConnection()) {
+            ResultSet rs = connection.getMetaData().getTables(null, null, tableName, null);
+            System.out.println(rs);
+            if(rs.next()) {
+                exists = true;
+            }
+        }
+        return exists;
+    }
+
+    protected void dropTable(String tableName) throws SQLException {
+        try(Connection connection = databaseConn.getDataSource().getConnection()) {
+            Statement stmt = connection.createStatement();
+            stmt.executeUpdate("DROP TABLE IF EXISTS "+tableName);
+        }
+    }
+
+    private void createDatabase() throws SQLException{
+        try (Connection connection = databaseConn.getDataSource().getConnection()) {
+            Statement stmt = connection.createStatement();
+            stmt.execute("CREATE SCHEMA IF NOT EXISTS pgr200_assignment_1;");
+        }
+    }
+
+    private void createSubjectTable() throws SQLException {
+        String tableName = "subject";
+        try(Connection connection = databaseConn.getDataSource().getConnection()) {
+            Statement stmt = connection.createStatement();
+            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS "+tableName+" (\n" +
+                    "id VARCHAR(255) UNIQUE,\n" +
+                    "name varchar(255) UNIQUE NOT NULL,\n" +
+                    "attending_students INT(6),\n" +
+                    "teaching_form varchar(50) NOT NULL,\n" +
+                    "duration FLOAT(11),\n" +
+                    "PRIMARY KEY(id));");
+        }
+    }
+
+    private void createLecturerTable() throws SQLException {
+        try(Connection connection = databaseConn.getDataSource().getConnection()) {
+            Statement stmt = connection.createStatement();
+            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS lecturer (\n" +
+                    "id int(11) auto_increment,\n" +
+                    "name varchar (255),\n" +
+                    "PRIMARY KEY (id)\n" +
+                    ");");
+        }
+    }
+
+    private void createRoomTable() throws SQLException {
+        try (Connection connection = databaseConn.getDataSource().getConnection()) {
+            Statement stmt = connection.createStatement();
+            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS room (\n" +
+                    "name varchar(255) UNIQUE, \n" +
+                    "type ENUM('SMALLROOM', 'LARGEROOM', 'LARGEAUD', 'SMALLAUD'),\n" +
+                    "facilities varchar(255)\n" +
+                    ");");
+        }
+    }
+
 
 }

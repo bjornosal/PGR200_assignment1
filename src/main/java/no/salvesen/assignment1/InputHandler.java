@@ -102,14 +102,14 @@ public class InputHandler {
         switch (answer) {
             case "Y":
                 System.out.println("Dropping table " + getTableName());
-                dbc.dropTable(getTableName());
-                dbc.createTable(getTableName());
+                databaseHandler.dropTable(getTableName());
+                databaseHandler.createTable(getTableName());
                 databaseHandler.fillTable(getCurrentFile(), getTableName());
                 break;
             case "y":
                 System.out.println("Dropping table " + getTableName());
-                dbc.dropTable(getTableName());
-                dbc.createTable(getTableName());
+                databaseHandler.dropTable(getTableName());
+                databaseHandler.createTable(getTableName());
                 databaseHandler.fillTable(getCurrentFile(), getTableName());
                 break;
             case "N":
