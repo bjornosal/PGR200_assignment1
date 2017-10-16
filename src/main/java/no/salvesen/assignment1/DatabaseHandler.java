@@ -109,7 +109,7 @@ public class DatabaseHandler {
 
     public void fillTable(File tableInformation, String tableName) throws SQLException, FileNotFoundException {
         Scanner fileStream = new Scanner(tableInformation);
-        fileStream.useDelimiter(";|\\r\\n");
+        fileStream.useDelimiter(";|\\r\\n|\\n");
 
         MysqlDataSource dataSource = databaseConn.getDataSource();
         try(Connection connection = dataSource.getConnection()) {
@@ -279,6 +279,7 @@ public class DatabaseHandler {
                     //"duration FLOAT(11),\n" +
                     "PRIMARY KEY(id));");
         }
+
     }
 
     private void createLecturerTable() throws SQLException {
