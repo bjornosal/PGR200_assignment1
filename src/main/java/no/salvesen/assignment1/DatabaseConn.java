@@ -11,6 +11,7 @@ import java.sql.Statement;
 public class DatabaseConn {
 
     private MysqlDataSource dataSource;
+    
 
     public DatabaseConn() throws SQLException {
         databaseBuilder();
@@ -30,12 +31,12 @@ public class DatabaseConn {
         dataSource.setPassword("pgr200!");
 */
 
-        /*
+
         dataSource.setServerName("localhost");
         dataSource.setDatabaseName("pgr200_assignment_1");
         dataSource.setUser("pgr200");
         dataSource.setPassword("pgr200");
-        */
+
 
     }
 

@@ -25,10 +25,10 @@ public class DatabaseHandler {
         dropTable("room");
         dropTable("lecturer");
 
+        createDatabase();
         createSubjectTable();
         createRoomTable();
         createLecturerTable();
-        //    createDatabase();
     }
 
 
@@ -268,12 +268,15 @@ public class DatabaseHandler {
         String tableName = "subject";
         try(Connection connection = databaseConn.getDataSource().getConnection()) {
             Statement stmt = connection.createStatement();
-            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS "+tableName+" (\n" +
+            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS " + tableName + " (\n" +
                     "id VARCHAR(255) UNIQUE,\n" +
                     "name varchar(255) UNIQUE NOT NULL,\n" +
                     "attending_students INT(6),\n" +
                     "teaching_form varchar(50) NOT NULL,\n" +
-                    "duration FLOAT(11),\n" +
+                    // Issue with data truncation might lie here.
+                    //Mysql has issues with float, use decimal instead.
+                    "duration DECIMAL(11),\n" +
+                    //"duration FLOAT(11),\n" +
                     "PRIMARY KEY(id));");
         }
     }
@@ -294,7 +297,8 @@ public class DatabaseHandler {
             Statement stmt = connection.createStatement();
             stmt.executeUpdate("CREATE TABLE IF NOT EXISTS room (\n" +
                     "name varchar(255) UNIQUE, \n" +
-                    "type ENUM('SMALLROOM', 'LARGEROOM', 'LARGEAUD', 'SMALLAUD'),\n" +
+                    "type varchar(255),\n" +
+                    //"type ENUM('SMALLROOM', 'LARGEROOM', 'LARGEAUD', 'SMALLAUD'),\n" +
                     "facilities varchar(255)\n" +
                     ");");
         }
