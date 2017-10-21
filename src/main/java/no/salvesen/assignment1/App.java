@@ -1,11 +1,12 @@
 package no.salvesen.assignment1;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.SQLException;
 
 public class App
 {
-    public static void main(String[] args) throws FileNotFoundException, SQLException {
+    public static void main(String[] args) throws IOException, SQLException {
         App app = new App();
         app.runApp();
     }
@@ -19,7 +20,7 @@ public class App
      * @throws FileNotFoundException
      * @throws SQLException
      */
-    private void runApp() throws FileNotFoundException, SQLException {
+    private void runApp() throws IOException, SQLException {
         InputHandler inph = new InputHandler();
         DatabaseHandler dbh = new DatabaseHandler();
         dbh.fillTable(inph.getSubjectFile(), "subject");

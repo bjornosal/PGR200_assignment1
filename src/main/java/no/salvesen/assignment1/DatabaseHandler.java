@@ -1,11 +1,11 @@
 package no.salvesen.assignment1;
 
-import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 
+import java.io.IOException;
 import java.sql.*;
 import java.sql.Connection;
 import java.sql.ResultSetMetaData;
@@ -16,10 +16,10 @@ import java.util.Scanner;
 
 public class DatabaseHandler {
 
-    DatabaseConn databaseConn;
+    DatabaseConnection databaseConnection;
 
-    public DatabaseHandler() throws SQLException {
-        databaseConn = new DatabaseConn();
+    public DatabaseHandler() throws SQLException, IOException {
+        databaseConnection = new DatabaseConnection();
         //Temporary - prepared statement needs to be implemented with ON DUPLICATE KEY for these to be removed
         dropTable("subject");
         dropTable("room");
@@ -33,7 +33,7 @@ public class DatabaseHandler {
 
 
 /*    public int findColumnCount(String tableName) throws SQLException {
-        MysqlDataSource dataSource = databaseConn.getDataSource();
+        MysqlDataSource dataSource = databaseConnection.getDataSource();
         String selectAllQuery = "SELECT * FROM " + tableName + ";";
         int columnCount;
 
@@ -53,7 +53,7 @@ public class DatabaseHandler {
     }
 
     public int getRowCount(String tableName) throws SQLException {
-        MysqlDataSource dataSource = databaseConn.getDataSource();
+        MysqlDataSource dataSource = databaseConnection.getDataSource();
         String selectAllQuery = "SELECT * FROM " + tableName + ";";
         int rowCount = 0;
 
@@ -72,7 +72,7 @@ public class DatabaseHandler {
         String[] columnNames = new String[findColumnCount(tableName)];
         String query = "SELECT * FROM " + tableName + ";";
         //Shorten code by taking entire try - with resource out of methods??
-        MysqlDataSource dataSource = databaseConn.getDataSource();
+        MysqlDataSource dataSource = databaseConnection.getDataSource();
 
         try(Connection connection = dataSource.getConnection()) {
             Statement stmt = connection.createStatement();
@@ -93,7 +93,7 @@ public class DatabaseHandler {
         String[] dataTypes = new String[findColumnCount(tableName)];
         String query = "SELECT * FROM " + tableName + ";";
 
-        MysqlDataSource dataSource = databaseConn.getDataSource();
+        MysqlDataSource dataSource = databaseConnection.getDataSource();
         try(Connection connection = dataSource.getConnection()) {
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery(query);
@@ -111,7 +111,7 @@ public class DatabaseHandler {
         Scanner fileStream = new Scanner(tableInformation);
         fileStream.useDelimiter(";|\\r\\n|\\n");
 
-        MysqlDataSource dataSource = databaseConn.getDataSource();
+        MysqlDataSource dataSource = databaseConnection.getDataSource();
         try(Connection connection = dataSource.getConnection()) {
             String prpStmt = prepareInsertStatement(tableName);
 
@@ -164,7 +164,7 @@ public class DatabaseHandler {
                 "WHERE id = '"+ subject + "';";
         System.out.println("Kode    |   Navn    |   Studenter   |   Laeringsform    |   Lengde");
 
-        MysqlDataSource dataSource = databaseConn.getDataSource();
+        MysqlDataSource dataSource = databaseConnection.getDataSource();
         try(Connection connection = dataSource.getConnection()) {
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery(query);
@@ -186,7 +186,7 @@ public class DatabaseHandler {
         String query = "SELECT id as 'Kode', name as 'Navn', attending_students as 'Studenter', teaching_form as 'Laeringsform', duration as 'Lengde'\n" +
                 "FROM subject;";
         System.out.println("\nKode    |   Navn    |   Studenter   |   Laeringsform    |   Lengde\n");
-        MysqlDataSource dataSource = databaseConn.getDataSource();
+        MysqlDataSource dataSource = databaseConnection.getDataSource();
         try (Connection connection = dataSource.getConnection()) {
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery(query);
@@ -214,7 +214,7 @@ public class DatabaseHandler {
         String query = "SELECT * FROM " + tableName + ";";
         ResultSetMetaData rsmd;
 
-        MysqlDataSource dataSource = databaseConn.getDataSource();
+        MysqlDataSource dataSource = databaseConnection.getDataSource();
         try(Connection connection = dataSource.getConnection()) {
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery(query);
@@ -240,7 +240,7 @@ public class DatabaseHandler {
     //Not in use as of right now
     private boolean checkIfTableExists(String tableName) throws SQLException {
         boolean exists = false;
-        try (Connection connection = databaseConn.getDataSource().getConnection()) {
+        try (Connection connection = databaseConnection.getDataSource().getConnection()) {
             ResultSet rs = connection.getMetaData().getTables(null, null, tableName, null);
             System.out.println(rs);
             if(rs.next()) {
@@ -251,14 +251,14 @@ public class DatabaseHandler {
     }
 
     protected void dropTable(String tableName) throws SQLException {
-        try(Connection connection = databaseConn.getDataSource().getConnection()) {
+        try(Connection connection = databaseConnection.getDataSource().getConnection()) {
             Statement stmt = connection.createStatement();
             stmt.executeUpdate("DROP TABLE IF EXISTS "+tableName);
         }
     }
 
     private void createDatabase() throws SQLException{
-        try (Connection connection = databaseConn.getDataSource().getConnection()) {
+        try (Connection connection = databaseConnection.getDataSource().getConnection()) {
             Statement stmt = connection.createStatement();
             stmt.execute("CREATE SCHEMA IF NOT EXISTS pgr200_assignment_1;");
         }
@@ -266,7 +266,7 @@ public class DatabaseHandler {
 
     private void createSubjectTable() throws SQLException {
         String tableName = "subject";
-        try(Connection connection = databaseConn.getDataSource().getConnection()) {
+        try(Connection connection = databaseConnection.getDataSource().getConnection()) {
             Statement stmt = connection.createStatement();
             stmt.executeUpdate("CREATE TABLE IF NOT EXISTS " + tableName + " (\n" +
                     "id VARCHAR(255) UNIQUE,\n" +
@@ -283,7 +283,7 @@ public class DatabaseHandler {
     }
 
     private void createLecturerTable() throws SQLException {
-        try(Connection connection = databaseConn.getDataSource().getConnection()) {
+        try(Connection connection = databaseConnection.getDataSource().getConnection()) {
             Statement stmt = connection.createStatement();
             stmt.executeUpdate("CREATE TABLE IF NOT EXISTS lecturer (\n" +
                     "id int(11) auto_increment,\n" +
@@ -294,7 +294,7 @@ public class DatabaseHandler {
     }
 
     private void createRoomTable() throws SQLException {
-        try (Connection connection = databaseConn.getDataSource().getConnection()) {
+        try (Connection connection = databaseConnection.getDataSource().getConnection()) {
             Statement stmt = connection.createStatement();
             stmt.executeUpdate("CREATE TABLE IF NOT EXISTS room (\n" +
                     "name varchar(255) UNIQUE, \n" +

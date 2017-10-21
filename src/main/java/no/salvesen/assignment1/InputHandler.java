@@ -2,13 +2,14 @@ package no.salvesen.assignment1;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Scanner;
 
 public class InputHandler {
 
 
-    private DatabaseConn dbc;
+    private DatabaseConnection dbc;
     private DatabaseHandler databaseHandler;
 
     private File currentFile;
@@ -20,8 +21,8 @@ public class InputHandler {
     private String tableName;
     private String filePath;
 
-    public InputHandler() throws SQLException {
-        dbc = new DatabaseConn();
+    public InputHandler() throws SQLException, IOException {
+        dbc = new DatabaseConnection();
         databaseHandler = new DatabaseHandler();
         setSubjectFile(new File("src/files/subject.csv"));
         setRoomFile(new File("src/files/room.csv"));
@@ -30,6 +31,7 @@ public class InputHandler {
 
     public void fileChooser() {
         Scanner userInput = new Scanner(System.in);
+        System.out.printf("%10s");
         System.out.println("Please choose which table you are entering information for: ");
         System.out.println("1: Subject");
         System.out.println("2: Room");
