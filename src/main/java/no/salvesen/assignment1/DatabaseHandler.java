@@ -150,6 +150,7 @@ public class DatabaseHandler{
      * @throws SQLException
      * @throws FileNotFoundException
      */
+
     private void fillTable(File tableInformation, String tableName) throws SQLException, FileNotFoundException {
         Scanner fileStream = new Scanner(tableInformation);
         fileStream.useDelimiter(";|\\r\\n|\\n");
@@ -175,6 +176,8 @@ public class DatabaseHandler{
      * @return a prepared query
      * @throws SQLException
      */
+
+    //TODO do a batch insertion instead, to decrease runtime
     private String prepareInsertStatement(String tableName) throws SQLException {
         String preparedStatement = "INSERT INTO " + tableName + " VALUES (";
         int columns = getColumnCountOfTable(tableName);
@@ -186,6 +189,9 @@ public class DatabaseHandler{
         }
         return preparedStatement;
     }
+
+
+
 
     /***
      * Implement usage for more generic methods
@@ -450,7 +456,7 @@ public class DatabaseHandler{
         return exists;
     }
 
-    protected void dropTable(String tableName) throws SQLException {
+    private void dropTable(String tableName) throws SQLException {
         try(Connection connection = getDatabaseConnection().getDataSource().getConnection()) {
             Statement stmt = connection.createStatement();
             stmt.executeUpdate("DROP TABLE IF EXISTS "+tableName);
@@ -463,7 +469,9 @@ public class DatabaseHandler{
             stmt.execute("CREATE SCHEMA IF NOT EXISTS pgr200_assignment_1;");
         }
     }
-//TODO change this to be a dynamic
+
+
+    //TODO change this to be a dynamic creation
     private void createSubjectTable() throws SQLException {
         try(Connection connection = getDatabaseConnection().getDataSource().getConnection()) {
             Statement stmt = connection.createStatement();
