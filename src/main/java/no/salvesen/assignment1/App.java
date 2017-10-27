@@ -21,11 +21,12 @@ public class App
      * @throws SQLException
      */
     private void runApp() throws IOException, SQLException {
-        InputHandler inph = new InputHandler();
-        DatabaseHandler dbh = new DatabaseHandler();
-        dbh.fillTable(inph.getSubjectFile(), "subject");
+        InputHandler inputHandler = new InputHandler();
+//        DatabaseHandler dbh = new DatabaseHandler();
+        inputHandler.startMenuLoop();
+        /*dbh.fillTable(inph.getSubjectFile(), "subject");
         dbh.fillTable(inph.getRoomFile(), "room");
         dbh.fillTable(inph.getLecturerFile(), "lecturer");
-        inph.choices();
+        inph.choices();*/
     }
 }
