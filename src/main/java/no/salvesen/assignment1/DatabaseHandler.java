@@ -31,25 +31,8 @@ public class DatabaseHandler {
         createLecturerTable();
     }
 
-
-/*    public int findColumnCount(String tableName) throws SQLException {
-        MysqlDataSource dataSource = databaseConnection.getDataSource();
-        String selectAllQuery = "SELECT * FROM " + tableName + ";";
-        int columnCount;
-
-        try(Connection connection = dataSource.getConnection()) {
-            Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery(selectAllQuery);
-            ResultSetMetaData rsmd = rs.getMetaData();
-            columnCount = rsmd.getColumnCount();
-        }
-        return columnCount;
-    }*/
-
-    //Shorter version
     public int findColumnCount(String tableName) throws SQLException {
-        int columnCount = getFullResultSetMetaData(tableName).getColumnCount();
-        return columnCount;
+        return getFullResultSetMetaData(tableName).getColumnCount();
     }
 
     public int getRowCount(String tableName) throws SQLException {
@@ -299,7 +282,7 @@ public class DatabaseHandler {
             stmt.executeUpdate("CREATE TABLE IF NOT EXISTS room (\n" +
                     "name varchar(255) UNIQUE, \n" +
                     "type varchar(255),\n" +
-                    //"type ENUM('SMALLROOM', 'LARGEROOM', 'LARGEAUD', 'SMALLAUD'),\n" +
+                    "type ENUM('SMALLROOM', 'LARGEROOM', 'LARGEAUD', 'SMALLAUD'),\n" +
                     "facilities varchar(255)\n" +
                     ");");
         }

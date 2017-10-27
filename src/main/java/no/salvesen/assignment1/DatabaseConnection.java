@@ -37,7 +37,7 @@ public class DatabaseConnection {
 
         properties.load(input);
 
-        dataSource.setServerName("localhost");
+        dataSource.setServerName(properties.getProperty("serverName"));
         dataSource.setDatabaseName(properties.getProperty("databaseName"));
         dataSource.setUser(properties.getProperty("databaseUser"));
         dataSource.setPassword(properties.getProperty("databasePassword"));
