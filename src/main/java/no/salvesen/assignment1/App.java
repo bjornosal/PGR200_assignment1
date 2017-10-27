@@ -23,10 +23,14 @@ public class App
     private void runApp() throws IOException, SQLException {
         InputHandler inputHandler = new InputHandler();
         inputHandler.startMenuLoop();
-//        DatabaseHandler dbh = new DatabaseHandler();
-        /*dbh.fillTable(inph.getSubjectFile(), "subject");
-        dbh.fillTable(inph.getRoomFile(), "room");
-        dbh.fillTable(inph.getLecturerFile(), "lecturer");
-        inph.choices();*/
+
+        //FileReader Testing
+/*
+        FileReader fileReader = new FileReader();
+        fileReader.readFile();
+        System.out.println(fileReader.getColumnNames());
+        System.out.println(fileReader.getColumnSQLValues());
+        System.out.println(fileReader.getDisplayNames());
+        System.out.println(fileReader.getInsertionValues());*/
     }
 }

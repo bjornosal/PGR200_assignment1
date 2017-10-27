@@ -10,6 +10,7 @@ public class InputHandler {
 
     private Menu menu;
     private DatabaseHandler databaseHandler;
+    private FileReader fileReader;
 
     private File subjectFile;
     private File roomFile;
@@ -20,8 +21,8 @@ public class InputHandler {
         setSubjectFile(new File("src/files/subject.csv"));
         setRoomFile(new File("src/files/room.csv"));
         setLecturerFile(new File("src/files/lecturer.csv"));
-        userInput = new Scanner(System.in);
 
+        userInput = new Scanner(System.in);
         databaseHandler = new DatabaseHandler();
         menu = new Menu();
     }

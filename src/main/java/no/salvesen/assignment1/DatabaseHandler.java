@@ -21,7 +21,6 @@ public class DatabaseHandler{
     }
 
 
-    //TODO do prepared statements at the missing 3 classes.
 
     private String getResultHeader(String queryType) {
         String result = "";
@@ -54,10 +53,7 @@ public class DatabaseHandler{
         fillTable(lecturerFile, "lecturer");
     }
 
-    /*
-     * Copied from assignment1
-     *
-     */
+
 
     /**
      *
@@ -507,11 +503,6 @@ public class DatabaseHandler{
         }
     }
 
-
-    /*
-     * ^ Copied from assignment 1
-     *
-     */
     protected DatabaseConnection getDatabaseConnection() {
         return databaseConnection;
     }
