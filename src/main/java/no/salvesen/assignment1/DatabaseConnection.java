@@ -4,7 +4,6 @@ package no.salvesen.assignment1;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 import java.io.*;
-import java.sql.SQLException;
 import java.util.Properties;
 
 public class DatabaseConnection {
@@ -12,27 +11,15 @@ public class DatabaseConnection {
     private MysqlDataSource dataSource;
     
 
-    public DatabaseConnection() throws SQLException, IOException {
-        databaseBuilder();
+    public DatabaseConnection() throws IOException {
+        dataSource = new MysqlDataSource();
     }
 
-    public void databaseBuilder() throws SQLException, IOException {
-        dataSource = new MysqlDataSource();
+    public void databaseBuilder(String propertyFilePath) throws IOException {
 
-        /**
-         * Login to webserver.
-         * If local server wanted, comment out next four lines and
-         * remove comment on next lines. Fill in proper information.
-         */ /*
-        dataSource.setServerName("tek.westerdals.no");
-        dataSource.setDatabaseName("salbjo16_pgr200_assignment1");
-        dataSource.setUser("salbjo16_pgr200");
-        dataSource.setPassword("pgr200!");
-*/
-        //Setting up using properties instead
-
-        //Using default login for now.
         Properties properties = new Properties();
+        //This one should be used, using other until dynamic creation is finished
+//        InputStream input = new FileInputStream(propertyFilePath);
         InputStream input = new FileInputStream("./src/files/defaultDatabaseConfig.properties");
 
         properties.load(input);

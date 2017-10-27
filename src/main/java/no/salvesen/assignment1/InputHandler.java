@@ -1,15 +1,233 @@
 package no.salvesen.assignment1;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.sql.SQLException;
+import java.util.Properties;
 import java.util.Scanner;
 
 public class InputHandler {
 
 
-    private DatabaseConnection dbc;
+    private Menu menu;
+    private DatabaseHandler databaseHandler;
+
+    private File subjectFile;
+    private File roomFile;
+    private File lecturerFile;
+
+    public InputHandler() throws IOException {
+        setSubjectFile(new File("src/files/subject.csv"));
+        setRoomFile(new File("src/files/room.csv"));
+        setLecturerFile(new File("src/files/lecturer.csv"));
+
+        databaseHandler = new DatabaseHandler();
+        menu = new Menu();
+    }
+
+
+    private void setUpProperties(PrintWriter outputToClient, BufferedReader inputFromClient) throws IOException, SQLException {
+        boolean finished = false;
+        String menuChoice;
+
+        while (!finished) {
+            Properties properties = new Properties();
+            outputToClient.println(menu.propertiesMenu());
+            menuChoice = inputFromClient.readLine();
+            switch(menuChoice) {
+
+                //Use default properties
+                case "1":
+                    databaseHandler.setPropertyFilePath("./src/files/defaultDatabaseLogin.properties");
+                    finished = true;
+                    break;
+
+                //use properties previously set by user
+                case "2":
+                    databaseHandler.setPropertyFilePath("./src/files/userEnteredDatabaseLogin.properties");
+                    finished = true;
+                    break;
+
+                //Enter new properties
+                case "3":
+                    outputToClient.println("Server name: ");
+                    String serverName = inputFromClient.readLine();
+                    outputToClient.println("Database name: ");
+                    String databaseName = inputFromClient.readLine();
+                    outputToClient.println("Username: ");
+                    String databaseUser = inputFromClient.readLine();
+                    outputToClient.println("Password: ");
+                    String databasePassword = inputFromClient.readLine();
+
+                    //Filling property file
+                    properties.setProperty("serverName", serverName);
+                    properties.setProperty("databaseName", databaseName);
+                    properties.setProperty("databaseUser", databaseUser);
+                    properties.setProperty("databasePassword", databasePassword);
+                    File userEnteredProperties = new File("./src/files/userEnteredDatabaseLogin.properties");
+
+                    try(FileOutputStream fileOut = new FileOutputStream(userEnteredProperties)) {
+                        properties.store(fileOut, "Added by user");
+                        outputToClient.println("Property file set up. Attempting to connect.\n");
+                        databaseHandler.setPropertyFilePath("./src/files/userEnteredDatabaseLogin.properties");
+                        finished = true;
+                    }
+                    break;
+
+                default:
+                    outputToClient.println("Incorrect choice, please try again.");
+                    break;
+
+            }
+        }
+
+        //Starts database with the properties chosen.
+        databaseHandler.startDatabase();
+
+    }
+
+    public void startMenuLoop(PrintWriter outputToClient, BufferedReader inputFromClient) throws IOException, SQLException {
+        setUpProperties(outputToClient, inputFromClient);
+
+        //Temporary setup for testing
+        databaseHandler.tearDownDatabaseAndSetBackUp(getSubjectFile(),getRoomFile(),getLecturerFile());
+
+        showMainMenu(outputToClient, inputFromClient);
+    }
+
+    private void showMainMenu(PrintWriter outputToClient, BufferedReader inputFromClient) throws IOException, SQLException {
+        String menuChoice;
+        while(true) {
+            outputToClient.println(menu.mainMenu());
+            menuChoice = inputFromClient.readLine();
+
+            switch(menuChoice) {
+                case "1":
+                    showSearchMenu(outputToClient, inputFromClient);
+                    break;
+                case "2":
+                    showTableMenu(outputToClient, inputFromClient);
+                    break;
+                default:
+                    outputToClient.println("Incorrect choice, please try again.");
+            }
+        }
+    }
+
+    //TODO missing option regarding filling information into DB
+    private void showTableMenu(PrintWriter outputToClient, BufferedReader inputFromClient) throws IOException, SQLException {
+        String menuChoice;
+        while(true) {
+            outputToClient.println(menu.tableMenu());
+            menuChoice = inputFromClient.readLine();
+            String filePathMessage = "Please enter the file-path to the csv file.";
+
+            switch(menuChoice) {
+                case "1":
+                    outputToClient.println(filePathMessage);
+                    setSubjectFile(new File(inputFromClient.readLine()));
+                    break;
+                case "2":
+                    outputToClient.println(filePathMessage);
+                    setRoomFile(new File(inputFromClient.readLine()));
+                    break;
+                case "3":
+                    outputToClient.println(filePathMessage);
+                    setLecturerFile(new File(inputFromClient.readLine()));
+                    break;
+                case "4":
+                    outputToClient.println("Existing files chosen");
+                    break;
+                case "5":
+                    //TODO add fillTable method here
+                    outputToClient.print("Cleared tables and filled with information from files.");
+                    break;
+                case "6":
+                    showMainMenu(outputToClient, inputFromClient);
+                    break;
+                case "7":
+                    //Closes thread
+//                    Thread.currentThread().interrupt();
+//                    return;
+                    break;
+                default:
+                    outputToClient.println("Incorrect choice, please try again.");
+            }
+
+        }
+    }
+
+    private void showSearchMenu(PrintWriter outputToClient, BufferedReader inputFromClient) throws IOException, SQLException {
+        String menuChoice;
+        while(true) {
+            outputToClient.println(menu.searchMenu());
+            menuChoice = inputFromClient.readLine();
+
+            switch(menuChoice) {
+                case "1":
+                    outputToClient.println("Please enter subject code: ");
+                    String subject = inputFromClient.readLine();
+                    outputToClient.println(databaseHandler.getSubjectRowBySubjectID(subject));
+                    break;
+                case "2":
+                    outputToClient.println(databaseHandler.getAllRowsFromSubjectTable());
+                    break;
+                case "3":
+                    outputToClient.println("Please enter name of lecturer: ");
+                    String lecturer = inputFromClient.readLine();
+                    outputToClient.println(databaseHandler.getLecturerRowByName(lecturer));
+                    break;
+                case "4":
+                    outputToClient.println(databaseHandler.getAllRowsFromLecturerTable());
+                    break;
+                case "5":
+                    outputToClient.println("Please enter name of room: ");
+                    String room = inputFromClient.readLine();
+                    outputToClient.println(databaseHandler.getRoomRowByName(room));
+                    break;
+                case "6":
+                    outputToClient.println(databaseHandler.getAllRowsFromRoomTable());
+                    break;
+                case "7":
+                    showMainMenu(outputToClient,inputFromClient);
+                    break;
+                case "8":
+                    //Closes thread
+//                    Thread.currentThread().interrupt();
+//                    return;
+                    break;
+                default:
+                    outputToClient.println("Incorrect choice, please try again.");
+            }
+
+        }
+    }
+
+
+    public File getSubjectFile() {
+        return subjectFile;
+    }
+
+    public void setSubjectFile(File subjectFile) {
+        this.subjectFile = subjectFile;
+    }
+
+    public File getRoomFile() {
+        return roomFile;
+    }
+
+    public void setRoomFile(File roomFile) {
+        this.roomFile = roomFile;
+    }
+
+    public File getLecturerFile() {
+        return lecturerFile;
+    }
+
+    public void setLecturerFile(File lecturerFile) {
+        this.lecturerFile = lecturerFile;
+    }
+
+/*
     private DatabaseHandler databaseHandler;
 
     private File currentFile;
@@ -22,7 +240,6 @@ public class InputHandler {
     private String filePath;
 
     public InputHandler() throws SQLException, IOException {
-        dbc = new DatabaseConnection();
         databaseHandler = new DatabaseHandler();
         setSubjectFile(new File("src/files/subject.csv"));
         setRoomFile(new File("src/files/room.csv"));
@@ -230,4 +447,6 @@ public class InputHandler {
     public void setCurrentFile(File currentFile) {
         this.currentFile = currentFile;
     }
+
+    */
 }
