@@ -7,6 +7,10 @@ import java.util.Scanner;
 
 public class FileReader {
 
+    private File subjectFile;
+    private File roomFile;
+    private File lecturerFile;
+
     private String tableName;
     private int tableColumnCount;
     private int amountOfPrimaryKeys;
@@ -18,16 +22,19 @@ public class FileReader {
     private ArrayList<String> insertionValues;
 
     public FileReader() {
+        setSubjectFile(new File("src/files/subject.csv"));
+        setRoomFile(new File("src/files/room.csv"));
+        setLecturerFile(new File("src/files/lecturer.csv"));
     }
 
-    public void readFile(String filepath) throws FileNotFoundException {
+    public void readFile(File tableFile) throws FileNotFoundException {
         columnNames = new ArrayList<>();
         columnSQLValues = new ArrayList<>();
         displayNames = new ArrayList<>();
         insertionValues = new ArrayList<>();
 
         //TODO change source when testing is complete
-        Scanner fileParser = new Scanner(new File(filepath));
+        Scanner fileParser = new Scanner(tableFile);
         fileParser.useDelimiter(";|\\r\\n|\\n");
 
         readMetaDataFromFile(fileParser);
@@ -76,6 +83,30 @@ public class FileReader {
                 insertionValues.add(fileParser.next());
             }
         }
+    }
+
+    public File getSubjectFile() {
+        return subjectFile;
+    }
+
+    public void setSubjectFile(File subjectFile) {
+        this.subjectFile = subjectFile;
+    }
+
+    public File getRoomFile() {
+        return roomFile;
+    }
+
+    public void setRoomFile(File roomFile) {
+        this.roomFile = roomFile;
+    }
+
+    public File getLecturerFile() {
+        return lecturerFile;
+    }
+
+    public void setLecturerFile(File lecturerFile) {
+        this.lecturerFile = lecturerFile;
     }
 
     public String getTableName() {

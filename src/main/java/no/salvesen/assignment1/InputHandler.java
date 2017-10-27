@@ -12,15 +12,10 @@ public class InputHandler {
     private DatabaseHandler databaseHandler;
     private FileReader fileReader;
 
-    private File subjectFile;
-    private File roomFile;
-    private File lecturerFile;
     private Scanner userInput;
 
     public InputHandler() throws IOException {
-        setSubjectFile(new File("src/files/subject.csv"));
-        setRoomFile(new File("src/files/room.csv"));
-        setLecturerFile(new File("src/files/lecturer.csv"));
+        fileReader = new FileReader();
 
         userInput = new Scanner(System.in);
         databaseHandler = new DatabaseHandler();
@@ -92,7 +87,7 @@ public class InputHandler {
         setUpProperties();
 
         //Temporary setup for testing
-        databaseHandler.tearDownDatabaseAndSetBackUp(getSubjectFile(),getRoomFile(),getLecturerFile());
+        databaseHandler.tearDownDatabaseAndSetBackUp(fileReader.getSubjectFile(),fileReader.getRoomFile(),fileReader.getLecturerFile());
 
         showMainMenu();
     }
@@ -127,15 +122,15 @@ public class InputHandler {
             switch(menuChoice) {
                 case "1":
                     System.out.println(filePathMessage);
-                    setSubjectFile(new File(userInput.nextLine()));
+                    fileReader.setSubjectFile(new File(userInput.nextLine()));
                     break;
                 case "2":
                     System.out.println(filePathMessage);
-                    setRoomFile(new File(userInput.nextLine()));
+                    fileReader.setRoomFile(new File(userInput.nextLine()));
                     break;
                 case "3":
                     System.out.println(filePathMessage);
-                    setLecturerFile(new File(userInput.nextLine()));
+                    fileReader.setLecturerFile(new File(userInput.nextLine()));
                     break;
                 case "4":
                     System.out.println("Existing files chosen");
@@ -205,30 +200,6 @@ public class InputHandler {
         }
     }
 
-
-    public File getSubjectFile() {
-        return subjectFile;
-    }
-
-    public void setSubjectFile(File subjectFile) {
-        this.subjectFile = subjectFile;
-    }
-
-    public File getRoomFile() {
-        return roomFile;
-    }
-
-    public void setRoomFile(File roomFile) {
-        this.roomFile = roomFile;
-    }
-
-    public File getLecturerFile() {
-        return lecturerFile;
-    }
-
-    public void setLecturerFile(File lecturerFile) {
-        this.lecturerFile = lecturerFile;
-    }
 
 /*
     private DatabaseHandler databaseHandler;

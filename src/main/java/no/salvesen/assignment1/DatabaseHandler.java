@@ -11,6 +11,9 @@ import java.util.Scanner;
 public class DatabaseHandler{
 
     private DatabaseConnection databaseConnection;
+    FileReader fileReader;
+
+
     private String propertyFilePath;
     private String subjectFormat = "%-7s| %-40s| %-10s| %-16s| %-9s|";
     private String lecturerFormat = "%-4s| %-15s|";
@@ -18,6 +21,7 @@ public class DatabaseHandler{
 
     protected DatabaseHandler() throws IOException {
         databaseConnection = new DatabaseConnection();
+        fileReader  = new FileReader();
     }
 
 
@@ -45,7 +49,8 @@ public class DatabaseHandler{
         dropTable("lecturer");
 
         createDatabase();
-        createTableWithTableName("subject");
+//        createTableWithTableName("subject");
+        createSubjectTableFromMetaData();
         createTableWithTableName("room");
         createTableWithTableName("lecturer");
         fillTable(subjectFile, "subject");
@@ -481,6 +486,36 @@ public class DatabaseHandler{
         }
     }
 
+    //TODO CHANGE THE NAME OF THIS METHOD WHEN COMPLETED. IT WILL TAKE OVER FOR "createSubjectTable()"
+    private void createSubjectTableFromMetaData() throws FileNotFoundException, SQLException {
+        fileReader.readFile(fileReader.getSubjectFile());
+
+        StringBuilder createTableQuery = new StringBuilder("CREATE TABLE IF NOT EXISTS " + fileReader.getTableName() + "(\n");
+
+        try(Connection connection = getDatabaseConnection().getDataSource().getConnection()) {
+            Statement statement = connection.createStatement();
+            for(int i = 1; i < fileReader.getTableColumnCount(); i++) {
+                createTableQuery.append(fileReader.getColumnNames().get(i));
+                createTableQuery.append(" ");
+                createTableQuery.append(fileReader.getColumnSQLValues().get(i));
+                createTableQuery.append(",\n");
+
+                if(i == fileReader.getTableColumnCount() - 1 ) {
+
+                    //Temporary solution for primary keys
+                    if(fileReader.getAmountOfPrimaryKeys() > 0) {
+                        createTableQuery.append("PRIMARY KEY(");
+                        createTableQuery.append(fileReader.getColumnSQLValues().get(i+1));
+                        createTableQuery.append(")");
+                    }
+                }
+            }
+            createTableQuery.append(");");
+            System.out.println(createTableQuery.toString());
+            statement.executeUpdate(createTableQuery.toString());
+        }
+    }
+
     private void createLecturerTable() throws SQLException {
         try(Connection connection = getDatabaseConnection().getDataSource().getConnection()) {
             Statement stmt = connection.createStatement();
@@ -652,13 +687,13 @@ public class DatabaseHandler {
 
     */
 /***
-     * Implement usage for more generic methods
-     * Should return column numbers, maybe column names to skip those?
-     *
-     * @param rsmd Takes in ResultSetMetaData to se which column number has an autoincrement, for now only one column.
-     * @return int
-     * @throws SQLException
-     *//*
+ * Implement usage for more generic methods
+ * Should return column numbers, maybe column names to skip those?
+ *
+ * @param rsmd Takes in ResultSetMetaData to se which column number has an autoincrement, for now only one column.
+ * @return int
+ * @throws SQLException
+ *//*
 
     private int findAutoIncrement(ResultSetMetaData rsmd) throws SQLException {
         int columnNumber = -1;
@@ -741,10 +776,10 @@ public class DatabaseHandler {
 
     */
 /**
-     * This part is methods that creates all stuff required.
-     *
-     *
-     *//*
+ * This part is methods that creates all stuff required.
+ *
+ *
+ *//*
 
     protected void createTable(String tableName) throws SQLException {
         switch (tableName) {
