@@ -164,15 +164,19 @@ public class InputHandler {
                 case "1":
                     System.out.println("Please enter subject code: ");
                     String subject = userInput.nextLine();
-                    System.out.println(databaseHandler.getSubjectRowBySubjectID(subject));
+//                    System.out.println(databaseHandler.getSubjectRowBySubjectID(subject));
+                    System.out.println(databaseHandler.getRowsFromTableByColumnNameAndSearchColumnValue("subject","code",subject));
                     break;
                 case "2":
-                    System.out.println(databaseHandler.getAllRowsFromSubjectTable());
+//                    System.out.println(databaseHandler.getAllRowsFromSubjectTable());
+                    System.out.println(databaseHandler.getAllRowsByTableName("subject"));
                     break;
                 case "3":
                     System.out.println("Please enter name of lecturer: ");
                     String lecturer = userInput.nextLine();
-                    System.out.println(databaseHandler.getLecturerRowByName(lecturer));
+//                    System.out.println(databaseHandler.getLecturerRowByName(lecturer));
+                    System.out.println(databaseHandler.getRowsFromTableByColumnNameAndSearchColumnValue("lecturer","name",lecturer));
+
                     break;
                 case "4":
                     System.out.println(databaseHandler.getAllRowsFromLecturerTable());
@@ -180,19 +184,19 @@ public class InputHandler {
                 case "5":
                     System.out.println("Please enter name of room: ");
                     String room = userInput.nextLine();
-                    System.out.println(databaseHandler.getRoomRowByName(room));
+//                    System.out.println(databaseHandler.getRoomRowByName(room));
+                    System.out.println(databaseHandler.getRowsFromTableByColumnNameAndSearchColumnValue("room","name",room));
+
                     break;
                 case "6":
-                    System.out.println(databaseHandler.getAllRowsFromRoomTable());
+//                    System.out.println(databaseHandler.getAllRowsFromRoomTable());
                     break;
                 case "7":
                     showMainMenu();
                     break;
                 case "8":
-                    //Closes thread
-//                    Thread.currentThread().interrupt();
-//                    return;
-                    break;
+                    System.out.println("Goodbye!");
+                    System.exit(0);
                 default:
                     System.out.println("Incorrect choice, please try again.");
             }

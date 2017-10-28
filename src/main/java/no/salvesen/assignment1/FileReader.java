@@ -33,7 +33,6 @@ public class FileReader {
         displayNames = new ArrayList<>();
         insertionValues = new ArrayList<>();
 
-        //TODO change source when testing is complete
         Scanner fileParser = new Scanner(tableFile);
         fileParser.useDelimiter(";|\\r\\n|\\n");
 
