@@ -501,13 +501,26 @@ public class DatabaseHandler{
                 createTableQuery.append(",\n");
 
                 if(i == fileReader.getTableColumnCount() - 1 ) {
+                    //TODO FIX PRIMARY KEY AND FOREIGN KEY ISSUES REGARDING dynamic creation
 
                     //Temporary solution for primary keys
                     if(fileReader.getAmountOfPrimaryKeys() > 0) {
+                        //Just add a loop here.
                         createTableQuery.append("PRIMARY KEY(");
-                        createTableQuery.append(fileReader.getColumnSQLValues().get(i+1));
+                        for(int j = 1; j < fileReader.getAmountOfPrimaryKeys()+1; j++) {
+                                createTableQuery.append(fileReader.getColumnSQLValues().get(i + j));
+                            if(j < fileReader.getAmountOfPrimaryKeys()) {
+                                createTableQuery.append(", ");
+                            }
+                        }
                         createTableQuery.append(")");
+                        if(fileReader.getAmountOfForeignKeys() > 0) {
+                            createTableQuery.append(",");
+                            //TODO Missing foreign key fix.
+                            //TODO to implement foreign key, the filereader has to be changed
+                        }
                     }
+                    //Add a foreign key if and loop, npnp
                 }
             }
             createTableQuery.append(");");
