@@ -505,28 +505,33 @@ public class DatabaseHandler{
 
                     //Temporary solution for primary keys
                     if(fileReader.getAmountOfPrimaryKeys() > 0) {
-                        //Just add a loop here.
-                        createTableQuery.append("PRIMARY KEY(");
-                        for(int j = 1; j < fileReader.getAmountOfPrimaryKeys()+1; j++) {
-                                createTableQuery.append(fileReader.getColumnSQLValues().get(i + j));
-                            if(j < fileReader.getAmountOfPrimaryKeys()) {
-                                createTableQuery.append(", ");
-                            }
-                        }
-                        createTableQuery.append(")");
-                        if(fileReader.getAmountOfForeignKeys() > 0) {
-                            createTableQuery.append(",");
-                            //TODO Missing foreign key fix.
-                            //TODO to implement foreign key, the filereader has to be changed
-                        }
+                        createTableQuery.append(addPrimaryKeyToQuery(i));
                     }
-                    //Add a foreign key if and loop, npnp
+                    //TODO Missing foreign key fix.
+                    //TODO to implement foreign key, FileReader has to be changed
+                    //Add a foreign key if and loop
                 }
             }
             createTableQuery.append(");");
             System.out.println(createTableQuery.toString());
             statement.executeUpdate(createTableQuery.toString());
         }
+    }
+
+    private String addPrimaryKeyToQuery(int index) {
+        StringBuilder addPrimaryKeyToQuery = new StringBuilder();
+        addPrimaryKeyToQuery.append("PRIMARY KEY(");
+        for(int j = 1; j < fileReader.getAmountOfPrimaryKeys() + 1; j++) {
+            addPrimaryKeyToQuery.append(fileReader.getColumnSQLValues().get(index + j));
+            if(j < fileReader.getAmountOfPrimaryKeys()) {
+                addPrimaryKeyToQuery.append(", ");
+            }
+        }
+        addPrimaryKeyToQuery.append(")");
+        if(fileReader.getAmountOfForeignKeys() > 0) {
+            addPrimaryKeyToQuery.append(",");
+        }
+        return addPrimaryKeyToQuery.toString();
     }
 
     private void createLecturerTable() throws SQLException {
