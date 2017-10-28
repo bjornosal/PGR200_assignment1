@@ -50,13 +50,15 @@ public class DatabaseHandler{
 
         createDatabase();
 //        createTableWithTableName("subject");
-        createSubjectTableFromMetaData();
-        createTableWithTableName("room");
+        createTableFromMetaData("subject");
+        createTableFromMetaData("room");
+        createTableFromMetaData("lecturer");
+ /*       createTableWithTableName("room");
         createTableWithTableName("lecturer");
         fillTable(subjectFile, "subject");
         fillTable(roomFile, "room");
         fillTable(lecturerFile, "lecturer");
-    }
+ */   }
 
 
 
@@ -487,24 +489,27 @@ public class DatabaseHandler{
     }
 
     //TODO CHANGE THE NAME OF THIS METHOD WHEN COMPLETED. IT WILL TAKE OVER FOR "createSubjectTable()"
-    private void createSubjectTableFromMetaData() throws FileNotFoundException, SQLException {
-        fileReader.readFile(fileReader.getSubjectFile());
+    private void createTableFromMetaData(String tableName) throws FileNotFoundException, SQLException {
+        fileReader.readFile(fileReader.getFileByTableName(tableName));
 
         StringBuilder createTableQuery = new StringBuilder("CREATE TABLE IF NOT EXISTS " + fileReader.getTableName() + "(\n");
 
         try(Connection connection = getDatabaseConnection().getDataSource().getConnection()) {
             Statement statement = connection.createStatement();
-            for(int i = 1; i < fileReader.getTableColumnCount(); i++) {
+            for(int i = 0; i < fileReader.getTableColumnCount(); i++) {
                 createTableQuery.append(fileReader.getColumnNames().get(i));
                 createTableQuery.append(" ");
                 createTableQuery.append(fileReader.getColumnSQLValues().get(i));
-                createTableQuery.append(",\n");
 
-                if(i == fileReader.getTableColumnCount() - 1 ) {
+                if(i < fileReader.getTableColumnCount() - 1) {
+                    createTableQuery.append(",\n");
+                }
+
+                if(i == fileReader.getTableColumnCount() - 1) {
                     //TODO FIX PRIMARY KEY AND FOREIGN KEY ISSUES REGARDING dynamic creation
-
                     //Temporary solution for primary keys
                     if(fileReader.getAmountOfPrimaryKeys() > 0) {
+                        createTableQuery.append(",\n");
                         createTableQuery.append(addPrimaryKeyToQuery(i));
                     }
                     //TODO Missing foreign key fix.

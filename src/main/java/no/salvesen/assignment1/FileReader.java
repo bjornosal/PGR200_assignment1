@@ -85,6 +85,19 @@ public class FileReader {
         }
     }
 
+    public File getFileByTableName(String tableName) {
+        switch(tableName) {
+            case "subject":
+                return getSubjectFile();
+            case "room":
+                return getRoomFile();
+            case "lecturer":
+                return getLecturerFile();
+        }
+        return null;
+    }
+
+
     public File getSubjectFile() {
         return subjectFile;
     }
