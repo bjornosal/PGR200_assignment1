@@ -15,11 +15,6 @@ public class DatabaseHandler{
     private FileReader fileReader;
     private String propertyFilePath;
 
-    //TODO MAKE THIS PART DYNAMIC
-    private String subjectFormat = "%-7s| %-40s| %-10s| %-16s| %-9s|";
-    private String lecturerFormat = "%-4s| %-15s|";
-    private String roomFormat = "%-6s| %-11s| %-15s|";
-
     protected DatabaseHandler() throws IOException {
         databaseConnection = new DatabaseConnection();
         fileReader  = new FileReader();
@@ -32,7 +27,7 @@ public class DatabaseHandler{
         for (int i = 0; i < columnDisplayNames.length; i++) {
             columnDisplayNames[i] = fileReader.getDisplayNames().get(i);
         }
-        return String.format(getResultFormat(fileReader), columnDisplayNames);
+        return String.format(getResultFormat(), columnDisplayNames);
 
     }
 
@@ -46,6 +41,10 @@ public class DatabaseHandler{
         createTableFromMetaData("subject");
         createTableFromMetaData("room");
         createTableFromMetaData("lecturer");
+        fillTableFromFileByTableName("subject");
+        fillTableFromFileByTableName("room");
+        fillTableFromFileByTableName("lecturer");
+
  /*       createTableWithTableName("room");
         createTableWithTableName("lecturer");
         fillTable(subjectFile, "subject");
@@ -63,80 +62,6 @@ public class DatabaseHandler{
      */
     private int getColumnCountOfTable(String tableName) throws SQLException {
         return getResultSetMetaDataForEntireTable(tableName).getColumnCount();
-    }
-
-    /**
-     *
-     * @param tableName
-     * @return
-     * @throws SQLException
-     */
-    public int getRowCountOfTable(String tableName) throws SQLException {
-        MysqlDataSource dataSource = getDatabaseConnection().getDataSource();
-        String selectAllQuery = "SELECT * FROM " + tableName + ";";
-        int rowCount = 0;
-
-        try (Connection connection = dataSource.getConnection()) {
-            Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery(selectAllQuery);
-
-            while (rs.next()) {
-                rowCount++;
-            }
-        }
-        return rowCount;
-    }
-
-    /**
-     *
-     * @param tableName
-     * @return
-     * @throws SQLException
-     */
-    private String[] getColumnNames(String tableName) throws SQLException {
-        String[] columnNames = new String[getColumnCountOfTable(tableName)];
-        String query = "SELECT * FROM " + tableName + ";";
-        //Shorten code by taking entire try - with resource out of methods??
-        MysqlDataSource dataSource = getDatabaseConnection().getDataSource();
-
-        try(Connection connection = dataSource.getConnection()) {
-            Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-            ResultSetMetaData rsmd = rs.getMetaData();
-
-            for(int i = 1; i < getColumnCountOfTable(tableName); i++) {
-                columnNames[i-1] = rsmd.getColumnName(i);
-            }
-        }
-
-        return columnNames;
-    }
-
-    //SOURCE: https://stackoverflow.com/questions/12367828/how-can-i-get-different-datatypes-from-resultsetmetadata-in-java
-    // Ment to be used to make mostly generic. Resolved using objects instead of 17 if's
-
-    /**
-     *
-     * @param tableName
-     * @return
-     * @throws SQLException
-     */
-    private String[] getDataTypes(String tableName) throws SQLException {
-        String[] dataTypes = new String[getColumnCountOfTable(tableName)];
-        String query = "SELECT * FROM " + tableName + ";";
-
-        MysqlDataSource dataSource = getDatabaseConnection().getDataSource();
-        try(Connection connection = dataSource.getConnection()) {
-            Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-            ResultSetMetaData rsmd = rs.getMetaData();
-
-            for(int i = 1; i < getColumnCountOfTable(tableName); i++) {
-                String dataType = rsmd.getColumnTypeName(i);
-                dataTypes[i-1] = dataType;
-            }
-        }
-        return dataTypes;
     }
 
     /**
@@ -186,6 +111,57 @@ public class DatabaseHandler{
         return preparedStatement;
     }
 
+    private String prepareInsertStatementBasedOnMetaData(String tableName) throws FileNotFoundException {
+        fileReader.readFile(fileReader.getFileByTableName(tableName));
+
+        StringBuilder preparedStatement = new StringBuilder();
+        preparedStatement.append("INSERT INTO ").append(fileReader.getTableName()).append("\nVALUES (");
+
+        for(int i = 1; i < fileReader.getTableColumnCount(); i++) {
+            preparedStatement.append("?, ");
+            if(i == fileReader.getTableColumnCount() - 1) {
+                preparedStatement.append("?);");
+            }
+        }
+
+        return preparedStatement.toString();
+    }
+
+    private void fillTableFromFileByTableName(String tableName) throws FileNotFoundException, SQLException {
+        File tableFile = fileReader.getFileByTableName(tableName);
+        fileReader.readFile(tableFile);
+
+        ArrayList<String> insertionValues = fileReader.getInsertionValues();
+
+        MysqlDataSource dataSource = getDatabaseConnection().getDataSource();
+        try(Connection connection = dataSource.getConnection()) {
+            String preparedInsert = prepareInsertStatementBasedOnMetaData(tableName);
+            PreparedStatement preparedStatement = connection.prepareStatement(preparedInsert);
+
+
+            //TODO add method for parsing through insertionValues and creating a new batch on each getColumnCount
+            /*for(int i = 1; i < insertionValues.size(); i++)  {
+                preparedStatement.setObject(i, insertionValues.get(i));
+            }*/
+         /*   int index = 1;
+            int counter = 0;
+            while(counter < insertionValues.size()) {
+                while (index < fileReader.getTableColumnCount()) {
+                    preparedStatement.setObject(index, insertionValues.get(index-1));
+                    if(index == fileReader.getTableColumnCount()) {
+                        System.out.println(preparedStatement.toString());
+                        preparedStatement.addBatch();
+                    }
+                    index++;
+                    counter++;
+                }
+                preparedStatement.executeBatch();
+                index = 1;
+            }*/
+        }
+    }
+
+
     /***
      * Implement usage for more generic methods
      * Should return column numbers, maybe column names to skip those?
@@ -211,19 +187,19 @@ public class DatabaseHandler{
     public String getRowsFromTableByColumnNameAndSearchColumnValue(String tableName, String columnName, String columnValue) throws FileNotFoundException, SQLException {
         fileReader.readFile(fileReader.getFileByTableName(tableName));
         String result = "";
-        String query =  buildSelectQuery(fileReader, true, tableName, columnName);
+        String query =  buildSelectQuery(true, tableName, columnName);
 
         MysqlDataSource dataSource = getDatabaseConnection().getDataSource();
         try(Connection connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, columnValue);
             ResultSet resultSet = preparedStatement.executeQuery();
-            result += resultStringBuilder(fileReader, resultSet);
+            result += resultStringBuilder(resultSet);
         }
         return result;
     }
 
-    private String buildSelectQuery(FileReader fileReader, boolean isSpecifiedSearch, String tableName, String columnName) {
+    private String buildSelectQuery(boolean isSpecifiedSearch, String tableName, String columnName) {
         StringBuilder searchQuery = new StringBuilder();
         searchQuery.append("SELECT ");
         for(int i = 0; i < fileReader.getTableColumnCount(); i++)
@@ -242,7 +218,7 @@ public class DatabaseHandler{
         return searchQuery.toString();
     }
 
-    private String resultStringBuilder(FileReader fileReader, ResultSet resultSet) throws SQLException, FileNotFoundException {
+    private String resultStringBuilder(ResultSet resultSet) throws SQLException, FileNotFoundException {
         String[] rowResult = new String[getColumnCountOfTable(fileReader.getTableName())];
         StringBuilder result = new StringBuilder();
         result.append(getResultHeader(fileReader.getTableName()));
@@ -254,7 +230,7 @@ public class DatabaseHandler{
                     result.append("\n");
                 }
             }
-            result.append(String.format(getResultFormat(fileReader),rowResult));
+            result.append(String.format(getResultFormat(),rowResult));
         }
         return result.toString();
     }
@@ -262,22 +238,22 @@ public class DatabaseHandler{
     public String getAllRowsByTableName(String tableName) throws FileNotFoundException, SQLException {
         fileReader.readFile(fileReader.getFileByTableName(tableName));
         String result = "";
-        String query =  buildSelectQuery(fileReader, false, tableName, null);
+        String query =  buildSelectQuery(false, tableName, null);
 
         MysqlDataSource dataSource = getDatabaseConnection().getDataSource();
         try(Connection connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             ResultSet resultSet = preparedStatement.executeQuery();
-            result += resultStringBuilder(fileReader,resultSet);
+            result += resultStringBuilder(resultSet);
         }
         return result;
     }
 
 
 
-    private String getResultFormat(FileReader fileReader) throws SQLException {
+    private String getResultFormat() throws SQLException {
         StringBuilder resultFormat = new StringBuilder();
-        ArrayList<String> maxLengthOfColumn = getMaxLengthOfColumnsByTableName(fileReader);
+        ArrayList<String> maxLengthOfColumn = getMaxLengthOfColumnsByTableName();
         for(int i = 0; i < fileReader.getTableColumnCount(); i++) {
             resultFormat.append("%-").append(maxLengthOfColumn.get(i)).append("s | ");
         }
@@ -285,11 +261,11 @@ public class DatabaseHandler{
         return resultFormat.toString();
     }
 
-    private ArrayList<String> getMaxLengthOfColumnsByTableName(FileReader fileReader) throws SQLException {
+    private ArrayList<String> getMaxLengthOfColumnsByTableName() throws SQLException {
         ArrayList<String> formatLengthForAllColumns = new ArrayList<>();
         ArrayList<String> displayNames = fileReader.getDisplayNames();
         StringBuilder query = new StringBuilder();
-        query.append(createMaxLengthSelect(fileReader));
+        query.append(createMaxLengthSelect());
 
         MysqlDataSource dataSource = getDatabaseConnection().getDataSource();
         try(Connection connection = dataSource.getConnection();
@@ -300,7 +276,7 @@ public class DatabaseHandler{
                 for(int i = 0; i < fileReader.getTableColumnCount(); i++) {
                     String maxLength = resultSet.getObject(i+1).toString();
                     if(Integer.parseInt(maxLength) < displayNames.get(i).length()) {
-                       maxLength = "" + displayNames.get(i).length();
+                        maxLength = "" + displayNames.get(i).length();
                     }
                     formatLengthForAllColumns.add(maxLength);
                 }
@@ -309,7 +285,7 @@ public class DatabaseHandler{
         return formatLengthForAllColumns;
     }
 
-    private String createMaxLengthSelect(FileReader fileReader) {
+    private String createMaxLengthSelect() {
         StringBuilder query = new StringBuilder("SELECT ");
         //Build bigger select and run that query, take all results into an array
         for(int i = 0; i < fileReader.getTableColumnCount(); i++) {
@@ -321,74 +297,6 @@ public class DatabaseHandler{
         query.append("\nFROM ").append(fileReader.getTableName()).append(";");
         return query.toString();
     }
-    //TODO All the queries can be a lot more dynamic, more high cohesion method wise
-    public String getAllRowsFromLecturerTable() throws SQLException, FileNotFoundException {
-        String result = "";
-        //Query has to be dynamic, and not a static choice of columns
-        String query = "SELECT id, name \n" +
-                "FROM lecturer;";
-        String[] rowResult = new String[getColumnCountOfTable("lecturer")];
-        result += getResultHeader("lecturer");
-
-        MysqlDataSource dataSource = getDatabaseConnection().getDataSource();
-        try(Connection connection = dataSource.getConnection()) {
-            Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-
-            while(rs.next()) {
-                for(int i = 1; i <= getColumnCountOfTable("lecturer"); i++) {
-                    rowResult[i-1] = rs.getObject(i).toString();
-                    if(i == getColumnCountOfTable("lecturer")) {
-                        result += "\n";
-                    }
-                }
-                result += String.format(lecturerFormat,
-                        rowResult[0], rowResult[1]);
-            }
-        }
-        return result;
-
-    }
-
-
-
- /*   public String getAllRowsFromRoomTable() throws SQLException {
-        StringBuilder result = new StringBuilder();
-        String query = "SELECT name, type, facilities\n" +
-                "FROM room;";
-        String[] rowResult = new String[getColumnCountOfTable("room")];
-        result.append(getResultHeader("room"));
-
-        MysqlDataSource dataSource = getDatabaseConnection().getDataSource();
-        try(Connection connection = dataSource.getConnection()) {
-            Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-
-            result.append(resultStringBuilderForRoomTable(rs));
-
-        }
-        return result.toString();
-
-    }*/
-
-
-    //TODO temporary helper method for creation of strings of results in room searches, can be more abstract
-/*
-    private String resultStringBuilderForRoomTable(ResultSet rs) throws SQLException {
-        String[] rowResult = new String[getColumnCountOfTable("room")];
-        StringBuilder result = new StringBuilder();
-        while(rs.next()) {
-            for(int i = 1; i <= getColumnCountOfTable("room"); i++) {
-                rowResult[i-1] = rs.getObject(i).toString();
-                if(i == getColumnCountOfTable("room")) {
-                    result.append("\n");
-                }
-            }
-            result.append(String.format(roomFormat,
-                    rowResult[0], rowResult[1], rowResult[2]));
-        }
-        return result.toString();
-    }*/
 
     private ResultSetMetaData getResultSetMetaDataForEntireTable(String tableName) throws SQLException {
         String query = "SELECT * FROM " + tableName + ";";
@@ -402,7 +310,6 @@ public class DatabaseHandler{
         }
         return resultSetMetaData;
     }
-
 
     //Not in use as of right now
     private boolean checkIfTableExists(String tableName) throws SQLException {
@@ -430,8 +337,6 @@ public class DatabaseHandler{
         }
     }
 
-
-    //TODO CHANGE THE NAME OF THIS METHOD WHEN COMPLETED. IT WILL TAKE OVER FOR "createSubjectTable()"
     private void createTableFromMetaData(String tableName) throws FileNotFoundException, SQLException {
         fileReader.readFile(fileReader.getFileByTableName(tableName));
 
