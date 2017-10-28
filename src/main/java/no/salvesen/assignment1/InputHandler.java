@@ -169,6 +169,7 @@ public class InputHandler {
                     break;
                 case "2":
 //                    System.out.println(databaseHandler.getAllRowsFromSubjectTable());
+//                    System.out.println(databaseHandler.getAllRowsByTableName("subject"));
                     System.out.println(databaseHandler.getAllRowsByTableName("subject"));
                     break;
                 case "3":
@@ -179,7 +180,9 @@ public class InputHandler {
 
                     break;
                 case "4":
-                    System.out.println(databaseHandler.getAllRowsFromLecturerTable());
+//                    System.out.println(databaseHandler.getAllRowsFromLecturerTable());
+                    System.out.println(databaseHandler.getAllRowsByTableName("lecturer"));
+
                     break;
                 case "5":
                     System.out.println("Please enter name of room: ");
@@ -190,6 +193,8 @@ public class InputHandler {
                     break;
                 case "6":
 //                    System.out.println(databaseHandler.getAllRowsFromRoomTable());
+                    System.out.println(databaseHandler.getAllRowsByTableName("room"));
+
                     break;
                 case "7":
                     showMainMenu();

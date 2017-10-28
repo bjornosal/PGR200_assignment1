@@ -287,7 +287,7 @@ public class DatabaseHandler{
 
     private ArrayList<String> getMaxLengthOfColumnsByTableName(FileReader fileReader) throws SQLException {
         ArrayList<String> formatLengthForAllColumns = new ArrayList<>();
-        ArrayList<String> columnNames = fileReader.getColumnNames();
+        ArrayList<String> displayNames = fileReader.getDisplayNames();
         StringBuilder query = new StringBuilder();
         query.append(createMaxLengthSelect(fileReader));
 
@@ -299,8 +299,8 @@ public class DatabaseHandler{
             while (resultSet.next()) {
                 for(int i = 0; i < fileReader.getTableColumnCount(); i++) {
                     String maxLength = resultSet.getObject(i+1).toString();
-                    if(Integer.parseInt(maxLength) < columnNames.get(i).length()) {
-                       maxLength = "" + columnNames.get(i).length();
+                    if(Integer.parseInt(maxLength) < displayNames.get(i).length()) {
+                       maxLength = "" + displayNames.get(i).length();
                     }
                     formatLengthForAllColumns.add(maxLength);
                 }

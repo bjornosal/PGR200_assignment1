@@ -1,5 +1,5 @@
 Lecturer;2;1;0
-ID;name
+employee_id;name
 int(11) auto_increment;VARCHAR(255);id
 Employee ID;Name
 1;Tor-Morten
