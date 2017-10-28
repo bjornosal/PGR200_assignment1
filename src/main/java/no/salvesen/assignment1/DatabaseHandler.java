@@ -282,8 +282,8 @@ public class DatabaseHandler{
             System.out.println(query);
             ResultSet resultSet = preparedStatement.executeQuery();
             result += resultStringBuilder(resultSet, tableName);
-            System.out.println(getResultFormat(fileReader));
         }
+        System.out.println(getResultFormat(fileReader));
         return result;
     }
 
@@ -293,7 +293,7 @@ public class DatabaseHandler{
         //    private String subjectFormat = "%-7s| %-40s| %-10s| %-16s| %-9s|";
         StringBuilder resultFormat = new StringBuilder();
         ArrayList<String> maxLengthOfColumn = getMaxLengthOfColumnsByTableName(fileReader);
-        for(int i = 0; i < fileReader.getTableColumnCount(); i++) {
+        for(int i = 1; i < fileReader.getTableColumnCount(); i++) {
             resultFormat.append("%-").append(maxLengthOfColumn.get(i)).append("s| ");
         }
 
@@ -302,21 +302,42 @@ public class DatabaseHandler{
 
     private ArrayList<String> getMaxLengthOfColumnsByTableName(FileReader fileReader) throws SQLException {
         ArrayList<String> formatLengthForAllColumns = new ArrayList<>();
+        ArrayList<String> columnNames = fileReader.getColumnNames();
+        StringBuilder query = new StringBuilder();
+        query.append(createMaxLengthSelect(fileReader));
 
-        for(int i = 0; i < fileReader.getTableColumnCount(); i++) {
-            String columnName = fileReader.getColumnNames().get(i);
-            String query = "SELECT max(length(" + columnName + "))\n" +
-                    "FROM " + fileReader.getTableName() + ";";
-            MysqlDataSource dataSource = getDatabaseConnection().getDataSource();
-            try(Connection connection = dataSource.getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                ResultSet resultSet = preparedStatement.executeQuery();
-                formatLengthForAllColumns.add(resultSet.getObject(i).toString());
+        MysqlDataSource dataSource = getDatabaseConnection().getDataSource();
+        System.out.println(query);
+        try(Connection connection = dataSource.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query.toString())) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            //TODO don't do this at home kids
+            while (resultSet.next()) {
+                for(int i = 0; i < fileReader.getTableColumnCount(); i++) {
+                    String maxLength = resultSet.getObject(i+1).toString();
+                    if(Integer.parseInt(maxLength) < columnNames.get(i).length()) {
+                        maxLength = "" + columnNames.get(i).length();
+                    }
+                    formatLengthForAllColumns.add(maxLength);
+                }
             }
         }
+        System.out.println(formatLengthForAllColumns);
         return formatLengthForAllColumns;
     }
 
+    private String createMaxLengthSelect(FileReader fileReader) {
+        StringBuilder query = new StringBuilder("SELECT ");
+        //Build bigger select and run that query, take all results into an array
+        for(int i = 0; i < fileReader.getTableColumnCount(); i++) {
+            query.append("max(length(").append(fileReader.getColumnNames().get(i)).append("))");
+            if(i < fileReader.getTableColumnCount()-1) {
+                query.append(", ");
+            }
+        }
+        query.append("\nFROM ").append(fileReader.getTableName()).append(";");
+        return query.toString();
+    }
     //TODO All the queries can be a lot more dynamic, more high cohesion method wise
     public String getAllRowsFromLecturerTable() throws SQLException {
         String result = "";
