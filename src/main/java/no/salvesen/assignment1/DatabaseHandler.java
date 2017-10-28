@@ -201,15 +201,15 @@ public class DatabaseHandler{
      * Implement usage for more generic methods
      * Should return column numbers, maybe column names to skip those?
      *
-     * @param rsmd Takes in ResultSetMetaData to se which column number has an autoincrement, for now only one column.
+     * @param resultSetMetaData Takes in ResultSetMetaData to se which column number has an autoincrement, for now only one column.
      * @return int
      * @throws SQLException
      */
-    private int findAutoIncrement(ResultSetMetaData rsmd) throws SQLException {
+    private int findAutoIncrement(ResultSetMetaData resultSetMetaData) throws SQLException {
         int columnNumber = -1;
 
-        for(int i = 1; i < rsmd.getColumnCount(); i ++) {
-            if(rsmd.isAutoIncrement(i)) {
+        for(int i = 1; i < resultSetMetaData.getColumnCount(); i ++) {
+            if(resultSetMetaData.isAutoIncrement(i)) {
                 columnNumber = i;
             }
         }
@@ -219,12 +219,21 @@ public class DatabaseHandler{
 
     //TODO Create a dynamic search and a search for all based on display names
 
-    public String getRowsFromTableByColumnNameAndSearchColumnValue(String tableName, String columnName, String columnValue) throws FileNotFoundException {
+    public String getRowsFromTableByColumnNameAndSearchColumnValue(String tableName, String columnName, String columnValue) throws FileNotFoundException, SQLException {
         fileReader.readFile(fileReader.getFileByTableName(tableName));
 
-        StringBuilder searchQuery = new StringBuilder();
-        searchQuery.append(buildSelectQuery(fileReader,true, tableName, columnName));
-        return searchQuery.toString();
+        String query =  buildSelectQuery(fileReader, true, tableName, columnName);
+
+        MysqlDataSource dataSource = getDatabaseConnection().getDataSource();
+        try(Connection connection = dataSource.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, columnName);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+
+        }
+
+        return query;
     }
 
     private String buildSelectQuery(FileReader fileReader, boolean isSpecifiedSearch, String tableName, String columnName) {
@@ -241,6 +250,25 @@ public class DatabaseHandler{
         searchQuery.append(";");
 
         return searchQuery.toString();
+    }
+
+    private String resultStringBuilder(ResultSet resultSet, String tableName) throws SQLException {
+        String[] rowResult = new String[getColumnCountOfTable(tableName)];
+        StringBuilder result = new StringBuilder();
+
+        while(resultSet.next()) {
+            for(int i = 1; i <= getColumnCountOfTable(tableName); i++) {
+                rowResult[i-1] = resultSet.getObject(i).toString();
+                if (i == getColumnCountOfTable(tableName)) {
+
+                    result.append("\n");
+                }
+            }
+            //TODO Change this after adding helper method for format choosing and creation
+            result.append(String.format(subjectFormat,
+                    rowResult[0], rowResult[1], rowResult[2], rowResult[3], rowResult[4]));
+        }
+        return result.toString();
     }
 
 
@@ -271,6 +299,11 @@ public class DatabaseHandler{
             }
         }
         return result;
+    }
+
+    //TODO add query
+    private void getResultFormat() {
+
     }
 
     public String getAllRowsFromSubjectTable() throws SQLException {
