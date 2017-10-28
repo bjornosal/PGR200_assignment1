@@ -13,9 +13,8 @@ public class DatabaseHandler{
 
     private DatabaseConnection databaseConnection;
     private FileReader fileReader;
-
-
     private String propertyFilePath;
+
     //TODO MAKE THIS PART DYNAMIC
     private String subjectFormat = "%-7s| %-40s| %-10s| %-16s| %-9s|";
     private String lecturerFormat = "%-4s| %-15s|";
@@ -27,22 +26,14 @@ public class DatabaseHandler{
     }
 
 
-    //TODO Make dynamic
-    private String getResultHeader(String queryType) {
-        String result = "";
-
-        switch(queryType) {
-            case "subject":
-                result += String.format(subjectFormat, "Code", "Name","Students", "Teaching form", "Duration");
-                break;
-            case "lecturer":
-                result += String.format(lecturerFormat, "ID", "Name");
-                break;
-            case "room":
-                result += String.format(roomFormat, "Room", "Type", "Facilities");
-                break;
+    private String getResultHeader(String tableName) throws FileNotFoundException, SQLException {
+        fileReader.readFile(fileReader.getFileByTableName(tableName));
+        String[] columnDisplayNames = new String[fileReader.getTableColumnCount()];
+        for (int i = 0; i < columnDisplayNames.length; i++) {
+            columnDisplayNames[i] = fileReader.getDisplayNames().get(i);
         }
-        return result;
+        return String.format(getResultFormat(fileReader), columnDisplayNames);
+
     }
 
     public void tearDownDatabaseAndSetBackUp(File subjectFile, File roomFile, File lecturerFile) throws SQLException, FileNotFoundException {
@@ -199,7 +190,7 @@ public class DatabaseHandler{
      * Implement usage for more generic methods
      * Should return column numbers, maybe column names to skip those?
      *
-     * @param resultSetMetaData Takes in ResultSetMetaData to se which column number has an autoincrement, for now only one column.
+     * @param resultSetMetaData Takes in ResultSetMetaData to see which column number has an autoincrement, for now only one column.
      * @return int
      * @throws SQLException
      */
@@ -226,9 +217,8 @@ public class DatabaseHandler{
         try(Connection connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, columnValue);
-            System.out.println(query);
             ResultSet resultSet = preparedStatement.executeQuery();
-            result += resultStringBuilder(resultSet, tableName);
+            result += resultStringBuilder(fileReader, resultSet);
         }
         return result;
     }
@@ -252,21 +242,19 @@ public class DatabaseHandler{
         return searchQuery.toString();
     }
 
-    private String resultStringBuilder(ResultSet resultSet, String tableName) throws SQLException {
-        String[] rowResult = new String[getColumnCountOfTable(tableName)];
+    private String resultStringBuilder(FileReader fileReader, ResultSet resultSet) throws SQLException, FileNotFoundException {
+        String[] rowResult = new String[getColumnCountOfTable(fileReader.getTableName())];
         StringBuilder result = new StringBuilder();
-        result.append(getResultHeader(tableName));
+        result.append(getResultHeader(fileReader.getTableName()));
         while(resultSet.next()) {
-            for(int i = 1; i <= getColumnCountOfTable(tableName); i++) {
+            for(int i = 1; i <= getColumnCountOfTable(fileReader.getTableName()); i++) {
                 rowResult[i-1] = resultSet.getObject(i).toString();
-                if (i == getColumnCountOfTable(tableName)) {
+                if (i == getColumnCountOfTable(fileReader.getTableName())) {
 
                     result.append("\n");
                 }
             }
-            //TODO Change this after adding helper method for format choosing and creation
-            result.append(String.format(subjectFormat,
-                    rowResult[0], rowResult[1], rowResult[2], rowResult[3], rowResult[4]));
+            result.append(String.format(getResultFormat(fileReader),rowResult));
         }
         return result.toString();
     }
@@ -279,22 +267,19 @@ public class DatabaseHandler{
         MysqlDataSource dataSource = getDatabaseConnection().getDataSource();
         try(Connection connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            System.out.println(query);
             ResultSet resultSet = preparedStatement.executeQuery();
-            result += resultStringBuilder(resultSet, tableName);
+            result += resultStringBuilder(fileReader,resultSet);
         }
-        System.out.println(getResultFormat(fileReader));
         return result;
     }
 
 
 
     private String getResultFormat(FileReader fileReader) throws SQLException {
-        //    private String subjectFormat = "%-7s| %-40s| %-10s| %-16s| %-9s|";
         StringBuilder resultFormat = new StringBuilder();
         ArrayList<String> maxLengthOfColumn = getMaxLengthOfColumnsByTableName(fileReader);
-        for(int i = 1; i < fileReader.getTableColumnCount(); i++) {
-            resultFormat.append("%-").append(maxLengthOfColumn.get(i)).append("s| ");
+        for(int i = 0; i < fileReader.getTableColumnCount(); i++) {
+            resultFormat.append("%-").append(maxLengthOfColumn.get(i)).append("s | ");
         }
 
         return resultFormat.toString();
@@ -307,7 +292,6 @@ public class DatabaseHandler{
         query.append(createMaxLengthSelect(fileReader));
 
         MysqlDataSource dataSource = getDatabaseConnection().getDataSource();
-        System.out.println(query);
         try(Connection connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(query.toString())) {
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -316,13 +300,12 @@ public class DatabaseHandler{
                 for(int i = 0; i < fileReader.getTableColumnCount(); i++) {
                     String maxLength = resultSet.getObject(i+1).toString();
                     if(Integer.parseInt(maxLength) < columnNames.get(i).length()) {
-                        maxLength = "" + columnNames.get(i).length();
+                       maxLength = "" + columnNames.get(i).length();
                     }
                     formatLengthForAllColumns.add(maxLength);
                 }
             }
         }
-        System.out.println(formatLengthForAllColumns);
         return formatLengthForAllColumns;
     }
 
@@ -339,7 +322,7 @@ public class DatabaseHandler{
         return query.toString();
     }
     //TODO All the queries can be a lot more dynamic, more high cohesion method wise
-    public String getAllRowsFromLecturerTable() throws SQLException {
+    public String getAllRowsFromLecturerTable() throws SQLException, FileNotFoundException {
         String result = "";
         //Query has to be dynamic, and not a static choice of columns
         String query = "SELECT id, name \n" +
@@ -477,7 +460,6 @@ public class DatabaseHandler{
                 }
             }
             createTableQuery.append(");");
-            System.out.println(createTableQuery.toString());
             statement.executeUpdate(createTableQuery.toString());
         }
     }

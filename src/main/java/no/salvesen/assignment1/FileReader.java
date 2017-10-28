@@ -85,6 +85,7 @@ public class FileReader {
     }
 
     public File getFileByTableName(String tableName) {
+        tableName = tableName.toLowerCase();
         switch(tableName) {
             case "subject":
                 return getSubjectFile();
@@ -93,6 +94,8 @@ public class FileReader {
             case "lecturer":
                 return getLecturerFile();
         }
+
+
         return null;
     }
 
