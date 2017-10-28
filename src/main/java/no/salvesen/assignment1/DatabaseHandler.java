@@ -11,10 +11,11 @@ import java.util.Scanner;
 public class DatabaseHandler{
 
     private DatabaseConnection databaseConnection;
-    FileReader fileReader;
+    private FileReader fileReader;
 
 
     private String propertyFilePath;
+    //TODO MAKE THIS PART DYNAMIC
     private String subjectFormat = "%-7s| %-40s| %-10s| %-16s| %-9s|";
     private String lecturerFormat = "%-4s| %-15s|";
     private String roomFormat = "%-6s| %-11s| %-15s|";
@@ -216,6 +217,33 @@ public class DatabaseHandler{
         return columnNumber;
     }
 
+    //TODO Create a dynamic search and a search for all based on display names
+
+    public String getRowsFromTableByColumnNameAndSearchColumnValue(String tableName, String columnName, String columnValue) throws FileNotFoundException {
+        fileReader.readFile(fileReader.getFileByTableName(tableName));
+
+        StringBuilder searchQuery = new StringBuilder();
+        searchQuery.append(buildSelectQuery(fileReader,true, tableName, columnName));
+        return searchQuery.toString();
+    }
+
+    private String buildSelectQuery(FileReader fileReader, boolean isSpecifiedSearch, String tableName, String columnName) {
+        StringBuilder searchQuery = new StringBuilder();
+        searchQuery.append("SELECT ");
+        for(int i = 0; i < fileReader.getTableColumnCount(); i++)
+        {
+            searchQuery.append(fileReader.getColumnNames().get(i));
+        }
+        searchQuery.append("\n").append("FROM ").append(tableName);
+        if(isSpecifiedSearch) {
+            searchQuery.append("\n").append("WHERE ").append(columnName).append(" = ?");
+        }
+        searchQuery.append(";");
+
+        return searchQuery.toString();
+    }
+
+
     public String getSubjectRowBySubjectID(String subjectID) throws SQLException {
         String result = "";
         String query = "SELECT id, name, attending_students, teaching_form, duration \n" +
@@ -245,11 +273,6 @@ public class DatabaseHandler{
         return result;
     }
 
-    /**
-     *
-     * @return
-     * @throws SQLException
-     */
     public String getAllRowsFromSubjectTable() throws SQLException {
         String result = "";
         String query = "SELECT id, name, attending_students, teaching_form, duration\n" +
@@ -278,12 +301,6 @@ public class DatabaseHandler{
         return result;
     }
 
-    /**
-     *
-     * @param name
-     * @return
-     * @throws SQLException
-     */
     public String getLecturerRowByName(String name) throws SQLException {
         String result = "";
         String query = "SELECT id, name\n" +
@@ -341,12 +358,7 @@ public class DatabaseHandler{
 
     }
 
-    /**
-     *
-     * @param roomName
-     * @return
-     * @throws SQLException
-     */
+
     public String getRoomRowByName(String roomName) throws SQLException {
         StringBuilder result = new StringBuilder();
         String query = "SELECT name, type, facilities\n" +
@@ -408,12 +420,6 @@ public class DatabaseHandler{
         return result.toString();
     }
 
-    /**
-     * Helping method for getting metadata for a table
-     * @param tableName
-     * @return metadata of a resultset for table of name param
-     * @throws SQLException
-     */
     private ResultSetMetaData getResultSetMetaDataForEntireTable(String tableName) throws SQLException {
         String query = "SELECT * FROM " + tableName + ";";
         ResultSetMetaData resultSetMetaData;
@@ -428,12 +434,7 @@ public class DatabaseHandler{
     }
 
 
-    /**
-     *
-     * @param tableName
-     * @throws SQLException
-     */
-    private void createTableWithTableName(String tableName) throws SQLException {
+  /*  private void createTableWithTableName(String tableName) throws SQLException {
         switch (tableName) {
             case "subject":
                 createSubjectTable();
@@ -445,7 +446,7 @@ public class DatabaseHandler{
                 createRoomTable();
                 break;
         }
-    }
+    }*/
 
     //Not in use as of right now
     private boolean checkIfTableExists(String tableName) throws SQLException {
@@ -474,8 +475,7 @@ public class DatabaseHandler{
     }
 
 
-    //TODO change this to be a dynamic creation
-    private void createSubjectTable() throws SQLException {
+ /*   private void createSubjectTable() throws SQLException {
         try(Connection connection = getDatabaseConnection().getDataSource().getConnection()) {
             Statement stmt = connection.createStatement();
             stmt.executeUpdate("CREATE TABLE IF NOT EXISTS subject (\n" +
@@ -486,7 +486,7 @@ public class DatabaseHandler{
                     "duration DECIMAL(11),\n" +
                     "PRIMARY KEY(id));");
         }
-    }
+    }*/
 
     //TODO CHANGE THE NAME OF THIS METHOD WHEN COMPLETED. IT WILL TAKE OVER FOR "createSubjectTable()"
     private void createTableFromMetaData(String tableName) throws FileNotFoundException, SQLException {
@@ -506,7 +506,6 @@ public class DatabaseHandler{
                 }
 
                 if(i == fileReader.getTableColumnCount() - 1) {
-                    //TODO FIX PRIMARY KEY AND FOREIGN KEY ISSUES REGARDING dynamic creation
                     //Temporary solution for primary keys
                     if(fileReader.getAmountOfPrimaryKeys() > 0) {
                         createTableQuery.append(",\n");
@@ -539,7 +538,7 @@ public class DatabaseHandler{
         return addPrimaryKeyToQuery.toString();
     }
 
-    private void createLecturerTable() throws SQLException {
+  /*  private void createLecturerTable() throws SQLException {
         try(Connection connection = getDatabaseConnection().getDataSource().getConnection()) {
             Statement stmt = connection.createStatement();
             stmt.executeUpdate("CREATE TABLE IF NOT EXISTS lecturer (\n" +
@@ -559,7 +558,7 @@ public class DatabaseHandler{
                     "facilities varchar(255)\n" +
                     ");");
         }
-    }
+    }*/
 
     protected DatabaseConnection getDatabaseConnection() {
         return databaseConnection;
@@ -575,10 +574,7 @@ public class DatabaseHandler{
 
     protected void startDatabase() throws IOException {
         databaseConnection.databaseBuilder(getPropertyFilePath());
-
     }
-
-
 }
 
 
