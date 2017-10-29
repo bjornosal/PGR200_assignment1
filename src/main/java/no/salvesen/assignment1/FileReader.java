@@ -44,7 +44,7 @@ public class FileReader {
 
     /**
      * Description of file:
-     * First line: tableName;columnCount;primaryKeys;foreignKeys
+     * First line: tableName;columnCount;primaryKeys;foreignKeys;ForeignKeyReferences(Table(column))
      * Second line: columnName * columnCount
      * Third line: MySQL values * columnCount
      * Fourth line: Display Names * columnCount
@@ -61,8 +61,8 @@ public class FileReader {
         for(int i = 0; i < getTableColumnCount(); i++) {
             columnNames.add(fileParser.next());
         }
-
-        for(int i = 0; i < getTableColumnCount()  + getAmountOfPrimaryKeys() + getAmountOfForeignKeys(); i++) {
+        //Antall kolonner, antall primary keys, antall foreign keys*2 fordi references
+        for(int i = 0; i < getTableColumnCount()  + getAmountOfPrimaryKeys() + (getAmountOfForeignKeys()*2); i++) {
             columnSQLValues.add(fileParser.next());
         }
     }

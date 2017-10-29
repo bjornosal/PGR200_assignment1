@@ -7,17 +7,18 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class DatabaseHandler{
 
     private DatabaseConnection databaseConnection;
     private FileReader fileReader;
     private String propertyFilePath;
+    private ArrayList<String> foreignKeysToBeAdded;
 
     protected DatabaseHandler() throws IOException {
         databaseConnection = new DatabaseConnection();
         fileReader  = new FileReader();
+        foreignKeysToBeAdded = new ArrayList<>();
     }
 
 
@@ -41,6 +42,10 @@ public class DatabaseHandler{
         createTableFromMetaData("subject");
         createTableFromMetaData("room");
         createTableFromMetaData("lecturer");
+
+        //TODO Works in theory. Test databases has to be set up to check
+        addAllForeignKeysToTables();
+
         fillTableFromFileByTableName("subject");
         fillTableFromFileByTableName("room");
         fillTableFromFileByTableName("lecturer");
@@ -72,24 +77,6 @@ public class DatabaseHandler{
      * @throws FileNotFoundException
      */
 
-    private void fillTable(File tableInformation, String tableName) throws SQLException, FileNotFoundException {
-        Scanner fileStream = new Scanner(tableInformation);
-        fileStream.useDelimiter(";|\\r\\n|\\n");
-
-        MysqlDataSource dataSource = getDatabaseConnection().getDataSource();
-        try(Connection connection = dataSource.getConnection()) {
-            String prpStmt = prepareInsertStatement(tableName);
-
-            while (fileStream.hasNext()) {
-                PreparedStatement preparedStatement = connection.prepareStatement(prpStmt);
-                for(int i = 1; i < getColumnCountOfTable(tableName)+1; i++) {
-                    preparedStatement.setObject(i, fileStream.next());
-                }
-                preparedStatement.executeUpdate();
-            }
-        }
-    }
-
     /**
      * Puts together a prepared statement based on a table name.
      *
@@ -97,19 +84,6 @@ public class DatabaseHandler{
      * @return a prepared query
      * @throws SQLException
      */
-
-    //TODO do a batch insertion instead, to decrease runtime
-    private String prepareInsertStatement(String tableName) throws SQLException {
-        String preparedStatement = "INSERT INTO " + tableName + " VALUES (";
-        int columns = getColumnCountOfTable(tableName);
-        for(int i = 1; i < columns; i++) {
-            preparedStatement += "?, ";
-            if (i == columns - 1) {
-                preparedStatement += "?);";
-            }
-        }
-        return preparedStatement;
-    }
 
     private String prepareInsertStatementBasedOnMetaData(String tableName) throws FileNotFoundException {
         fileReader.readFile(fileReader.getFileByTableName(tableName));
@@ -154,28 +128,17 @@ public class DatabaseHandler{
         }
     }
 
-
-    /***
-     * Implement usage for more generic methods
-     * Should return column numbers, maybe column names to skip those?
-     *
-     * @param resultSetMetaData Takes in ResultSetMetaData to see which column number has an autoincrement, for now only one column.
-     * @return int
-     * @throws SQLException
-     */
-    private int findAutoIncrement(ResultSetMetaData resultSetMetaData) throws SQLException {
-        int columnNumber = -1;
-
-        for(int i = 1; i < resultSetMetaData.getColumnCount(); i ++) {
-            if(resultSetMetaData.isAutoIncrement(i)) {
-                columnNumber = i;
+    private void addAllForeignKeysToTables() throws SQLException {
+        MysqlDataSource dataSource = getDatabaseConnection().getDataSource();
+        try(Connection connection = dataSource.getConnection()) {
+            Statement statement = connection.createStatement();
+            for(String foreignKeyQuery : foreignKeysToBeAdded){
+                statement.addBatch(foreignKeyQuery);
             }
+            statement.executeBatch();
+
         }
-
-        return columnNumber;
     }
-
-    //TODO Create a dynamic search and a search for all based on display names
 
     public String getRowsFromTableByColumnNameAndSearchColumnValue(String tableName, String columnName, String columnValue) throws FileNotFoundException, SQLException {
         fileReader.readFile(fileReader.getFileByTableName(tableName));
@@ -304,18 +267,6 @@ public class DatabaseHandler{
         return resultSetMetaData;
     }
 
-    //Not in use as of right now
-    private boolean checkIfTableExists(String tableName) throws SQLException {
-        boolean exists = false;
-        try (Connection connection = getDatabaseConnection().getDataSource().getConnection()) {
-            ResultSet rs = connection.getMetaData().getTables(null, null, tableName, null);
-            if(rs.next()) {
-                exists = true;
-            }
-        }
-        return exists;
-    }
-
     private void dropTable(String tableName) throws SQLException {
         try(Connection connection = getDatabaseConnection().getDataSource().getConnection()) {
             Statement stmt = connection.createStatement();
@@ -347,14 +298,14 @@ public class DatabaseHandler{
                 }
 
                 if(i == fileReader.getTableColumnCount() - 1) {
-                    //TODO fix Temporary solution for primary keys
+                    ///Syntax for multiple primary keys -> PRIMARY KEY(pk1, pk2, pk3
                     if(fileReader.getAmountOfPrimaryKeys() > 0) {
                         createTableQuery.append(",\n");
                         createTableQuery.append(addPrimaryKeyToQuery(i));
                     }
-                    //TODO Missing foreign key fix.
-                    //TODO to implement foreign key, FileReader has to be changed
-                    //Add a foreign key if and loop
+                    if(fileReader.getAmountOfForeignKeys() > 0) {
+                        addForeignKeyToList(i);
+                    }
                 }
             }
             createTableQuery.append(");");
@@ -363,26 +314,36 @@ public class DatabaseHandler{
     }
 
     private String addPrimaryKeyToQuery(int index) {
-        StringBuilder addPrimaryKeyToQuery = new StringBuilder();
-        addPrimaryKeyToQuery.append("PRIMARY KEY(");
-        for(int j = 1; j < fileReader.getAmountOfPrimaryKeys() + 1; j++) {
-            addPrimaryKeyToQuery.append(fileReader.getColumnSQLValues().get(index + j));
-            if(j < fileReader.getAmountOfPrimaryKeys()) {
-                addPrimaryKeyToQuery.append(", ");
+        StringBuilder primaryKeysToBeAddedToQuery = new StringBuilder();
+        primaryKeysToBeAddedToQuery.append("PRIMARY KEY(");
+        for(int i = 1; i < fileReader.getAmountOfPrimaryKeys() + 1; i++) {
+            primaryKeysToBeAddedToQuery.append(fileReader.getColumnSQLValues().get(index + i));
+            if(i < fileReader.getAmountOfPrimaryKeys()) {
+                primaryKeysToBeAddedToQuery.append(", ");
             }
         }
-        addPrimaryKeyToQuery.append(")");
-        if(fileReader.getAmountOfForeignKeys() > 0) {
-            addPrimaryKeyToQuery.append(",");
-        }
-        return addPrimaryKeyToQuery.toString();
+        primaryKeysToBeAddedToQuery.append(")");
+        return primaryKeysToBeAddedToQuery.toString();
     }
 
-    protected DatabaseConnection getDatabaseConnection() {
+    private void addForeignKeyToList(int index) {
+        StringBuilder foreignKeyToBeAddedToQuery = new StringBuilder();
+        for(int i = 1; i < fileReader.getAmountOfForeignKeys() + 1; i++) {
+            foreignKeyToBeAddedToQuery.append("ALTER TABLE ").append(fileReader.getTableName()).append("\n");
+            foreignKeyToBeAddedToQuery.append("ADD FOREIGN KEY (");
+            foreignKeyToBeAddedToQuery.append(fileReader.getColumnSQLValues().get(index + fileReader.getAmountOfPrimaryKeys() + i));
+            foreignKeyToBeAddedToQuery.append(") REFERENCES ");
+            foreignKeyToBeAddedToQuery.append(fileReader.getColumnSQLValues().get(index + fileReader.getAmountOfPrimaryKeys() + i + 1));
+            foreignKeyToBeAddedToQuery.append(";");
+            foreignKeysToBeAdded.add(foreignKeyToBeAddedToQuery.toString());
+        }
+    }
+
+    private DatabaseConnection getDatabaseConnection() {
         return databaseConnection;
     }
 
-    protected String getPropertyFilePath() {
+    private String getPropertyFilePath() {
         return propertyFilePath;
     }
 
