@@ -2,6 +2,7 @@ package no.salvesen.assignment1;
 
 import java.io.*;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Scanner;
 
@@ -85,7 +86,7 @@ public class InputHandler {
 
     public void startMenuLoop() throws IOException, SQLException {
         setUpProperties();
-        databaseHandler.tearDownDatabaseAndSetBackUp(fileReader.getSubjectFile(),fileReader.getRoomFile(),fileReader.getLecturerFile());
+        databaseHandler.tearDownDatabaseAndSetBackUp();
 
         showMainMenu();
     }
@@ -134,8 +135,13 @@ public class InputHandler {
                     System.out.println("Existing files chosen");
                     break;
                 case "5":
-                    //TODO add fillTable method here
-                    System.out.println("Cleared tables and filled with information from files.");
+ /*                   System.out.println("Which table do you want to tear down and fill with information?");
+                    System.out.println("Possible tables are: " );
+                    printAllTableNames();*/
+//                    String tableName = userInput.nextLine();
+//                    databaseHandler.fillTableFromFileByTableName(tableName);
+                    chooseTableToFillWithInformation();
+                    System.out.println("Cleared table and filled with information from file.");
                     break;
                 case "6":
                     showMainMenu();
@@ -195,6 +201,28 @@ public class InputHandler {
                     System.out.println("Incorrect choice, please try again.");
             }
 
+        }
+    }
+
+    private void printAllTableNames() throws SQLException {
+        for(String tableName : databaseHandler.getArrayListOfTableNames()) {
+            System.out.println(tableName);
+        }
+    }
+
+    private void chooseTableToFillWithInformation() throws SQLException, FileNotFoundException {
+        String chosenTable;
+        ArrayList<String> tableNames = databaseHandler.getArrayListOfTableNames();
+        while (true) {
+            System.out.println("Possible tables are: ");
+            printAllTableNames();
+            chosenTable = userInput.nextLine();
+            for (String tableName : tableNames) {
+                if (chosenTable.equals(tableName)) {
+                    databaseHandler.tearDownTableAndSetBackUpWithNewInformation(chosenTable);
+                    return;
+                }
+            }
         }
     }
 }

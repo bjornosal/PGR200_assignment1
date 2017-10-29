@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 public class FileReader {
 
+    //TODO possible to make this dynamic?
     private File subjectFile;
     private File roomFile;
     private File lecturerFile;

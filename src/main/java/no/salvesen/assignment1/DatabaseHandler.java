@@ -31,32 +31,53 @@ public class DatabaseHandler{
         return String.format(getResultFormat(), columnDisplayNames);
 
     }
+    //TODO MAKE THIS DYNAMIC BASED ON ALL TABLES
+    public void tearDownDatabaseAndSetBackUp() throws SQLException, FileNotFoundException {
 
-    public void tearDownDatabaseAndSetBackUp(File subjectFile, File roomFile, File lecturerFile) throws SQLException, FileNotFoundException {
-        dropTable("subject");
-        dropTable("room");
-        dropTable("lecturer");
+        String tableOne = "subject";
+        String tableTwo = "room";
+        String tableThree = "lecturer";
+
+        dropTable(tableOne);
+        dropTable(tableTwo);
+        dropTable(tableThree);
 
         createDatabase();
-//        createTableWithTableName("subject");
-        createTableFromMetaData("subject");
-        createTableFromMetaData("room");
-        createTableFromMetaData("lecturer");
+
+        createTableFromMetaData(tableOne);
+        createTableFromMetaData(tableTwo);
+        createTableFromMetaData(tableThree);
 
         //TODO Works in theory. Test databases has to be set up to check
         addAllForeignKeysToTables();
 
-        fillTableFromFileByTableName("subject");
-        fillTableFromFileByTableName("room");
-        fillTableFromFileByTableName("lecturer");
+        fillTableFromFileByTableName(tableOne);
+        fillTableFromFileByTableName(tableTwo);
+        fillTableFromFileByTableName(tableThree);
 
- /*       createTableWithTableName("room");
-        createTableWithTableName("lecturer");
-        fillTable(subjectFile, "subject");
-        fillTable(roomFile, "room");
-        fillTable(lecturerFile, "lecturer");
- */   }
+    }
 
+    public void tearDownTableAndSetBackUpWithNewInformation(String tableName) throws SQLException, FileNotFoundException {
+        dropTable(tableName);
+        createTableFromMetaData(tableName);
+        fillTableFromFileByTableName(tableName);
+    }
+
+//SOURCE: https://stackoverflow.com/questions/2780284/how-to-get-all-table-names-from-a-database
+    public ArrayList<String> getArrayListOfTableNames() throws SQLException {
+
+        ArrayList<String> tableNames = new ArrayList<>();
+
+        MysqlDataSource dataSource = getDatabaseConnection().getDataSource();
+        try(Connection connection = dataSource.getConnection()) {
+            DatabaseMetaData databaseMetaData = connection.getMetaData();
+            ResultSet rs = databaseMetaData.getTables(null, null, "%", null);
+            while (rs.next()) {
+                tableNames.add(rs.getString(3));
+            }
+        }
+        return tableNames;
+    }
 
 
     /**
@@ -127,6 +148,7 @@ public class DatabaseHandler{
             preparedStatement.executeBatch();
         }
     }
+
 
     private void addAllForeignKeysToTables() throws SQLException {
         MysqlDataSource dataSource = getDatabaseConnection().getDataSource();
