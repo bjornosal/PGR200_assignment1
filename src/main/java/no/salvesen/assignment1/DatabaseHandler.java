@@ -138,26 +138,19 @@ public class DatabaseHandler{
             String preparedInsert = prepareInsertStatementBasedOnMetaData(tableName);
             PreparedStatement preparedStatement = connection.prepareStatement(preparedInsert);
 
-
-            //TODO add method for parsing through insertionValues and creating a new batch on each getColumnCount
-            /*for(int i = 1; i < insertionValues.size(); i++)  {
-                preparedStatement.setObject(i, insertionValues.get(i));
-            }*/
-         /*   int index = 1;
+            int index = 1;
             int counter = 0;
+
             while(counter < insertionValues.size()) {
-                while (index < fileReader.getTableColumnCount()) {
-                    preparedStatement.setObject(index, insertionValues.get(index-1));
-                    if(index == fileReader.getTableColumnCount()) {
-                        System.out.println(preparedStatement.toString());
-                        preparedStatement.addBatch();
-                    }
+                while(index < fileReader.getTableColumnCount() + 1) {
+                    preparedStatement.setObject(index,insertionValues.get(counter));
                     index++;
                     counter++;
                 }
-                preparedStatement.executeBatch();
+                preparedStatement.addBatch();
                 index = 1;
-            }*/
+            }
+            preparedStatement.executeBatch();
         }
     }
 
