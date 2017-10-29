@@ -15,7 +15,7 @@ public class DatabaseHandler{
     private String propertyFilePath;
     private ArrayList<String> foreignKeysToBeAdded;
 
-    protected DatabaseHandler() throws IOException {
+    protected DatabaseHandler()  {
         databaseConnection = new DatabaseConnection();
         fileReader  = new FileReader();
         foreignKeysToBeAdded = new ArrayList<>();
@@ -31,29 +31,28 @@ public class DatabaseHandler{
         return String.format(getResultFormat(), columnDisplayNames);
 
     }
-    //TODO MAKE THIS DYNAMIC BASED ON ALL TABLES
     public void tearDownDatabaseAndSetBackUp() throws SQLException, FileNotFoundException {
 
-        String tableOne = "subject";
-        String tableTwo = "room";
-        String tableThree = "lecturer";
+        String subjectTable = "subject";
+        String roomTable = "room";
+        String lecturerTable = "lecturer";
 
-        dropTable(tableOne);
-        dropTable(tableTwo);
-        dropTable(tableThree);
+        dropTable(subjectTable);
+        dropTable(roomTable);
+        dropTable(lecturerTable);
 
         createDatabase();
 
-        createTableFromMetaData(tableOne);
-        createTableFromMetaData(tableTwo);
-        createTableFromMetaData(tableThree);
+        createTableFromMetaData(subjectTable);
+        createTableFromMetaData(roomTable);
+        createTableFromMetaData(lecturerTable);
 
         //TODO Works in theory. Test databases has to be set up to check
         addAllForeignKeysToTables();
 
-        fillTableFromFileByTableName(tableOne);
-        fillTableFromFileByTableName(tableTwo);
-        fillTableFromFileByTableName(tableThree);
+        fillTableFromFileByTableName(subjectTable);
+        fillTableFromFileByTableName(roomTable);
+        fillTableFromFileByTableName(lecturerTable);
 
     }
 
@@ -63,7 +62,7 @@ public class DatabaseHandler{
         fillTableFromFileByTableName(tableName);
     }
 
-//SOURCE: https://stackoverflow.com/questions/2780284/how-to-get-all-table-names-from-a-database
+    //SOURCE: https://stackoverflow.com/questions/2780284/how-to-get-all-table-names-from-a-database
     public ArrayList<String> getArrayListOfTableNames() throws SQLException {
 
         ArrayList<String> tableNames = new ArrayList<>();
@@ -118,7 +117,6 @@ public class DatabaseHandler{
                 preparedStatement.append("?);");
             }
         }
-
         return preparedStatement.toString();
     }
 
@@ -226,8 +224,6 @@ public class DatabaseHandler{
         }
         return result;
     }
-
-
 
     private String getResultFormat() throws SQLException {
         StringBuilder resultFormat = new StringBuilder();
@@ -378,5 +374,3 @@ public class DatabaseHandler{
     }
 
 }
-
-

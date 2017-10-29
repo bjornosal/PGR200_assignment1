@@ -11,12 +11,12 @@ public class DatabaseConnection {
     private MysqlDataSource dataSource;
     
 
-    public DatabaseConnection() throws IOException {
+    public DatabaseConnection() {
         dataSource = new MysqlDataSource();
     }
 
     public void databaseBuilder(String propertyFilePath) throws IOException {
-
+//TODO FIX PROPERTIES
         Properties properties = new Properties();
         //This one should be used, using other until dynamic creation is finished
 //        InputStream input = new FileInputStream(propertyFilePath);

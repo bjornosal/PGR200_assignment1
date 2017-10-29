@@ -12,11 +12,13 @@ public class InputHandler {
     private Menu menu;
     private DatabaseHandler databaseHandler;
     private FileReader fileReader;
+    private ExceptionHandler exceptionHandler;
 
     private Scanner userInput;
 
-    public InputHandler() throws IOException {
+    public InputHandler()  {
         fileReader = new FileReader();
+        exceptionHandler = new ExceptionHandler();
 
         userInput = new Scanner(System.in);
         databaseHandler = new DatabaseHandler();
@@ -24,7 +26,7 @@ public class InputHandler {
     }
 
 
-    private void setUpProperties() throws IOException, SQLException {
+    private void setUpProperties() throws SQLException, IOException {
         boolean finished = false;
         String menuChoice;
 
@@ -84,14 +86,24 @@ public class InputHandler {
 
     }
 
-    public void startMenuLoop() throws IOException, SQLException {
-        setUpProperties();
-        databaseHandler.tearDownDatabaseAndSetBackUp();
+    public void startMenuLoop()  {
+        try {
 
-        showMainMenu();
+            setUpProperties();
+            databaseHandler.tearDownDatabaseAndSetBackUp();
+            showMainMenu();
+
+
+        } catch (SQLException e) {
+            exceptionHandler.outputSQLException();
+        } catch (FileNotFoundException e) {
+            exceptionHandler.outputFileNotFoundException();
+        } catch (IOException e) {
+            exceptionHandler.outputIOException();
+        }
     }
 
-    private void showMainMenu() throws IOException, SQLException {
+    private void showMainMenu() throws FileNotFoundException, SQLException {
         String menuChoice;
         while(true) {
             System.out.println(menu.mainMenu());
@@ -111,7 +123,7 @@ public class InputHandler {
     }
 
     //TODO missing option regarding filling information into DB
-    private void showTableMenu() throws IOException, SQLException {
+    private void showTableMenu() throws FileNotFoundException, SQLException {
         String menuChoice;
         while(true) {
             System.out.println(menu.tableMenu());
@@ -135,11 +147,6 @@ public class InputHandler {
                     System.out.println("Existing files chosen");
                     break;
                 case "5":
- /*                   System.out.println("Which table do you want to tear down and fill with information?");
-                    System.out.println("Possible tables are: " );
-                    printAllTableNames();*/
-//                    String tableName = userInput.nextLine();
-//                    databaseHandler.fillTableFromFileByTableName(tableName);
                     chooseTableToFillWithInformation();
                     System.out.println("Cleared table and filled with information from file.");
                     break;
@@ -152,11 +159,10 @@ public class InputHandler {
                 default:
                     System.out.println("Incorrect choice, please try again.");
             }
-
         }
     }
 
-    private void showSearchMenu() throws IOException, SQLException {
+    private void showSearchMenu() throws SQLException, FileNotFoundException {
         String menuChoice;
         while(true) {
             System.out.println(menu.searchMenu());

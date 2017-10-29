@@ -7,7 +7,6 @@ import java.util.Scanner;
 
 public class FileReader {
 
-    //TODO possible to make this dynamic?
     private File subjectFile;
     private File roomFile;
     private File lecturerFile;
@@ -23,9 +22,9 @@ public class FileReader {
     private ArrayList<String> insertionValues;
 
     public FileReader() {
-        setSubjectFile(new File("src/files/subject.csv"));
-        setRoomFile(new File("src/files/room.csv"));
-        setLecturerFile(new File("src/files/lecturer.csv"));
+        setSubjectFile(new File("src/files/database files/subject.csv"));
+        setRoomFile(new File("src/files/database files/room.csv"));
+        setLecturerFile(new File("src/files/database files/lecturer.csv"));
     }
 
     public void readFile(File tableFile) throws FileNotFoundException {
@@ -95,8 +94,6 @@ public class FileReader {
             case "lecturer":
                 return getLecturerFile();
         }
-
-
         return null;
     }
 
