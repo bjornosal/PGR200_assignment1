@@ -21,7 +21,6 @@ public class DatabaseHandler{
         foreignKeysToBeAdded = new ArrayList<>();
     }
 
-
 //TODO Create database if not already exists
     //TODO
     private String getResultHeader(String tableName) throws FileNotFoundException, SQLException {

@@ -10,7 +10,6 @@ public class DatabaseConnection {
 
     private MysqlDataSource dataSource;
 
-
     public DatabaseConnection() {
         dataSource = new MysqlDataSource();
     }
@@ -25,11 +24,7 @@ public class DatabaseConnection {
         dataSource.setDatabaseName(properties.getProperty("databaseName"));
         dataSource.setUser(properties.getProperty("databaseUser"));
         dataSource.setPassword(properties.getProperty("databasePassword"));
-
     }
-
-
-
 
     public MysqlDataSource getDataSource() {
         return dataSource;

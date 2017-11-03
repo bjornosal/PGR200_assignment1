@@ -49,8 +49,8 @@ public class Menu {
             }
             if(i == choices.length - 1 && addEnd) {
                 menuChoices.append("\n");
-                menuChoices.append(i + 2 + ": Return to main menu\n");
-                menuChoices.append(i + 3 + ": Quit");
+                menuChoices.append(i + 2).append(": Return to main menu\n");
+                menuChoices.append(i + 3).append(": Quit");
             }
         }
 
@@ -74,7 +74,6 @@ public class Menu {
         searchChoices[3] = "Get information on all lecturers";
         searchChoices[4] = "Get information on a room";
         searchChoices[5] = "Get information on all rooms";
-
     }
 
     //Choices that makes a change on tables
@@ -87,13 +86,11 @@ public class Menu {
         tableChoices[4] = "Fill a table with information from file.";
     }
 
-    //TODO add web server as a possible option
     private void setPropertiesMenu() {
-        propertiesMenuChoices = new String[4];
+        propertiesMenuChoices = new String[3];
         propertiesMenuChoices[0] = "Use default database properties";
-        propertiesMenuChoices[1] = "Use default web-server properties";
-        propertiesMenuChoices[2] = "Use properties set by user";
-        propertiesMenuChoices[3] = "Set new database properties";
+        propertiesMenuChoices[1] = "Use properties set by user";
+        propertiesMenuChoices[2] = "Set new database properties";
     }
 
     private String[] getTableChoices() {

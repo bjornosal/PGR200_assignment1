@@ -46,18 +46,13 @@ public class InputHandler {
                     databaseHandler.setPropertyFilePath(defaultPropertiesFilePath);
                     finished = true;
                     break;
-                case "2":
-                    databaseHandler.setPropertyFilePath(webServerPropertiesFilePath);
-                    finished = true;
-                    break;
                 //use properties previously set by user
-                case "3":
+                case "2":
                     databaseHandler.setPropertyFilePath(userEnteredPropertiesFilePath);
                     finished = true;
                     break;
-
                 //Enter new properties
-                case "4":
+                case "3":
                     System.out.println("Server name: ");
                     String serverName = userInput.nextLine();
                     System.out.println("Database name: ");
@@ -210,7 +205,6 @@ public class InputHandler {
                     System.out.println("Please enter name of room: ");
                     String room = userInput.nextLine();
                     System.out.println(databaseHandler.getRowsFromTableByColumnNameAndSearchColumnValue("room","name",room));
-
                     break;
                 case "6":
                     System.out.println(databaseHandler.getAllRowsByTableName("room"));
