@@ -1,6 +1,5 @@
 package no.salvesen.assignment1;
 
-import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,13 +9,13 @@ import java.util.ArrayList;
 
 public class DatabaseHandler{
 
-    private DatabaseConnection databaseConnection;
+    private MySQLDatabaseConnection mySQLDatabaseConnection;
     private FileReader fileReader;
     private String propertyFilePath;
     private ArrayList<String> foreignKeysToBeAdded;
 
     protected DatabaseHandler()  {
-        databaseConnection = new DatabaseConnection();
+        mySQLDatabaseConnection = new MySQLDatabaseConnection();
         fileReader  = new FileReader();
         foreignKeysToBeAdded = new ArrayList<>();
     }
@@ -68,7 +67,7 @@ public class DatabaseHandler{
 
         ArrayList<String> tableNames = new ArrayList<>();
 
-        try(Connection connection = databaseConnection.getConnection()) {
+        try(Connection connection = mySQLDatabaseConnection.getConnection()) {
             DatabaseMetaData databaseMetaData = connection.getMetaData();
             ResultSet rs = databaseMetaData.getTables(null, null, "%", null);
             while (rs.next()) {
@@ -126,7 +125,7 @@ public class DatabaseHandler{
 
         ArrayList<String> insertionValues = fileReader.getInsertionValues();
 
-        try(Connection connection = databaseConnection.getConnection()) {
+        try(Connection connection = mySQLDatabaseConnection.getConnection()) {
             String preparedInsert = prepareInsertStatementBasedOnMetaData(tableName);
             PreparedStatement preparedStatement = connection.prepareStatement(preparedInsert);
 
@@ -148,7 +147,7 @@ public class DatabaseHandler{
 
 
     private void addAllForeignKeysToTables() throws SQLException {
-        try(Connection connection = databaseConnection.getConnection()) {
+        try(Connection connection = mySQLDatabaseConnection.getConnection()) {
             Statement statement = connection.createStatement();
             for(String foreignKeyQuery : foreignKeysToBeAdded){
                 statement.addBatch(foreignKeyQuery);
@@ -163,7 +162,7 @@ public class DatabaseHandler{
         String result = "";
         String query =  buildSelectQuery(true, tableName, columnName);
 
-        try(Connection connection = databaseConnection.getConnection();
+        try(Connection connection = mySQLDatabaseConnection.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, columnValue);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -213,7 +212,7 @@ public class DatabaseHandler{
         String result = "";
         String query =  buildSelectQuery(false, tableName, null);
 
-        try(Connection connection = databaseConnection.getConnection();
+        try(Connection connection = mySQLDatabaseConnection.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             result += resultStringBuilder(resultSet);
@@ -237,7 +236,7 @@ public class DatabaseHandler{
         StringBuilder query = new StringBuilder();
         query.append(createMaxLengthSelect());
 
-        try(Connection connection = databaseConnection.getConnection();
+        try(Connection connection = mySQLDatabaseConnection.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(query.toString())) {
             ResultSet resultSet = preparedStatement.executeQuery();
             //TODO don't do this at home kids
@@ -271,7 +270,7 @@ public class DatabaseHandler{
         String query = "SELECT * FROM " + tableName + ";";
         ResultSetMetaData resultSetMetaData;
 
-        try(Connection connection = databaseConnection.getConnection()) {
+        try(Connection connection = mySQLDatabaseConnection.getConnection()) {
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             resultSetMetaData = rs.getMetaData();
@@ -280,14 +279,14 @@ public class DatabaseHandler{
     }
 
     private void dropTable(String tableName) throws SQLException {
-        try(Connection connection = databaseConnection.getConnection()) {
+        try(Connection connection = mySQLDatabaseConnection.getConnection()) {
             Statement stmt = connection.createStatement();
             stmt.executeUpdate("DROP TABLE IF EXISTS "+tableName);
         }
     }
 
     private void createDatabase() throws SQLException{
-        try(Connection connection = databaseConnection.getConnection()) {
+        try(Connection connection = mySQLDatabaseConnection.getConnection()) {
             Statement stmt = connection.createStatement();
             stmt.execute("CREATE SCHEMA IF NOT EXISTS pgr200_assignment_1;");
         }
@@ -298,7 +297,7 @@ public class DatabaseHandler{
 
         StringBuilder createTableQuery = new StringBuilder("CREATE TABLE IF NOT EXISTS " + fileReader.getTableName() + "(\n");
 
-        try(Connection connection = databaseConnection.getConnection()) {
+        try(Connection connection = mySQLDatabaseConnection.getConnection()) {
             Statement statement = connection.createStatement();
             for(int i = 0; i < fileReader.getTableColumnCount(); i++) {
                 createTableQuery.append(fileReader.getColumnNames().get(i));
@@ -351,8 +350,8 @@ public class DatabaseHandler{
         }
     }
 
-    private DatabaseConnection getDatabaseConnection() {
-        return databaseConnection;
+    private MySQLDatabaseConnection getMySQLDatabaseConnection() {
+        return mySQLDatabaseConnection;
     }
 
     private String getPropertyFilePath() {
@@ -364,7 +363,7 @@ public class DatabaseHandler{
     }
 
     protected void startDatabase() throws IOException {
-        databaseConnection.databaseBuilder(getPropertyFilePath());
+        mySQLDatabaseConnection.databaseBuilder(getPropertyFilePath());
     }
 
 }

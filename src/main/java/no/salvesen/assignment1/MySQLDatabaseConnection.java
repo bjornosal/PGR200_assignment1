@@ -8,11 +8,11 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class DatabaseConnection {
+public class MySQLDatabaseConnection implements ConnectionProvider{
 
     private MysqlDataSource dataSource;
 
-    public DatabaseConnection() {
+    public MySQLDatabaseConnection() {
         dataSource = new MysqlDataSource();
     }
 
