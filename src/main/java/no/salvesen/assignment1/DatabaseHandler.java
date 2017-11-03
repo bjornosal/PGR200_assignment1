@@ -68,8 +68,7 @@ public class DatabaseHandler{
 
         ArrayList<String> tableNames = new ArrayList<>();
 
-        MysqlDataSource dataSource = getDatabaseConnection().getDataSource();
-        try(Connection connection = dataSource.getConnection()) {
+        try(Connection connection = databaseConnection.getConnection()) {
             DatabaseMetaData databaseMetaData = connection.getMetaData();
             ResultSet rs = databaseMetaData.getTables(null, null, "%", null);
             while (rs.next()) {
@@ -127,8 +126,7 @@ public class DatabaseHandler{
 
         ArrayList<String> insertionValues = fileReader.getInsertionValues();
 
-        MysqlDataSource dataSource = getDatabaseConnection().getDataSource();
-        try(Connection connection = dataSource.getConnection()) {
+        try(Connection connection = databaseConnection.getConnection()) {
             String preparedInsert = prepareInsertStatementBasedOnMetaData(tableName);
             PreparedStatement preparedStatement = connection.prepareStatement(preparedInsert);
 
@@ -150,8 +148,7 @@ public class DatabaseHandler{
 
 
     private void addAllForeignKeysToTables() throws SQLException {
-        MysqlDataSource dataSource = getDatabaseConnection().getDataSource();
-        try(Connection connection = dataSource.getConnection()) {
+        try(Connection connection = databaseConnection.getConnection()) {
             Statement statement = connection.createStatement();
             for(String foreignKeyQuery : foreignKeysToBeAdded){
                 statement.addBatch(foreignKeyQuery);
@@ -166,8 +163,7 @@ public class DatabaseHandler{
         String result = "";
         String query =  buildSelectQuery(true, tableName, columnName);
 
-        MysqlDataSource dataSource = getDatabaseConnection().getDataSource();
-        try(Connection connection = dataSource.getConnection();
+        try(Connection connection = databaseConnection.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, columnValue);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -217,8 +213,7 @@ public class DatabaseHandler{
         String result = "";
         String query =  buildSelectQuery(false, tableName, null);
 
-        MysqlDataSource dataSource = getDatabaseConnection().getDataSource();
-        try(Connection connection = dataSource.getConnection();
+        try(Connection connection = databaseConnection.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             result += resultStringBuilder(resultSet);
@@ -242,8 +237,7 @@ public class DatabaseHandler{
         StringBuilder query = new StringBuilder();
         query.append(createMaxLengthSelect());
 
-        MysqlDataSource dataSource = getDatabaseConnection().getDataSource();
-        try(Connection connection = dataSource.getConnection();
+        try(Connection connection = databaseConnection.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(query.toString())) {
             ResultSet resultSet = preparedStatement.executeQuery();
             //TODO don't do this at home kids
@@ -277,8 +271,7 @@ public class DatabaseHandler{
         String query = "SELECT * FROM " + tableName + ";";
         ResultSetMetaData resultSetMetaData;
 
-        MysqlDataSource dataSource = getDatabaseConnection().getDataSource();
-        try(Connection connection = dataSource.getConnection()) {
+        try(Connection connection = databaseConnection.getConnection()) {
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             resultSetMetaData = rs.getMetaData();
@@ -287,14 +280,14 @@ public class DatabaseHandler{
     }
 
     private void dropTable(String tableName) throws SQLException {
-        try(Connection connection = getDatabaseConnection().getDataSource().getConnection()) {
+        try(Connection connection = databaseConnection.getConnection()) {
             Statement stmt = connection.createStatement();
             stmt.executeUpdate("DROP TABLE IF EXISTS "+tableName);
         }
     }
 
     private void createDatabase() throws SQLException{
-        try (Connection connection = getDatabaseConnection().getDataSource().getConnection()) {
+        try(Connection connection = databaseConnection.getConnection()) {
             Statement stmt = connection.createStatement();
             stmt.execute("CREATE SCHEMA IF NOT EXISTS pgr200_assignment_1;");
         }
@@ -305,7 +298,7 @@ public class DatabaseHandler{
 
         StringBuilder createTableQuery = new StringBuilder("CREATE TABLE IF NOT EXISTS " + fileReader.getTableName() + "(\n");
 
-        try(Connection connection = getDatabaseConnection().getDataSource().getConnection()) {
+        try(Connection connection = databaseConnection.getConnection()) {
             Statement statement = connection.createStatement();
             for(int i = 0; i < fileReader.getTableColumnCount(); i++) {
                 createTableQuery.append(fileReader.getColumnNames().get(i));

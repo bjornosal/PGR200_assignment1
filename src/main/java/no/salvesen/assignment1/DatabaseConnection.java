@@ -4,6 +4,8 @@ package no.salvesen.assignment1;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 import java.io.*;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Properties;
 
 public class DatabaseConnection {
@@ -26,7 +28,7 @@ public class DatabaseConnection {
         dataSource.setPassword(properties.getProperty("databasePassword"));
     }
 
-    public MysqlDataSource getDataSource() {
-        return dataSource;
+    public Connection getConnection() throws SQLException {
+        return dataSource.getConnection();
     }
 }
