@@ -89,10 +89,11 @@ public class Menu {
 
     //TODO add web server as a possible option
     private void setPropertiesMenu() {
-        propertiesMenuChoices = new String[3];
+        propertiesMenuChoices = new String[4];
         propertiesMenuChoices[0] = "Use default database properties";
-        propertiesMenuChoices[1] = "Use properties set by user";
-        propertiesMenuChoices[2] = "Set new database properties";
+        propertiesMenuChoices[1] = "Use default web-server properties";
+        propertiesMenuChoices[2] = "Use properties set by user";
+        propertiesMenuChoices[3] = "Set new database properties";
     }
 
     private String[] getTableChoices() {

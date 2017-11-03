@@ -1,5 +1,7 @@
 package no.salvesen.assignment1;
 
+import com.mysql.jdbc.CommunicationsException;
+
 import java.io.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -13,6 +15,9 @@ public class InputHandler {
     private DatabaseHandler databaseHandler;
     private FileReader fileReader;
     private ExceptionHandler exceptionHandler;
+    private final String defaultPropertiesFilePath = "src/files/defaultDatabaseConfig.properties";
+    private final String userEnteredPropertiesFilePath = "src/files/userEnteredDatabaseLogin.properties";
+    private final String webServerPropertiesFilePath = "src/files/webServerLogin.properties";
 
     private Scanner userInput;
 
@@ -26,7 +31,7 @@ public class InputHandler {
     }
 
 
-    private void setUpProperties() throws SQLException, IOException {
+    private void setUpProperties() throws IOException {
         boolean finished = false;
         String menuChoice;
 
@@ -38,18 +43,21 @@ public class InputHandler {
 
                 //Use default properties
                 case "1":
-                    databaseHandler.setPropertyFilePath("./src/files/defaultDatabaseLogin.properties");
+                    databaseHandler.setPropertyFilePath(defaultPropertiesFilePath);
                     finished = true;
                     break;
-
-                //use properties previously set by user
                 case "2":
-                    databaseHandler.setPropertyFilePath("./src/files/userEnteredDatabaseLogin.properties");
+                    databaseHandler.setPropertyFilePath(webServerPropertiesFilePath);
+                    finished = true;
+                    break;
+                //use properties previously set by user
+                case "3":
+                    databaseHandler.setPropertyFilePath(userEnteredPropertiesFilePath);
                     finished = true;
                     break;
 
                 //Enter new properties
-                case "3":
+                case "4":
                     System.out.println("Server name: ");
                     String serverName = userInput.nextLine();
                     System.out.println("Database name: ");
@@ -64,12 +72,12 @@ public class InputHandler {
                     properties.setProperty("databaseName", databaseName);
                     properties.setProperty("databaseUser", databaseUser);
                     properties.setProperty("databasePassword", databasePassword);
-                    File userEnteredProperties = new File("./src/files/userEnteredDatabaseLogin.properties");
+                    File userEnteredProperties = new File(userEnteredPropertiesFilePath);
 
                     try(FileOutputStream fileOut = new FileOutputStream(userEnteredProperties)) {
                         properties.store(fileOut, "Added by user");
                         System.out.println("Property file set up. Attempting to connect.\n");
-                        databaseHandler.setPropertyFilePath("./src/files/userEnteredDatabaseLogin.properties");
+                        databaseHandler.setPropertyFilePath(userEnteredPropertiesFilePath);
                         finished = true;
                     }
                     break;
@@ -80,28 +88,39 @@ public class InputHandler {
 
             }
         }
-
         //Starts database with the properties chosen.
         databaseHandler.startDatabase();
 
     }
 
-    public void startMenuLoop()  {
+    public void startMenuLoop() {
+        boolean connected = false;
+
+        while (!connected) {
+            try {
+                setUpProperties();
+            } catch (IOException e) {
+                exceptionHandler.outputIOException("WriteProp");
+            }
+
+            try {
+                databaseHandler.tearDownDatabaseAndSetBackUp();
+                connected = true;
+            } catch (SQLException e) {
+                exceptionHandler.outputSQLException("connect");
+            } catch (FileNotFoundException e) {
+                exceptionHandler.outputFileNotFoundException();
+            }
+        }
         try {
-
-            setUpProperties();
-            databaseHandler.tearDownDatabaseAndSetBackUp();
             showMainMenu();
-
-
         } catch (SQLException e) {
-            exceptionHandler.outputSQLException();
+            exceptionHandler.outputSQLException("createTable");
         } catch (FileNotFoundException e) {
             exceptionHandler.outputFileNotFoundException();
-        } catch (IOException e) {
-            exceptionHandler.outputIOException();
         }
     }
+
 
     private void showMainMenu() throws FileNotFoundException, SQLException {
         String menuChoice;

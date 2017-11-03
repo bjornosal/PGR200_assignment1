@@ -9,18 +9,15 @@ import java.util.Properties;
 public class DatabaseConnection {
 
     private MysqlDataSource dataSource;
-    
+
 
     public DatabaseConnection() {
         dataSource = new MysqlDataSource();
     }
 
     public void databaseBuilder(String propertyFilePath) throws IOException {
-//TODO FIX PROPERTIES
         Properties properties = new Properties();
-        //This one should be used, using other until dynamic creation is finished
-//        InputStream input = new FileInputStream(propertyFilePath);
-        InputStream input = new FileInputStream("./src/files/defaultDatabaseConfig.properties");
+        InputStream input = new FileInputStream(propertyFilePath);
 
         properties.load(input);
 
@@ -29,8 +26,9 @@ public class DatabaseConnection {
         dataSource.setUser(properties.getProperty("databaseUser"));
         dataSource.setPassword(properties.getProperty("databasePassword"));
 
-
     }
+
+
 
 
     public MysqlDataSource getDataSource() {

@@ -22,6 +22,8 @@ public class DatabaseHandler{
     }
 
 
+//TODO Create database if not already exists
+    //TODO
     private String getResultHeader(String tableName) throws FileNotFoundException, SQLException {
         fileReader.readFile(fileReader.getFileByTableName(tableName));
         String[] columnDisplayNames = new String[fileReader.getTableColumnCount()];
