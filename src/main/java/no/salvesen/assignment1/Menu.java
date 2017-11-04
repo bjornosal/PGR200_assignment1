@@ -8,64 +8,68 @@ public class Menu {
     private String[] mainMenuChoices;
     private String[] propertiesMenuChoices;
 
+    /**
+     * Constructor. Initializes all menus.
+     */
     public Menu() {
-        setTableChoices();
-        setSearchChoices();
-        setMainMenuChoices();
-        setPropertiesMenu();
+        setTableMenuOptions();
+        setSearchMenuOptions();
+        setMainMenuOptions();
+        setPropertiesMenuOptions();
     }
+
 
     public String mainMenu() {
-        return menuHeader() + menuChoices(getMainMenuChoices(), false);
+        return menuHeader() + menuBuilder(getMainMenuChoices(), false);
     }
     public String tableMenu() {
-        return menuHeader() + menuChoices(getTableChoices(), true);
+        return menuHeader() + menuBuilder(getTableChoices(), true);
     }
     public String searchMenu() {
-        return  menuHeader() + menuChoices(getSearchChoices(), true);
+        return  menuHeader() + menuBuilder(getSearchChoices(), true);
     }
-    public String propertiesMenu() {return menuHeader() + menuChoices(getPropertiesMenuChoices(), false);}
+    public String propertiesMenu() {return menuHeader() + menuBuilder(getPropertiesMenuChoices(), false);}
 
+    /**
+     * Builds the menu based on menu and if it should have the last options.
+     * @param menuOptions
+     * @param addMainMenuAndQuitOptions
+     * @return
+     */
+    private String menuBuilder(String[] menuOptions, boolean addMainMenuAndQuitOptions) {
 
+        StringBuilder menu = new StringBuilder();
 
+        for(int i = 0; i < menuOptions.length; i++) {
 
-    private String menuHeader() {
-        String menuSeparator = "----------------------------------------------";
-        return menuSeparator +
-                "\nEnter the number before action and press enter\n" +
-                menuSeparator +
-                "\n";
-    }
-
-    private String menuChoices(String[] choices, boolean addEnd) {
-
-        StringBuilder menuChoices = new StringBuilder();
-
-        for(int i = 0; i < choices.length; i++) {
-
-            menuChoices.append(i + 1).append(": ").append(choices[i]);
-            if(i < choices.length - 1) {
-                menuChoices.append("\n");
+            menu.append(i + 1).append(": ").append(menuOptions[i]);
+            if(i < menuOptions.length - 1) {
+                menu.append("\n");
             }
-            if(i == choices.length - 1 && addEnd) {
-                menuChoices.append("\n");
-                menuChoices.append(i + 2).append(": Return to main menu\n");
-                menuChoices.append(i + 3).append(": Quit");
+            if(i == menuOptions.length - 1 && addMainMenuAndQuitOptions) {
+                menu.append("\n");
+                menu.append(i + 2).append(": Return to main menu\n");
+                menu.append(i + 3).append(": Quit");
             }
         }
 
-        return menuChoices.toString();
+        return menu.toString();
     }
 
-
-    private void setMainMenuChoices() {
+    /**
+     * Sets the content of the main menu.
+     */
+    private void setMainMenuOptions() {
         mainMenuChoices = new String[2];
         mainMenuChoices[0] = "Get information from table.";
         mainMenuChoices[1] = "Add information to table.";
     }
 
+    /**
+     * Sets the content of the search menu.
+     */
     //TODO after adding foreign key, add an option regarding subject's that lecturer's can lecture, or which rooms that subjects can have depending on type?
-    private void setSearchChoices() {
+    private void setSearchMenuOptions() {
         searchChoices = new String[6];
         searchChoices[0] = "Get information on a subject";
         searchChoices[1] = "Get information on all subjects";
@@ -75,8 +79,10 @@ public class Menu {
         searchChoices[5] = "Get information on all rooms";
     }
 
-    //Choices that makes a change on tables
-    private void setTableChoices() {
+    /**
+     * Sets the content of the fill table menu.
+     */
+    private void setTableMenuOptions() {
         tableChoices = new String[5];
         tableChoices[0] = "Add new filepath for \'subject\' table information";
         tableChoices[1] = "Add new filepath for \'room\' table information";
@@ -85,11 +91,26 @@ public class Menu {
         tableChoices[4] = "Fill a table with information from file.";
     }
 
-    private void setPropertiesMenu() {
+    /**
+     * Sets the content of the properties menu
+     */
+    private void setPropertiesMenuOptions() {
         propertiesMenuChoices = new String[3];
         propertiesMenuChoices[0] = "Use default database properties";
         propertiesMenuChoices[1] = "Use properties set by user";
         propertiesMenuChoices[2] = "Set new database properties";
+    }
+
+    /**
+     * Gets menu header
+     * @return String A header for the result to be printed.
+     */
+    private String menuHeader() {
+        String menuSeparator = "----------------------------------------------";
+        return menuSeparator +
+                "\nEnter the number before action and press enter\n" +
+                menuSeparator +
+                "\n";
     }
 
     private String[] getTableChoices() {

@@ -3,14 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="038afa83-f56f-4621-9260-50e1081a1fb9" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/App.java" afterPath="$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/App.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/DatabaseConnection.java" afterPath="$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/DatabaseConnection.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/DatabaseHandler.java" afterPath="$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/DatabaseHandler.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/ExceptionHandler.java" afterPath="$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/ExceptionHandler.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/FileReader.java" afterPath="$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/FileReader.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/InputHandler.java" afterPath="$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/InputHandler.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/no/salvesen/assignment1/DatabaseHandlerTest.java" afterPath="$PROJECT_DIR$/src/test/java/no/salvesen/assignment1/DatabaseHandlerTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/no/salvesen/assignment1/FileReaderTest.java" afterPath="$PROJECT_DIR$/src/test/java/no/salvesen/assignment1/FileReaderTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/Menu.java" afterPath="$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/Menu.java" />
     </list>
     <ignored path="assignment1.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -100,7 +93,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="InputHandler.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="InputHandler.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/InputHandler.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="578">
@@ -110,11 +103,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Menu.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Menu.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/Menu.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1020">
-              <caret line="66" column="0" lean-forward="false" selection-start-line="66" selection-start-column="0" selection-end-line="66" selection-end-column="0" />
+            <state relative-caret-position="1496">
+              <caret line="94" column="46" lean-forward="false" selection-start-line="94" selection-start-column="46" selection-end-line="94" selection-end-column="46" />
               <folding />
             </state>
           </provider>
@@ -225,7 +218,6 @@
         <option value="$PROJECT_DIR$/src/test/java/no/salvesen/assignment1/DatabaseConnectionTest.java" />
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/src/files/testDatabase.properties" />
-        <option value="$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/Menu.java" />
         <option value="$PROJECT_DIR$/src/test/java/no/salvesen/assignment1/Test_table_files/subject_test_file.csv" />
         <option value="$PROJECT_DIR$/src/test/java/no/salvesen/assignment1/Test_table_files/room_test_file.csv" />
         <option value="$PROJECT_DIR$/src/test/java/no/salvesen/assignment1/Test_table_files/lecturer_test_file.csv" />
@@ -246,6 +238,7 @@
         <option value="$PROJECT_DIR$/src/test/java/no/salvesen/assignment1/DatabaseHandlerTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/DatabaseHandler.java" />
         <option value="$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/InputHandler.java" />
+        <option value="$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/Menu.java" />
       </list>
     </option>
   </component>
@@ -1028,7 +1021,7 @@
       <workItem from="1509108419833" duration="60849000" />
       <workItem from="1509482436429" duration="882000" />
       <workItem from="1509732289215" duration="30899000" />
-      <workItem from="1509824136676" duration="5831000" />
+      <workItem from="1509824136676" duration="6165000" />
     </task>
     <task id="LOCAL-00001" summary="Added functionality for creating database and setting up subject table if it does not already exists. More functionality needed in databaseConnector&#10;&#10;&#10;Added standard setup in other classes.">
       <created>1505482574341</created>
@@ -1366,7 +1359,14 @@
       <option name="project" value="LOCAL" />
       <updated>1509821725572</updated>
     </task>
-    <option name="localTasksCounter" value="49" />
+    <task id="LOCAL-00049" summary="Added comments on most methods.">
+      <created>1509830267216</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1509830267217</updated>
+    </task>
+    <option name="localTasksCounter" value="50" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1402,7 +1402,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="182037000" />
+    <option name="totallyTimeSpent" value="182371000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1490,7 +1490,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Was an undetected issue in method createTableFromMetaData which ended up skipping the first column" />
     <MESSAGE value="Set up helper method for creating select queries with and without where parameter" />
     <MESSAGE value="Search method and result getter in progress" />
     <MESSAGE value="Created helper method for formatting output correctly" />
@@ -1515,7 +1514,8 @@
     <MESSAGE value="Reverted as issues were plentiful&#10;&#10;Revert &quot;Added interface for connection to make testing with H2 possible&quot;&#10;&#10;This reverts commit f644315e457361cc53fba03a41d1e0941999be91.&#10;&#10;# Conflicts:&#10;#&#9;src/main/java/no/salvesen/assignment1/ConnectionProvider.java&#10;#&#9;src/main/java/no/salvesen/assignment1/DatabaseConnection.java&#10;#&#9;src/main/java/no/salvesen/assignment1/DatabaseHandler.java&#10;#&#9;src/main/java/no/salvesen/assignment1/MySQLDatabaseConnection.java&#10;#&#9;src/main/java/no/salvesen/assignment1/PropertyHandler.java" />
     <MESSAGE value="Fixed issue - Was only a typo in a file...." />
     <MESSAGE value="Consider adding mock tests to mock the private methods of a class" />
-    <option name="LAST_COMMIT_MESSAGE" value="Consider adding mock tests to mock the private methods of a class" />
+    <MESSAGE value="Added comments on most methods." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added comments on most methods." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1744,14 +1744,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/Menu.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1020">
-          <caret line="66" column="0" lean-forward="false" selection-start-line="66" selection-start-column="0" selection-end-line="66" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/App.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
@@ -1826,6 +1818,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="578">
           <caret line="263" column="64" lean-forward="false" selection-start-line="263" selection-start-column="64" selection-end-line="263" selection-end-column="64" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/Menu.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1496">
+          <caret line="94" column="46" lean-forward="false" selection-start-line="94" selection-start-column="46" selection-end-line="94" selection-end-column="46" />
           <folding />
         </state>
       </provider>
