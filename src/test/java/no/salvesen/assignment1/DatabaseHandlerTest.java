@@ -1,6 +1,5 @@
 package no.salvesen.assignment1;
 
-import org.h2.tools.Server;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,7 +13,6 @@ import java.util.ArrayList;
 import static org.junit.Assert.*;
 
 public class DatabaseHandlerTest {
-    private ConnectionProvider databaseConnection;
     private DatabaseHandler databaseHandler;
     private FileReader fileReader;
     private ArrayList<String> foreignKeysToBeAdded;
@@ -35,7 +33,6 @@ public class DatabaseHandlerTest {
 
     @Test
     public void tearDownDatabaseAndSetBackUp() throws Exception {
-        createDatabase();
     }
 
     @Test
