@@ -11,12 +11,12 @@ import java.util.Properties;
 public class MySQLDatabaseConnection implements ConnectionProvider{
 
     private MysqlDataSource dataSource;
-
     public MySQLDatabaseConnection() {
         dataSource = new MysqlDataSource();
     }
 
-    public void databaseBuilder(String propertyFilePath) throws IOException {
+    @Override
+    public void setPropertiesForDatabase(String propertyFilePath) throws IOException {
         Properties properties = new Properties();
         InputStream input = new FileInputStream(propertyFilePath);
 
@@ -28,6 +28,7 @@ public class MySQLDatabaseConnection implements ConnectionProvider{
         dataSource.setPassword(properties.getProperty("databasePassword"));
     }
 
+    @Override
     public Connection getConnection() throws SQLException {
         return dataSource.getConnection();
     }

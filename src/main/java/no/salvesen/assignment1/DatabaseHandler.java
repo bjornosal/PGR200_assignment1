@@ -9,18 +9,18 @@ import java.util.ArrayList;
 
 public class DatabaseHandler{
 
-    private MySQLDatabaseConnection mySQLDatabaseConnection;
+    private ConnectionProvider databaseConnection;
     private FileReader fileReader;
     private String propertyFilePath;
     private ArrayList<String> foreignKeysToBeAdded;
 
     protected DatabaseHandler()  {
-        mySQLDatabaseConnection = new MySQLDatabaseConnection();
+        databaseConnection = new MySQLDatabaseConnection();
         fileReader  = new FileReader();
         foreignKeysToBeAdded = new ArrayList<>();
     }
 
-//TODO Create database if not already exists
+    //TODO Create database if not already exists
     //TODO
     private String getResultHeader(String tableName) throws FileNotFoundException, SQLException {
         fileReader.readFile(fileReader.getFileByTableName(tableName));
@@ -62,12 +62,11 @@ public class DatabaseHandler{
         fillTableFromFileByTableName(tableName);
     }
 
-    //SOURCE: https://stackoverflow.com/questions/2780284/how-to-get-all-table-names-from-a-database
     public ArrayList<String> getArrayListOfTableNames() throws SQLException {
 
         ArrayList<String> tableNames = new ArrayList<>();
 
-        try(Connection connection = mySQLDatabaseConnection.getConnection()) {
+        try(Connection connection = this.databaseConnection.getConnection()) {
             DatabaseMetaData databaseMetaData = connection.getMetaData();
             ResultSet rs = databaseMetaData.getTables(null, null, "%", null);
             while (rs.next()) {
@@ -125,7 +124,7 @@ public class DatabaseHandler{
 
         ArrayList<String> insertionValues = fileReader.getInsertionValues();
 
-        try(Connection connection = mySQLDatabaseConnection.getConnection()) {
+        try(Connection connection = this.databaseConnection.getConnection()) {
             String preparedInsert = prepareInsertStatementBasedOnMetaData(tableName);
             PreparedStatement preparedStatement = connection.prepareStatement(preparedInsert);
 
@@ -147,7 +146,7 @@ public class DatabaseHandler{
 
 
     private void addAllForeignKeysToTables() throws SQLException {
-        try(Connection connection = mySQLDatabaseConnection.getConnection()) {
+        try(Connection connection = this.databaseConnection.getConnection()) {
             Statement statement = connection.createStatement();
             for(String foreignKeyQuery : foreignKeysToBeAdded){
                 statement.addBatch(foreignKeyQuery);
@@ -162,7 +161,7 @@ public class DatabaseHandler{
         String result = "";
         String query =  buildSelectQuery(true, tableName, columnName);
 
-        try(Connection connection = mySQLDatabaseConnection.getConnection();
+        try(Connection connection = this.databaseConnection.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, columnValue);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -212,7 +211,7 @@ public class DatabaseHandler{
         String result = "";
         String query =  buildSelectQuery(false, tableName, null);
 
-        try(Connection connection = mySQLDatabaseConnection.getConnection();
+        try(Connection connection = this.databaseConnection.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             result += resultStringBuilder(resultSet);
@@ -236,7 +235,7 @@ public class DatabaseHandler{
         StringBuilder query = new StringBuilder();
         query.append(createMaxLengthSelect());
 
-        try(Connection connection = mySQLDatabaseConnection.getConnection();
+        try(Connection connection = this.databaseConnection.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(query.toString())) {
             ResultSet resultSet = preparedStatement.executeQuery();
             //TODO don't do this at home kids
@@ -270,7 +269,7 @@ public class DatabaseHandler{
         String query = "SELECT * FROM " + tableName + ";";
         ResultSetMetaData resultSetMetaData;
 
-        try(Connection connection = mySQLDatabaseConnection.getConnection()) {
+        try(Connection connection = this.databaseConnection.getConnection()) {
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             resultSetMetaData = rs.getMetaData();
@@ -279,14 +278,14 @@ public class DatabaseHandler{
     }
 
     private void dropTable(String tableName) throws SQLException {
-        try(Connection connection = mySQLDatabaseConnection.getConnection()) {
+        try(Connection connection = this.databaseConnection.getConnection()) {
             Statement stmt = connection.createStatement();
             stmt.executeUpdate("DROP TABLE IF EXISTS "+tableName);
         }
     }
 
     private void createDatabase() throws SQLException{
-        try(Connection connection = mySQLDatabaseConnection.getConnection()) {
+        try(Connection connection = this.databaseConnection.getConnection()) {
             Statement stmt = connection.createStatement();
             stmt.execute("CREATE SCHEMA IF NOT EXISTS pgr200_assignment_1;");
         }
@@ -297,7 +296,7 @@ public class DatabaseHandler{
 
         StringBuilder createTableQuery = new StringBuilder("CREATE TABLE IF NOT EXISTS " + fileReader.getTableName() + "(\n");
 
-        try(Connection connection = mySQLDatabaseConnection.getConnection()) {
+        try(Connection connection = this.databaseConnection.getConnection()) {
             Statement statement = connection.createStatement();
             for(int i = 0; i < fileReader.getTableColumnCount(); i++) {
                 createTableQuery.append(fileReader.getColumnNames().get(i));
@@ -350,9 +349,6 @@ public class DatabaseHandler{
         }
     }
 
-    private MySQLDatabaseConnection getMySQLDatabaseConnection() {
-        return mySQLDatabaseConnection;
-    }
 
     private String getPropertyFilePath() {
         return propertyFilePath;
@@ -363,7 +359,7 @@ public class DatabaseHandler{
     }
 
     protected void startDatabase() throws IOException {
-        mySQLDatabaseConnection.databaseBuilder(getPropertyFilePath());
+        databaseConnection.setPropertiesForDatabase(getPropertyFilePath());
     }
 
 }

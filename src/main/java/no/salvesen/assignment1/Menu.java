@@ -64,7 +64,6 @@ public class Menu {
         mainMenuChoices[1] = "Add information to table.";
     }
 
-    //menuchoices for all searches that a user can do.
     //TODO after adding foreign key, add an option regarding subject's that lecturer's can lecture, or which rooms that subjects can have depending on type?
     private void setSearchChoices() {
         searchChoices = new String[6];
