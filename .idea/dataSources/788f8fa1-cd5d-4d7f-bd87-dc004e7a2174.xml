@@ -1,0 +1,20 @@
+<dataSource name="MySQL - pgr200_assignment_1@localhost">
+  <database-model serializer="dbm" rdbms="MYSQL" format-version="2.6">
+    <schema id="1" name="pgr200_assignment_1">
+      <visible>1</visible>
+    </schema>
+    <schema id="2" name="bokhandelas" />
+    <schema id="3" name="flyreservasjon" />
+    <schema id="4" name="hint" />
+    <schema id="5" name="information_schema" />
+    <schema id="6" name="musikk" />
+    <schema id="7" name="mysql" />
+    <schema id="8" name="performance_schema" />
+    <schema id="9" name="sakila" />
+    <schema id="10" name="skole" />
+    <schema id="11" name="sys" />
+    <schema id="12" name="test" />
+    <schema id="13" name="test1" />
+    <schema id="14" name="world" />
+  </database-model>
+</dataSource>

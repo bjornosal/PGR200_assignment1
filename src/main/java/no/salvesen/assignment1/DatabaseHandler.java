@@ -1,5 +1,6 @@
 package no.salvesen.assignment1;
 
+import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -9,15 +10,24 @@ import java.util.ArrayList;
 
 public class DatabaseHandler{
 
+<<<<<<< HEAD
     private ConnectionProvider databaseConnection;
     private PropertyHandler propertyHandler;
+=======
+    private DatabaseConnection databaseConnection;
+>>>>>>> parent of f644315... Added interface for connection to make testing with H2 possible
     private FileReader fileReader;
     private String propertyFilePath;
     private ArrayList<String> foreignKeysToBeAdded;
     private String databaseName;
 
+<<<<<<< HEAD
     public  DatabaseHandler()  {
         databaseConnection = new MySQLDatabaseConnection();
+=======
+    protected DatabaseHandler()  {
+        databaseConnection = new DatabaseConnection();
+>>>>>>> parent of f644315... Added interface for connection to make testing with H2 possible
         fileReader  = new FileReader();
         foreignKeysToBeAdded = new ArrayList<>();
         propertyHandler = new PropertyHandler();
@@ -129,7 +139,11 @@ public class DatabaseHandler{
 
         ArrayList<String> insertionValues = fileReader.getInsertionValues();
 
+<<<<<<< HEAD
         try(Connection connection = this.databaseConnection.getConnection()) {
+=======
+        try(Connection connection = databaseConnection.getConnection()) {
+>>>>>>> parent of f644315... Added interface for connection to make testing with H2 possible
             String preparedInsert = prepareInsertStatementBasedOnMetaData(tableName);
             PreparedStatement preparedStatement = connection.prepareStatement(preparedInsert);
 
@@ -151,7 +165,11 @@ public class DatabaseHandler{
 
 
     private void addAllForeignKeysToTables() throws SQLException {
+<<<<<<< HEAD
         try(Connection connection = this.databaseConnection.getConnection()) {
+=======
+        try(Connection connection = databaseConnection.getConnection()) {
+>>>>>>> parent of f644315... Added interface for connection to make testing with H2 possible
             Statement statement = connection.createStatement();
             for(String foreignKeyQuery : foreignKeysToBeAdded){
                 statement.addBatch(foreignKeyQuery);
@@ -166,7 +184,11 @@ public class DatabaseHandler{
         String result = "";
         String query =  buildSelectQuery(true, tableName, columnName);
 
+<<<<<<< HEAD
         try(Connection connection = this.databaseConnection.getConnection();
+=======
+        try(Connection connection = databaseConnection.getConnection();
+>>>>>>> parent of f644315... Added interface for connection to make testing with H2 possible
             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, columnValue);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -216,7 +238,11 @@ public class DatabaseHandler{
         String result = "";
         String query =  buildSelectQuery(false, tableName, null);
 
+<<<<<<< HEAD
         try(Connection connection = this.databaseConnection.getConnection();
+=======
+        try(Connection connection = databaseConnection.getConnection();
+>>>>>>> parent of f644315... Added interface for connection to make testing with H2 possible
             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             result += resultStringBuilder(resultSet);
@@ -240,7 +266,11 @@ public class DatabaseHandler{
         StringBuilder query = new StringBuilder();
         query.append(createMaxLengthSelect());
 
+<<<<<<< HEAD
         try(Connection connection = this.databaseConnection.getConnection();
+=======
+        try(Connection connection = databaseConnection.getConnection();
+>>>>>>> parent of f644315... Added interface for connection to make testing with H2 possible
             PreparedStatement preparedStatement = connection.prepareStatement(query.toString())) {
             ResultSet resultSet = preparedStatement.executeQuery();
             //TODO don't do this at home kids
@@ -274,7 +304,11 @@ public class DatabaseHandler{
         String query = "SELECT * FROM " + tableName + ";";
         ResultSetMetaData resultSetMetaData;
 
+<<<<<<< HEAD
         try(Connection connection = this.databaseConnection.getConnection()) {
+=======
+        try(Connection connection = databaseConnection.getConnection()) {
+>>>>>>> parent of f644315... Added interface for connection to make testing with H2 possible
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             resultSetMetaData = rs.getMetaData();
@@ -289,8 +323,12 @@ public class DatabaseHandler{
         }
     }
 
+<<<<<<< HEAD
     public void createDatabase() throws SQLException, IOException {
         updateDatabaseName();
+=======
+    private void createDatabase() throws SQLException{
+>>>>>>> parent of f644315... Added interface for connection to make testing with H2 possible
         try(Connection connection = databaseConnection.getConnection()) {
             Statement stmt = connection.createStatement();
             stmt.execute("CREATE SCHEMA IF NOT EXISTS " + getDatabaseName() + ";");
@@ -355,6 +393,12 @@ public class DatabaseHandler{
         }
     }
 
+<<<<<<< HEAD
+=======
+    private DatabaseConnection getDatabaseConnection() {
+        return databaseConnection;
+    }
+>>>>>>> parent of f644315... Added interface for connection to make testing with H2 possible
 
     private String getPropertyFilePath() {
         return propertyFilePath;
@@ -364,8 +408,13 @@ public class DatabaseHandler{
         this.propertyFilePath = propertyFilePath;
     }
 
+<<<<<<< HEAD
     protected void startConnection() throws IOException {
         databaseConnection.setPropertiesForDatabase(getPropertyFilePath());
+=======
+    protected void startDatabase() throws IOException {
+        databaseConnection.databaseBuilder(getPropertyFilePath());
+>>>>>>> parent of f644315... Added interface for connection to make testing with H2 possible
     }
 
     public String getDatabaseName() {

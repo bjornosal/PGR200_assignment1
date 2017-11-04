@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="assignment1" default="all">
+  
+  
+  <property file="assignment1.properties"/>
+  <!-- Uncomment the following property if no tests compilation is needed -->
+  <!-- 
+  <property name="skip.tests" value="true"/>
+   -->
+  
+  <!-- Compiler options -->
+  
+  <property name="compiler.debug" value="on"/>
+  <property name="compiler.generate.no.warnings" value="off"/>
+  <property name="compiler.args" value=""/>
+  <property name="compiler.max.memory" value="700m"/>
+  <patternset id="ignored.files">
+    <exclude name="**/*.hprof/**"/>
+    <exclude name="**/*.pyc/**"/>
+    <exclude name="**/*.pyo/**"/>
+    <exclude name="**/*.rbc/**"/>
+    <exclude name="**/*.yarb/**"/>
+    <exclude name="**/*~/**"/>
+    <exclude name="**/.DS_Store/**"/>
+    <exclude name="**/.git/**"/>
+    <exclude name="**/.hg/**"/>
+    <exclude name="**/.svn/**"/>
+    <exclude name="**/CVS/**"/>
+    <exclude name="**/RCS/**"/>
+    <exclude name="**/SCCS/**"/>
+    <exclude name="**/__pycache__/**"/>
+    <exclude name="**/_svn/**"/>
+    <exclude name="**/rcs/**"/>
+    <exclude name="**/vssver.scc/**"/>
+    <exclude name="**/vssver2.scc/**"/>
+  </patternset>
+  <patternset id="library.patterns">
+    <include name="*.egg"/>
+    <include name="*.jar"/>
+    <include name="*.ear"/>
+    <include name="*.apk"/>
+    <include name="*.swc"/>
+    <include name="*.war"/>
+    <include name="*.ane"/>
+    <include name="*.zip"/>
+  </patternset>
+  <patternset id="compiler.resources">
+    <exclude name="**/?*.java"/>
+    <exclude name="**/?*.form"/>
+    <exclude name="**/?*.class"/>
+    <exclude name="**/?*.groovy"/>
+    <exclude name="**/?*.scala"/>
+    <exclude name="**/?*.flex"/>
+    <exclude name="**/?*.kt"/>
+    <exclude name="**/?*.clj"/>
+    <exclude name="**/?*.aj"/>
+  </patternset>
+  
+  <!-- JDK definitions -->
+  
+  <property name="jdk.bin.1.8" value="${jdk.home.1.8}/bin"/>
+  <path id="jdk.classpath.1.8">
+    <fileset dir="${jdk.home.1.8}">
+      <include name="jre/lib/charsets.jar"/>
+      <include name="jre/lib/deploy.jar"/>
+      <include name="jre/lib/ext/access-bridge-64.jar"/>
+      <include name="jre/lib/ext/cldrdata.jar"/>
+      <include name="jre/lib/ext/dnsns.jar"/>
+      <include name="jre/lib/ext/jaccess.jar"/>
+      <include name="jre/lib/ext/jfxrt.jar"/>
+      <include name="jre/lib/ext/localedata.jar"/>
+      <include name="jre/lib/ext/nashorn.jar"/>
+      <include name="jre/lib/ext/sunec.jar"/>
+      <include name="jre/lib/ext/sunjce_provider.jar"/>
+      <include name="jre/lib/ext/sunmscapi.jar"/>
+      <include name="jre/lib/ext/sunpkcs11.jar"/>
+      <include name="jre/lib/ext/zipfs.jar"/>
+      <include name="jre/lib/javaws.jar"/>
+      <include name="jre/lib/jce.jar"/>
+      <include name="jre/lib/jfr.jar"/>
+      <include name="jre/lib/jfxswt.jar"/>
+      <include name="jre/lib/jsse.jar"/>
+      <include name="jre/lib/management-agent.jar"/>
+      <include name="jre/lib/plugin.jar"/>
+      <include name="jre/lib/resources.jar"/>
+      <include name="jre/lib/rt.jar"/>
+    </fileset>
+  </path>
+  
+  <property name="project.jdk.home" value="${jdk.home.1.8}"/>
+  <property name="project.jdk.bin" value="${jdk.bin.1.8}"/>
+  <property name="project.jdk.classpath" value="jdk.classpath.1.8"/>
+  
+  
+  <!-- Project Libraries -->
+  
+  <path id="library.maven:_javax.help:javahelp:2.0.05.classpath">
+    <pathelement location="${path.variable.maven_repository}/javax/help/javahelp/2.0.05/javahelp-2.0.05.jar"/>
+  </path>
+  
+  <path id="library.maven:_junit:junit:3.8.1.classpath">
+    <pathelement location="${path.variable.maven_repository}/junit/junit/3.8.1/junit-3.8.1.jar"/>
+  </path>
+  
+  <path id="library.maven:_mysql:mysql-connector-java:5.1.3.classpath">
+    <pathelement location="${path.variable.maven_repository}/mysql/mysql-connector-java/5.1.3/mysql-connector-java-5.1.3.jar"/>
+  </path>
+  
+  <path id="library.maven:_net.sourceforge.javydreamercsw:mysql-driver:0.1.classpath">
+    <pathelement location="${path.variable.maven_repository}/net/sourceforge/javydreamercsw/MySQL-Driver/0.1/MySQL-Driver-0.1.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.json:json:20090211.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/json/json/20090211/json-20090211.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.netbeans.api:org-netbeans-api-annotations-common:release74.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/netbeans/api/org-netbeans-api-annotations-common/RELEASE74/org-netbeans-api-annotations-common-RELEASE74.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.netbeans.api:org-netbeans-api-progress:release74.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/netbeans/api/org-netbeans-api-progress/RELEASE74/org-netbeans-api-progress-RELEASE74.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.netbeans.api:org-netbeans-core-ide:release74.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/netbeans/api/org-netbeans-core-ide/RELEASE74/org-netbeans-core-ide-RELEASE74.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.netbeans.api:org-netbeans-modules-db:release74.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/netbeans/api/org-netbeans-modules-db/RELEASE74/org-netbeans-modules-db-RELEASE74.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.netbeans.api:org-netbeans-modules-editor-mimelookup:release74.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/netbeans/api/org-netbeans-modules-editor-mimelookup/RELEASE74/org-netbeans-modules-editor-mimelookup-RELEASE74.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.netbeans.api:org-netbeans-modules-javahelp:release74.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/netbeans/api/org-netbeans-modules-javahelp/RELEASE74/org-netbeans-modules-javahelp-RELEASE74.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.netbeans.api:org-netbeans-modules-keyring:release74.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/netbeans/api/org-netbeans-modules-keyring/RELEASE74/org-netbeans-modules-keyring-RELEASE74.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.netbeans.api:org-netbeans-modules-options-api:release74.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/netbeans/api/org-netbeans-modules-options-api/RELEASE74/org-netbeans-modules-options-api-RELEASE74.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.netbeans.api:org-netbeans-modules-project-libraries:release74.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/netbeans/api/org-netbeans-modules-project-libraries/RELEASE74/org-netbeans-modules-project-libraries-RELEASE74.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.netbeans.api:org-netbeans-modules-projectapi:release74.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/netbeans/api/org-netbeans-modules-projectapi/RELEASE74/org-netbeans-modules-projectapi-RELEASE74.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.netbeans.api:org-netbeans-modules-projectuiapi:release74.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/netbeans/api/org-netbeans-modules-projectuiapi/RELEASE74/org-netbeans-modules-projectuiapi-RELEASE74.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.netbeans.api:org-netbeans-modules-queries:release74.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/netbeans/api/org-netbeans-modules-queries/RELEASE74/org-netbeans-modules-queries-RELEASE74.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.netbeans.api:org-netbeans-modules-sampler:release74.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/netbeans/api/org-netbeans-modules-sampler/RELEASE74/org-netbeans-modules-sampler-RELEASE74.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.netbeans.api:org-netbeans-spi-quicksearch:release74.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/netbeans/api/org-netbeans-spi-quicksearch/RELEASE74/org-netbeans-spi-quicksearch-RELEASE74.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.netbeans.api:org-netbeans-swing-outline:release74.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/netbeans/api/org-netbeans-swing-outline/RELEASE74/org-netbeans-swing-outline-RELEASE74.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.netbeans.api:org-netbeans-swing-plaf:release74.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/netbeans/api/org-netbeans-swing-plaf/RELEASE74/org-netbeans-swing-plaf-RELEASE74.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.netbeans.api:org-netbeans-swing-tabcontrol:release74.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/netbeans/api/org-netbeans-swing-tabcontrol/RELEASE74/org-netbeans-swing-tabcontrol-RELEASE74.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.netbeans.api:org-openide-actions:release74.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/netbeans/api/org-openide-actions/RELEASE74/org-openide-actions-RELEASE74.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.netbeans.api:org-openide-awt:release74.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/netbeans/api/org-openide-awt/RELEASE74/org-openide-awt-RELEASE74.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.netbeans.api:org-openide-dialogs:release74.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/netbeans/api/org-openide-dialogs/RELEASE74/org-openide-dialogs-RELEASE74.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.netbeans.api:org-openide-explorer:release74.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/netbeans/api/org-openide-explorer/RELEASE74/org-openide-explorer-RELEASE74.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.netbeans.api:org-openide-filesystems:release74.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/netbeans/api/org-openide-filesystems/RELEASE74/org-openide-filesystems-RELEASE74.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.netbeans.api:org-openide-io:release74.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/netbeans/api/org-openide-io/RELEASE74/org-openide-io-RELEASE74.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.netbeans.api:org-openide-loaders:release74.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/netbeans/api/org-openide-loaders/RELEASE74/org-openide-loaders-RELEASE74.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.netbeans.api:org-openide-modules:release74.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/netbeans/api/org-openide-modules/RELEASE74/org-openide-modules-RELEASE74.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.netbeans.api:org-openide-nodes:release74.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/netbeans/api/org-openide-nodes/RELEASE74/org-openide-nodes-RELEASE74.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.netbeans.api:org-openide-text:release74.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/netbeans/api/org-openide-text/RELEASE74/org-openide-text-RELEASE74.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.netbeans.api:org-openide-util-lookup:release74.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/netbeans/api/org-openide-util-lookup/RELEASE74/org-openide-util-lookup-RELEASE74.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.netbeans.api:org-openide-util:release74.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/netbeans/api/org-openide-util/RELEASE74/org-openide-util-RELEASE74.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.netbeans.api:org-openide-windows:release74.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/netbeans/api/org-openide-windows/RELEASE74/org-openide-windows-RELEASE74.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.netbeans.external:ddl:release74.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/netbeans/external/ddl/RELEASE74/ddl-RELEASE74.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.netbeans.modules:org-netbeans-bootstrap:release74.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/netbeans/modules/org-netbeans-bootstrap/RELEASE74/org-netbeans-bootstrap-RELEASE74.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.netbeans.modules:org-netbeans-core-startup:release74.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/netbeans/modules/org-netbeans-core-startup/RELEASE74/org-netbeans-core-startup-RELEASE74.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.netbeans.modules:org-netbeans-core-ui:release74.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/netbeans/modules/org-netbeans-core-ui/RELEASE74/org-netbeans-core-ui-RELEASE74.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.netbeans.modules:org-netbeans-core:release74.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/netbeans/modules/org-netbeans-core/RELEASE74/org-netbeans-core-RELEASE74.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.netbeans.modules:org-netbeans-modules-db-metadata-model:release74.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/netbeans/modules/org-netbeans-modules-db-metadata-model/RELEASE74/org-netbeans-modules-db-metadata-model-RELEASE74.jar"/>
+  </path>
+  <!-- Register Custom Compiler Taskdefs -->
+  <property name="javac2.home" value="${idea.home}/lib"/>
+  <path id="javac2.classpath">
+    <pathelement location="${javac2.home}/javac2.jar"/>
+    <pathelement location="${javac2.home}/jdom.jar"/>
+    <pathelement location="${javac2.home}/asm-all.jar"/>
+    <pathelement location="${javac2.home}/jgoodies-forms.jar"/>
+  </path>
+  <target name="register.custom.compilers">
+    <taskdef name="javac2" classname="com.intellij.ant.Javac2" classpathref="javac2.classpath"/>
+    <taskdef name="instrumentIdeaExtensions" classname="com.intellij.ant.InstrumentIdeaExtensions" classpathref="javac2.classpath"/>
+  </target>
+  
+  <!-- Modules -->
+  
+  <import file="${basedir}/module_assignment1.xml"/>
+  
+  <target name="init" description="Build initialization">
+    <!-- Perform any build initialization in this target -->
+  </target>
+  
+  <target name="clean" depends="clean.module.assignment1" description="cleanup all"/>
+  
+  <target name="build.modules" depends="init, clean, compile.module.assignment1" description="build all modules"/>
+  
+  <target name="all" depends="build.modules" description="build all"/>
+</project>

@@ -8,12 +8,12 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 
-public class MySQLDatabaseConnection implements ConnectionProvider{
+public class DatabaseConnection {
 
     private MysqlDataSource dataSource;
     private PropertyHandler propertyHandler;
 
-    public MySQLDatabaseConnection() {
+    public DatabaseConnection() {
         dataSource = new MysqlDataSource();
         propertyHandler = new PropertyHandler();
     }
