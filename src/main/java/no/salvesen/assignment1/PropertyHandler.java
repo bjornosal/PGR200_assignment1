@@ -3,7 +3,6 @@ package no.salvesen.assignment1;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -29,6 +28,6 @@ public class PropertyHandler {
 
         properties.load(input);
 
-        return properties.getProperty("databaseNam");
+        return properties.getProperty("databaseName");
     }
 }

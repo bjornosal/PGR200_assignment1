@@ -1,5 +1,6 @@
 package no.salvesen.assignment1;
 
+import org.h2.tools.Server;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,8 +20,7 @@ public class DatabaseHandlerTest {
     private ArrayList<String> foreignKeysToBeAdded;
 
     public DatabaseHandlerTest() {
-        databaseConnection = new H2DatabaseConnection();
-        databaseHandler = new DatabaseHandler(databaseConnection);
+        databaseHandler = new DatabaseHandler();
         fileReader = new FileReader();
         foreignKeysToBeAdded = new ArrayList<>();
     }
@@ -31,25 +31,21 @@ public class DatabaseHandlerTest {
         fileReader.setLecturerFile(new File("src/test/Test_table_files/lecturer_test_file.csv"));
         fileReader.setRoomFile(new File("src/test/Test_table_files/room_test_file.csv"));
 
-
     }
 
     @Test
     public void checkDatabaseConnectionIsNotNull() throws SQLException {
-        assertNotNull(databaseConnection.getConnection());
+        assertNotNull(databaseHandler.());
     }
 
     @Test
     public void tearDownDatabaseAndSetBackUp() throws Exception {
-        fileReader.readFile(fileReader.getFileByTableName("subject"));
-        databaseHandler.tearDownDatabaseAndSetBackUp();
-        assertThat(databaseHandler.getArrayListOfTableNames().size(), is(3));
+
+
     }
 
     @Test
     public void createDatabase() throws Exception {
-        databaseHandler.setDatabaseName("h2Test");
-        databaseHandler.createDatabase();
     }
 
     @Test

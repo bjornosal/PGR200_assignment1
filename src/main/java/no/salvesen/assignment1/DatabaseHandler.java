@@ -77,7 +77,7 @@ public class DatabaseHandler{
 
         ArrayList<String> tableNames = new ArrayList<>();
 
-        try(Connection connection = this.databaseConnection.getConnection()) {
+        try(Connection connection = databaseConnection.getConnection()) {
             DatabaseMetaData databaseMetaData = connection.getMetaData();
             ResultSet rs = databaseMetaData.getTables(null, null, "%", null);
             while (rs.next()) {
@@ -301,8 +301,8 @@ public class DatabaseHandler{
             stmt.execute("CREATE SCHEMA IF NOT EXISTS " + databaseName + ";");
         }
     }
-
-    private void createTableFromMetaData(String tableName) throws FileNotFoundException, SQLException {
+//TODO made public to test
+    public void createTableFromMetaData(String tableName) throws FileNotFoundException, SQLException {
         fileReader.readFile(fileReader.getFileByTableName(tableName));
 
         StringBuilder createTableQuery = new StringBuilder("CREATE TABLE IF NOT EXISTS " + fileReader.getTableName() + "(\n");

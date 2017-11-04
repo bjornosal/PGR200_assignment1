@@ -12,6 +12,7 @@ public class MySQLDatabaseConnection implements ConnectionProvider{
 
     private MysqlDataSource dataSource;
     private PropertyHandler propertyHandler;
+
     public MySQLDatabaseConnection() {
         dataSource = new MysqlDataSource();
         propertyHandler = new PropertyHandler();
