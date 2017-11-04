@@ -14,11 +14,13 @@ import static org.junit.Assert.*;
 
 public class DatabaseHandlerTest {
     private ConnectionProvider databaseConnection;
+    private DatabaseHandler databaseHandler;
     private FileReader fileReader;
     private ArrayList<String> foreignKeysToBeAdded;
 
     public DatabaseHandlerTest() {
         databaseConnection = new H2DatabaseConnection();
+        databaseHandler = new DatabaseHandler(databaseConnection);
         fileReader = new FileReader();
         foreignKeysToBeAdded = new ArrayList<>();
     }
@@ -31,13 +33,14 @@ public class DatabaseHandlerTest {
     }
 
     @Test
-    public void assertThatDatabaseConnectionIsNotNull() throws SQLException {
+    public void checkDatabaseConnectionIsNotNull() throws SQLException {
         assertNotNull(databaseConnection.getConnection());
     }
 
     @Test
     public void tearDownDatabaseAndSetBackUp() throws Exception {
-        //Assert that is up before tearing down, and back up after tearing down?
+        databaseHandler.tearDownDatabaseAndSetBackUp();
+        assertThat(databaseHandler.getArrayListOfTableNames().size(), is(3));
     }
 
     @Test

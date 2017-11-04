@@ -14,8 +14,14 @@ public class DatabaseHandler{
     private String propertyFilePath;
     private ArrayList<String> foreignKeysToBeAdded;
 
-    protected DatabaseHandler()  {
+    public  DatabaseHandler()  {
         databaseConnection = new MySQLDatabaseConnection();
+        fileReader  = new FileReader();
+        foreignKeysToBeAdded = new ArrayList<>();
+    }
+
+    public DatabaseHandler(ConnectionProvider databaseConnection) {
+        this.databaseConnection = databaseConnection;
         fileReader  = new FileReader();
         foreignKeysToBeAdded = new ArrayList<>();
     }
