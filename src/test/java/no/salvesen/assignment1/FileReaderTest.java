@@ -27,7 +27,7 @@ public class FileReaderTest {
      */
     @Test
     public void readFile() throws Exception {
-        fileReader.readFile(fileReader.getSubjectFile());
+        fileReader.readFile(fileReader.getFileByTableName("subject"));
         assertEquals(fileReader.getTableColumnCount(), 5);
         assertThat(fileReader.getColumnNames().size(), is(5));
         //Column names and primary key

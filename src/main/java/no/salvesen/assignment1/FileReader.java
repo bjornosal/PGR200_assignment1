@@ -21,12 +21,23 @@ public class FileReader {
     private ArrayList<String> displayNames;
     private ArrayList<String> insertionValues;
 
+    /**
+     * Constructor for class FileReader.
+     * Initializes files at corresponding paths for the three tables.
+     */
     public FileReader() {
         setSubjectFile(new File("src/files/database files/subject.csv"));
         setRoomFile(new File("src/files/database files/room.csv"));
         setLecturerFile(new File("src/files/database files/lecturer.csv"));
     }
 
+    /**
+     * Initializes the ArrayLists to keep all the values
+     * Makes use of other methods to place information from file in corresponding ArrayLists.
+     *
+     * @param tableFile File containing table information.
+     * @throws FileNotFoundException If not file is found.
+     */
     public void readFile(File tableFile) throws FileNotFoundException {
         columnNames = new ArrayList<>();
         columnSQLValues = new ArrayList<>();
@@ -50,6 +61,12 @@ public class FileReader {
      * Fourth line: Display Names * columnCount
      * Fifth -> lines: Insertion values
      */
+
+    /**
+     * Reads the SQL metadata from the selected file.
+     *
+     * @param fileParser Scanner to use to parse the file.
+     */
     private void readMetaDataFromFile(Scanner fileParser) {
 
         setTableName(fileParser.next());
@@ -61,21 +78,26 @@ public class FileReader {
         for(int i = 0; i < getTableColumnCount(); i++) {
             columnNames.add(fileParser.next());
         }
-        //Antall kolonner, antall primary keys, antall foreign keys*2 fordi references
-        for(int i = 0; i < getTableColumnCount()  + getAmountOfPrimaryKeys() + (getAmountOfForeignKeys()*2); i++) {
+        //The part of the file that contains the primary keys and foreign keys.
+        for(int i = 0; i < getTableColumnCount() + getAmountOfPrimaryKeys() + (getAmountOfForeignKeys()*2); i++) {
             columnSQLValues.add(fileParser.next());
         }
     }
 
-
+    /**
+     * Reads the names that should be displayed when printing a table.
+     * @param fileParser Scanner to use to parse the file.
+     */
     private void readDisplayNamesFromFile(Scanner fileParser) {
         for(int i = 0; i < getTableColumnCount(); i++) {
             displayNames.add(fileParser.next());
         }
     }
 
-    //Fills an ArrayList with the information - When getting the information in the preperation of the insert
-    //Assert that size of this array is divisible by columnCount % = 0;
+    /**
+     * Reads the values that will go into the insert statements
+     * @param fileParser Scanner to use to parse the file.
+     */
     private void readInsertValuesFromFile(Scanner fileParser) {
         while(fileParser.hasNext()) {
             for (int i = 0; i < getTableColumnCount(); i++) {
@@ -84,6 +106,11 @@ public class FileReader {
         }
     }
 
+    /**
+     * Returns a table file.
+     * @param tableName Name of table that one wants the file for.
+     * @return The file with the name of param
+     */
     public File getFileByTableName(String tableName) {
         tableName = tableName.toLowerCase();
         switch(tableName) {
@@ -97,8 +124,7 @@ public class FileReader {
         return null;
     }
 
-
-    public File getSubjectFile() {
+    private File getSubjectFile() {
         return subjectFile;
     }
 
@@ -106,7 +132,7 @@ public class FileReader {
         this.subjectFile = subjectFile;
     }
 
-    public File getRoomFile() {
+    private File getRoomFile() {
         return roomFile;
     }
 
@@ -114,7 +140,7 @@ public class FileReader {
         this.roomFile = roomFile;
     }
 
-    public File getLecturerFile() {
+    private File getLecturerFile() {
         return lecturerFile;
     }
 
@@ -134,7 +160,7 @@ public class FileReader {
         return tableColumnCount;
     }
 
-    public void setTableColumnCount(int tableColumnCount) {
+    private void setTableColumnCount(int tableColumnCount) {
         this.tableColumnCount = tableColumnCount;
     }
 
@@ -142,7 +168,7 @@ public class FileReader {
         return amountOfPrimaryKeys;
     }
 
-    public void setAmountOfPrimaryKeys(int amountOfPrimaryKeys) {
+    private void setAmountOfPrimaryKeys(int amountOfPrimaryKeys) {
         this.amountOfPrimaryKeys = amountOfPrimaryKeys;
     }
 
@@ -150,7 +176,7 @@ public class FileReader {
         return amountOfForeignKeys;
     }
 
-    public void setAmountOfForeignKeys(int amountOfForeignKeys) {
+    private void setAmountOfForeignKeys(int amountOfForeignKeys) {
         this.amountOfForeignKeys = amountOfForeignKeys;
     }
 

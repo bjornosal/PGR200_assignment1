@@ -30,6 +30,10 @@ public class InputHandler {
     }
 
 
+    /**
+     * Loop for choices regarding which properties to use to connect to a database.
+     * @throws IOException If unable to find the file.
+     */
     private void setUpProperties() throws IOException {
         boolean finished = false;
         String menuChoice;
@@ -87,6 +91,12 @@ public class InputHandler {
 
     }
 
+    /**
+     * Starting the loop to put the customer in, which in turn starts the corresponding loops.
+     * This causes the customer to be able to go back and forth to whichever menu he wants.
+     *
+     * Has the responsibility of catching all the exceptions and printing them to the user.
+     */
     public void startMenuLoop() {
         boolean connected = false;
 
@@ -117,7 +127,11 @@ public class InputHandler {
         }
     }
 
-
+    /**
+     * Starting loop for the main menu.
+     * @throws FileNotFoundException If unable to find file.
+     * @throws SQLException If unable to get connection.
+     */
     private void showMainMenu() throws FileNotFoundException, SQLException {
         String menuChoice;
         while(true) {
@@ -137,7 +151,11 @@ public class InputHandler {
         }
     }
 
-    //TODO missing option regarding filling information into DB
+    /**
+     * Starting loop for the table menu.
+     * @throws FileNotFoundException If unable to find the file.
+     * @throws SQLException If unable to get connection.
+     */
     private void showTableMenu() throws FileNotFoundException, SQLException {
         String menuChoice;
         while(true) {
@@ -177,6 +195,11 @@ public class InputHandler {
         }
     }
 
+    /**
+     * Starts loop of the search menu.
+     * @throws SQLException If unable to get connection.
+     * @throws FileNotFoundException If unable to find the file.
+     */
     private void showSearchMenu() throws SQLException, FileNotFoundException {
         String menuChoice;
         while(true) {
@@ -224,12 +247,22 @@ public class InputHandler {
         }
     }
 
+    /**
+     * Prints all table names.
+     * @throws SQLException If unable to get connection.
+     */
     private void printAllTableNames() throws SQLException {
         for(String tableName : databaseHandler.getArrayListOfTableNames()) {
             System.out.println(tableName);
         }
     }
 
+    /**
+     * Prints out a list of possible tables to choose from.
+     * Until a correct table is chosen, will stay in loop.
+     * @throws SQLException If unable to get connection.
+     * @throws FileNotFoundException If unable to find the file.
+     */
     private void chooseTableToFillWithInformation() throws SQLException, FileNotFoundException {
         String chosenTable;
         ArrayList<String> tableNames = databaseHandler.getArrayListOfTableNames();

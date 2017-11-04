@@ -20,22 +20,13 @@ public class DatabaseHandler{
 
     }
 
-
-    //TODO Create database if not already exists
-    //TODO
-
-    //TODO Move this
-    private String getResultHeader(String tableName) throws FileNotFoundException, SQLException {
-        fileReader.readFile(fileReader.getFileByTableName(tableName));
-        String[] columnDisplayNames = new String[fileReader.getTableColumnCount()];
-        for (int i = 0; i < columnDisplayNames.length; i++) {
-            columnDisplayNames[i] = fileReader.getDisplayNames().get(i);
-        }
-        return String.format(getResultFormat(), columnDisplayNames);
-
-    }
-
-
+    /**
+     * Removes all existing tables and recreate them.
+     * Then fills them with data from the files.
+     *
+     * @throws SQLException If an issue with table or with database.
+     * @throws IOException If an issue with File or InputStream.
+     */
     public void tearDownDatabaseAndSetBackUp() throws SQLException, IOException {
 
         String subjectTable = "subject";
@@ -52,7 +43,6 @@ public class DatabaseHandler{
         createTableFromMetaData(roomTable);
         createTableFromMetaData(lecturerTable);
 
-        //TODO Works in theory. Test databases has to be set up to check
         addAllForeignKeysToTables();
 
         fillTableFromFileByTableName(subjectTable);
@@ -61,12 +51,23 @@ public class DatabaseHandler{
 
     }
 
+    /**
+     * Removes a table based on param and sets it back up.
+     * @param tableName Table to be dropped and recreated
+     * @throws SQLException If unable to drop table, or unable to run query
+     * @throws FileNotFoundException If unable to find the file containing table information.
+     */
     public void tearDownTableAndSetBackUpWithNewInformation(String tableName) throws SQLException, FileNotFoundException {
         dropTable(tableName);
         createTableFromMetaData(tableName);
         fillTableFromFileByTableName(tableName);
     }
 
+    /**
+     * Creates a list of all the table names in the database
+     * @return ArrayList containing table names.
+     * @throws SQLException If unable to get a connection.
+     */
     public ArrayList<String> getArrayListOfTableNames() throws SQLException {
 
         ArrayList<String> tableNames = new ArrayList<>();
@@ -83,31 +84,22 @@ public class DatabaseHandler{
 
 
     /**
-     *
-     * @param tableName
-     * @return
-     * @throws SQLException
+     * Gets the column count from the ResultSetMetaData
+     * @param tableName Which table to get column count for.
+     * @return Integer Amount of columns.
+     * @throws SQLException If unable to get a connection
      */
     private int getColumnCountOfTable(String tableName) throws SQLException {
         return getResultSetMetaDataForEntireTable(tableName).getColumnCount();
     }
 
-    /**
-     *
-     * @param tableInformation
-     * @param tableName
-     * @throws SQLException
-     * @throws FileNotFoundException
-     */
 
     /**
-     * Puts together a prepared statement based on a table name.
-     *
-     * @param tableName
-     * @return a prepared query
-     * @throws SQLException
+     * Creates a String that can be used for a prepared statement.
+     * @param tableName Which table to prepare insert query for
+     * @return String A string that is ready to be set as a prepared query
+     * @throws FileNotFoundException If unable to find a file at the specified location.
      */
-
     private String prepareInsertStatementBasedOnMetaData(String tableName) throws FileNotFoundException {
         fileReader.readFile(fileReader.getFileByTableName(tableName));
 
@@ -123,6 +115,12 @@ public class DatabaseHandler{
         return preparedStatement.toString();
     }
 
+    /**
+     * Fills a table with information from the related table file.
+     * @param tableName Which table to fill with information.
+     * @throws FileNotFoundException If unable to find file.
+     * @throws SQLException If unable to get a connection to the database.
+     */
     private void fillTableFromFileByTableName(String tableName) throws FileNotFoundException, SQLException {
         File tableFile = fileReader.getFileByTableName(tableName);
         fileReader.readFile(tableFile);
@@ -149,9 +147,12 @@ public class DatabaseHandler{
         }
     }
 
-
+    /**
+     * Adding foreign keys to tables after all tables have been created.
+     * @throws SQLException If unable to get a connection.
+     */
     private void addAllForeignKeysToTables() throws SQLException {
-        try(Connection connection = this.databaseConnection.getConnection()) {
+        try(Connection connection =  databaseConnection.getConnection()) {
             Statement statement = connection.createStatement();
             for(String foreignKeyQuery : foreignKeysToBeAdded){
                 statement.addBatch(foreignKeyQuery);
@@ -161,6 +162,16 @@ public class DatabaseHandler{
         }
     }
 
+    /**
+     * Retrieves all rows from a table based on the column name.
+     * Used to find a specific row based on primary keys for queries.
+     * @param tableName Which table to search in.
+     * @param columnName Which column to search in.
+     * @param columnValue What value to look for in that column.
+     * @return Returns entire row based on columnValue.
+     * @throws FileNotFoundException If unable to find the file that it uses to read files.
+     * @throws SQLException If unable to get a connection.
+     */
     public String getRowsFromTableByColumnNameAndSearchColumnValue(String tableName, String columnName, String columnValue) throws FileNotFoundException, SQLException {
         fileReader.readFile(fileReader.getFileByTableName(tableName));
         String result = "";
@@ -175,6 +186,13 @@ public class DatabaseHandler{
         return result;
     }
 
+    /**
+     * Builds a select query, based on parameters.
+     * @param isSpecifiedSearch Boolean, if true, adds a WHERE clause to the query with parameter to be filled.
+     * @param tableName Which table to search.
+     * @param columnName Which column to search.
+     * @return String A string ready to be set as a prepared statement.
+     */
     private String buildSelectQuery(boolean isSpecifiedSearch, String tableName, String columnName) {
         StringBuilder searchQuery = new StringBuilder();
         searchQuery.append("SELECT ");
@@ -194,6 +212,13 @@ public class DatabaseHandler{
         return searchQuery.toString();
     }
 
+    /**
+     * Dynamic creation of result based on information from table file and ResultSet
+     * @param resultSet ResultSet for the query.
+     * @return A prepared string to print out.
+     * @throws SQLException If unable to get column count, or build a ResultHeader based on file.
+     * @throws FileNotFoundException If unable to find file.
+     */
     private String resultStringBuilder(ResultSet resultSet) throws SQLException, FileNotFoundException {
         String[] rowResult = new String[getColumnCountOfTable(fileReader.getTableName())];
         StringBuilder result = new StringBuilder();
@@ -211,6 +236,13 @@ public class DatabaseHandler{
         return result.toString();
     }
 
+    /**
+     * Gets all rows based on table name
+     * @param tableName Which table to get rows from
+     * @return A string ready to be printed.
+     * @throws FileNotFoundException If unable to find file with table information.
+     * @throws SQLException If unable to get connection or run query.
+     */
     public String getAllRowsByTableName(String tableName) throws FileNotFoundException, SQLException {
         fileReader.readFile(fileReader.getFileByTableName(tableName));
         String result = "";
@@ -224,6 +256,11 @@ public class DatabaseHandler{
         return result;
     }
 
+    /**
+     * Creates a format for the result to be printed out on based on the MetaData.
+     * @return String ready for a String.Format print.
+     * @throws SQLException If unable to get connection.
+     */
     private String getResultFormat() throws SQLException {
         StringBuilder resultFormat = new StringBuilder();
         ArrayList<String> maxLengthOfColumn = getMaxLengthOfColumnsByTableName();
@@ -234,14 +271,17 @@ public class DatabaseHandler{
         return resultFormat.toString();
     }
 
+    /**
+     * To get the max length that a column should be for the result format.
+     * @return ArrayList with the maximum length a column should be.
+     * @throws SQLException If unable to get connection.
+     */
     private ArrayList<String> getMaxLengthOfColumnsByTableName() throws SQLException {
         ArrayList<String> formatLengthForAllColumns = new ArrayList<>();
         ArrayList<String> displayNames = fileReader.getDisplayNames();
-        StringBuilder query = new StringBuilder();
-        query.append(createMaxLengthSelect());
 
-        try(Connection connection = this.databaseConnection.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(query.toString())) {
+        try(Connection connection = databaseConnection.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(createMaxLengthSelect())) {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 for(int i = 0; i < fileReader.getTableColumnCount(); i++) {
@@ -256,6 +296,11 @@ public class DatabaseHandler{
         return formatLengthForAllColumns;
     }
 
+    /**
+     * Creates a statement to get the max length.
+     * Helper method for getMaxLengthOfColumnsByTableName()
+     * @return String A query to be used in method getMaxLengthOfColumnsByTableName
+     */
     private String createMaxLengthSelect() {
         StringBuilder query = new StringBuilder("SELECT ");
         //Build bigger select and run that query, take all results into an array
@@ -269,6 +314,12 @@ public class DatabaseHandler{
         return query.toString();
     }
 
+    /**
+     * Used to get ResultSetMetaData for the entire table to shorten the rest of methods.
+     * @param tableName Which table to get ResultSetMetaData from
+     * @return ResultSetMetaData for specified table.
+     * @throws SQLException If unable to get connection.
+     */
     private ResultSetMetaData getResultSetMetaDataForEntireTable(String tableName) throws SQLException {
         String query = "SELECT * FROM " + tableName + ";";
         ResultSetMetaData resultSetMetaData;
@@ -281,13 +332,23 @@ public class DatabaseHandler{
         return resultSetMetaData;
     }
 
-    public void dropTable(String tableName) throws SQLException {
+    /**
+     * Used to drop table from database.
+     * @param tableName Which table to drop.
+     * @throws SQLException If unable to get connection.
+     */
+    private void dropTable(String tableName) throws SQLException {
         try(Connection connection = databaseConnection.getConnection()) {
             Statement stmt = connection.createStatement();
             stmt.executeUpdate("DROP TABLE IF EXISTS "+tableName);
         }
     }
 
+    /**
+     * Creates database based on the database name in the properties file.
+     * @throws SQLException If unable to get connection.
+     * @throws IOException If unable to get access to the properties file.
+     */
     private void createDatabase() throws SQLException, IOException {
         try(Connection connection = databaseConnection.getConnection()) {
             Statement stmt = connection.createStatement();
@@ -296,8 +357,13 @@ public class DatabaseHandler{
         }
     }
 
-    //TODO made public to test
-    public void createTableFromMetaData(String tableName) throws FileNotFoundException, SQLException {
+    /**
+     * Creates a table in the database if it does not exist, based on MetaData from corresponding table file.
+     * @param tableName Which table to create.
+     * @throws FileNotFoundException If unable to locate table file.
+     * @throws SQLException If unable to connect to the database.
+     */
+    private void createTableFromMetaData(String tableName) throws FileNotFoundException, SQLException {
         fileReader.readFile(fileReader.getFileByTableName(tableName));
 
         StringBuilder createTableQuery = new StringBuilder("CREATE TABLE IF NOT EXISTS " + fileReader.getTableName() + "(\n");
@@ -314,7 +380,6 @@ public class DatabaseHandler{
                 }
 
                 if(i == fileReader.getTableColumnCount() - 1) {
-                    ///Syntax for multiple primary keys -> PRIMARY KEY(pk1, pk2, pk3
                     if(fileReader.getAmountOfPrimaryKeys() > 0) {
                         createTableQuery.append(",\n");
                         createTableQuery.append(addPrimaryKeyToQuery(i));
@@ -329,11 +394,16 @@ public class DatabaseHandler{
         }
     }
 
-    private String addPrimaryKeyToQuery(int index) {
+    /**
+     * Helping for createTableFromMetaData to add all the primary keys to the query.
+     * @param indexInSQLValueArrayList At which index in the ArrayList to start.
+     * @return String A string to be added to the query.
+     */
+    private String addPrimaryKeyToQuery(int indexInSQLValueArrayList) {
         StringBuilder primaryKeysToBeAddedToQuery = new StringBuilder();
         primaryKeysToBeAddedToQuery.append("PRIMARY KEY(");
         for(int i = 1; i < fileReader.getAmountOfPrimaryKeys() + 1; i++) {
-            primaryKeysToBeAddedToQuery.append(fileReader.getColumnSQLValues().get(index + i));
+            primaryKeysToBeAddedToQuery.append(fileReader.getColumnSQLValues().get(indexInSQLValueArrayList + i));
             if(i < fileReader.getAmountOfPrimaryKeys()) {
                 primaryKeysToBeAddedToQuery.append(", ");
             }
@@ -342,19 +412,45 @@ public class DatabaseHandler{
         return primaryKeysToBeAddedToQuery.toString();
     }
 
-    private void addForeignKeyToList(int index) {
+    /**
+     * Finds the foreign keys, if any, creates a query for each one,
+     * and adds them to an ArrayList so that they can be added after all tables has been created.
+     * @param indexInSQLValueArrayList At which index in the ArrayList to start.
+     */
+    private void addForeignKeyToList(int indexInSQLValueArrayList) {
         StringBuilder foreignKeyToBeAddedToQuery = new StringBuilder();
         for(int i = 1; i < fileReader.getAmountOfForeignKeys() + 1; i++) {
             foreignKeyToBeAddedToQuery.append("ALTER TABLE ").append(fileReader.getTableName()).append("\n");
             foreignKeyToBeAddedToQuery.append("ADD FOREIGN KEY (");
-            foreignKeyToBeAddedToQuery.append(fileReader.getColumnSQLValues().get(index + fileReader.getAmountOfPrimaryKeys() + i));
+            foreignKeyToBeAddedToQuery.append(fileReader.getColumnSQLValues().get(indexInSQLValueArrayList + fileReader.getAmountOfPrimaryKeys() + i));
             foreignKeyToBeAddedToQuery.append(") REFERENCES ");
-            foreignKeyToBeAddedToQuery.append(fileReader.getColumnSQLValues().get(index + fileReader.getAmountOfPrimaryKeys() + i + 1));
+            foreignKeyToBeAddedToQuery.append(fileReader.getColumnSQLValues().get(indexInSQLValueArrayList + fileReader.getAmountOfPrimaryKeys() + i + 1));
             foreignKeyToBeAddedToQuery.append(";");
             foreignKeysToBeAdded.add(foreignKeyToBeAddedToQuery.toString());
         }
     }
 
+    /**
+     * Gets the header to be put at top of results that are printed.
+     * @param tableName Which table to get result for.
+     * @return String A String to be added to a print.
+     * @throws FileNotFoundException If unable to find file.
+     * @throws SQLException If unable to get connection.
+     */
+    private String getResultHeader(String tableName) throws FileNotFoundException, SQLException {
+        fileReader.readFile(fileReader.getFileByTableName(tableName));
+        String[] columnDisplayNames = new String[fileReader.getTableColumnCount()];
+        for (int i = 0; i < columnDisplayNames.length; i++) {
+            columnDisplayNames[i] = fileReader.getDisplayNames().get(i);
+        }
+        return String.format(getResultFormat(), columnDisplayNames);
+    }
+
+    /**
+     * Gets the database name from the properties file.
+     * @return String Database name
+     * @throws IOException If unable to find properties file.
+     */
     private String getDatabaseNameFromProperties() throws IOException {
         Properties properties = new Properties();
         InputStream input = new FileInputStream(getPropertyFilePath());
@@ -364,8 +460,12 @@ public class DatabaseHandler{
         return properties.getProperty("databaseName");
     }
 
+    /**
+     * Initializes the database with the properties file.
+     * @throws IOException If unable to find file.
+     */
     public void startConnection() throws IOException {
-        databaseConnection.databaseBuilder(getPropertyFilePath());
+        databaseConnection.initializeProperties(getPropertyFilePath());
     }
 
     private String getPropertyFilePath() {

@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import static org.junit.Assert.*;
 
 public class DatabaseHandlerTest {
-    private DatabaseConnection databaseConnection;
     private DatabaseHandler databaseHandler;
     private FileReader fileReader;
     private ArrayList<String> foreignKeysToBeAdded;

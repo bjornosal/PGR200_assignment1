@@ -8,7 +8,8 @@ public class App
     }
 
     /**
-     *
+     * Starts loop of the console app which let's a user provide input to get
+     * information from any table.
      */
     private void runApp() {
         InputHandler inputHandler = new InputHandler();
