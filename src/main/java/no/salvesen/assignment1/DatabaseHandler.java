@@ -24,13 +24,6 @@ public class DatabaseHandler{
 
     }
 
-    public DatabaseHandler(ConnectionProvider databaseConnection) {
-        this.databaseConnection = databaseConnection;
-        fileReader  = new FileReader();
-        foreignKeysToBeAdded = new ArrayList<>();
-        propertyHandler = new PropertyHandler();
-    }
-
 
     //TODO Create database if not already exists
     //TODO
@@ -53,6 +46,7 @@ public class DatabaseHandler{
         dropTable(roomTable);
         dropTable(lecturerTable);
 
+        createDatabase();
 
         createTableFromMetaData(subjectTable);
         createTableFromMetaData(roomTable);
@@ -298,7 +292,7 @@ public class DatabaseHandler{
     public void createDatabase() throws SQLException{
         try(Connection connection = this.databaseConnection.getConnection()) {
             Statement stmt = connection.createStatement();
-            stmt.execute("CREATE SCHEMA IF NOT EXISTS " + databaseName + ";");
+            stmt.execute("CREATE SCHEMA IF NOT EXISTS pgr200_assignment_1;");
         }
     }
 //TODO made public to test
@@ -371,14 +365,10 @@ public class DatabaseHandler{
 
     protected void startDatabase() throws IOException {
         databaseConnection.setPropertiesForDatabase(getPropertyFilePath());
-        setDatabaseName(propertyHandler.getDatabaseName(propertyFilePath));
     }
 
     public String getDatabaseName() {
         return databaseName;
     }
 
-    public void setDatabaseName(String databaseName) {
-        this.databaseName = databaseName;
-    }
 }

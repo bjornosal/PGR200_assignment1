@@ -33,10 +33,7 @@ public class DatabaseHandlerTest {
 
     }
 
-    @Test
-    public void checkDatabaseConnectionIsNotNull() throws SQLException {
-        assertNotNull(databaseHandler.());
-    }
+
 
     @Test
     public void tearDownDatabaseAndSetBackUp() throws Exception {
