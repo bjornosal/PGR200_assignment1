@@ -1,7 +1,5 @@
 package no.salvesen.assignment1;
 
-import com.mysql.jdbc.CommunicationsException;
-
 import java.io.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -84,7 +82,7 @@ public class InputHandler {
             }
         }
         //Starts database with the properties chosen.
-        databaseHandler.startDatabase();
+        databaseHandler.startConnection();
 
     }
 
@@ -105,6 +103,8 @@ public class InputHandler {
                 exceptionHandler.outputSQLException("connect");
             } catch (FileNotFoundException e) {
                 exceptionHandler.outputFileNotFoundException();
+            } catch (IOException e) {
+                exceptionHandler.outputIOException("connect");
             }
         }
         try {

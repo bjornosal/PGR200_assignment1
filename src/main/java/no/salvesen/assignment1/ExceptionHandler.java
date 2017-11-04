@@ -6,6 +6,10 @@ public class ExceptionHandler {
         switch(location) {
             case "WriteProp":
                 System.out.println("Issues writing properties to file.");
+                break;
+            case "connect":
+                System.out.println("There was an issue with the database name");
+                break;
         }
     }
 

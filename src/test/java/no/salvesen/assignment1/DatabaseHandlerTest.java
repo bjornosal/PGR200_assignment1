@@ -33,12 +33,9 @@ public class DatabaseHandlerTest {
 
     }
 
-
-
     @Test
     public void tearDownDatabaseAndSetBackUp() throws Exception {
-
-
+        createDatabase();
     }
 
     @Test

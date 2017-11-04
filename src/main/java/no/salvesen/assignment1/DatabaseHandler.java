@@ -36,7 +36,7 @@ public class DatabaseHandler{
         return String.format(getResultFormat(), columnDisplayNames);
 
     }
-    public void tearDownDatabaseAndSetBackUp() throws SQLException, FileNotFoundException {
+    public void tearDownDatabaseAndSetBackUp() throws SQLException, IOException {
 
         String subjectTable = "subject";
         String roomTable = "room";
@@ -283,16 +283,17 @@ public class DatabaseHandler{
     }
 
     private void dropTable(String tableName) throws SQLException {
-        try(Connection connection = this.databaseConnection.getConnection()) {
+        try(Connection connection = databaseConnection.getConnection()) {
             Statement stmt = connection.createStatement();
             stmt.executeUpdate("DROP TABLE IF EXISTS "+tableName);
         }
     }
 
-    public void createDatabase() throws SQLException{
-        try(Connection connection = this.databaseConnection.getConnection()) {
+    public void createDatabase() throws SQLException, IOException {
+        updateDatabaseName();
+        try(Connection connection = databaseConnection.getConnection()) {
             Statement stmt = connection.createStatement();
-            stmt.execute("CREATE SCHEMA IF NOT EXISTS pgr200_assignment_1;");
+            stmt.execute("CREATE SCHEMA IF NOT EXISTS " + getDatabaseName() + ";");
         }
     }
 //TODO made public to test
@@ -301,7 +302,7 @@ public class DatabaseHandler{
 
         StringBuilder createTableQuery = new StringBuilder("CREATE TABLE IF NOT EXISTS " + fileReader.getTableName() + "(\n");
 
-        try(Connection connection = this.databaseConnection.getConnection()) {
+        try(Connection connection = databaseConnection.getConnection()) {
             Statement statement = connection.createStatement();
             for(int i = 0; i < fileReader.getTableColumnCount(); i++) {
                 createTableQuery.append(fileReader.getColumnNames().get(i));
@@ -363,7 +364,7 @@ public class DatabaseHandler{
         this.propertyFilePath = propertyFilePath;
     }
 
-    protected void startDatabase() throws IOException {
+    protected void startConnection() throws IOException {
         databaseConnection.setPropertiesForDatabase(getPropertyFilePath());
     }
 
@@ -371,4 +372,7 @@ public class DatabaseHandler{
         return databaseName;
     }
 
+    public void updateDatabaseName() throws IOException {
+        databaseName = propertyHandler.getDatabaseName(propertyFilePath);
+    }
 }
