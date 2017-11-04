@@ -10,21 +10,27 @@ import java.util.ArrayList;
 public class DatabaseHandler{
 
     private ConnectionProvider databaseConnection;
+    private PropertyHandler propertyHandler;
     private FileReader fileReader;
     private String propertyFilePath;
     private ArrayList<String> foreignKeysToBeAdded;
+    private String databaseName;
 
     public  DatabaseHandler()  {
         databaseConnection = new MySQLDatabaseConnection();
         fileReader  = new FileReader();
         foreignKeysToBeAdded = new ArrayList<>();
+        propertyHandler = new PropertyHandler();
+
     }
 
     public DatabaseHandler(ConnectionProvider databaseConnection) {
         this.databaseConnection = databaseConnection;
         fileReader  = new FileReader();
         foreignKeysToBeAdded = new ArrayList<>();
+        propertyHandler = new PropertyHandler();
     }
+
 
     //TODO Create database if not already exists
     //TODO
@@ -47,7 +53,6 @@ public class DatabaseHandler{
         dropTable(roomTable);
         dropTable(lecturerTable);
 
-        createDatabase();
 
         createTableFromMetaData(subjectTable);
         createTableFromMetaData(roomTable);
@@ -290,10 +295,10 @@ public class DatabaseHandler{
         }
     }
 
-    private void createDatabase() throws SQLException{
+    public void createDatabase() throws SQLException{
         try(Connection connection = this.databaseConnection.getConnection()) {
             Statement stmt = connection.createStatement();
-            stmt.execute("CREATE SCHEMA IF NOT EXISTS pgr200_assignment_1;");
+            stmt.execute("CREATE SCHEMA IF NOT EXISTS " + databaseName + ";");
         }
     }
 
@@ -366,6 +371,14 @@ public class DatabaseHandler{
 
     protected void startDatabase() throws IOException {
         databaseConnection.setPropertiesForDatabase(getPropertyFilePath());
+        setDatabaseName(propertyHandler.getDatabaseName(propertyFilePath));
     }
 
+    public String getDatabaseName() {
+        return databaseName;
+    }
+
+    public void setDatabaseName(String databaseName) {
+        this.databaseName = databaseName;
+    }
 }

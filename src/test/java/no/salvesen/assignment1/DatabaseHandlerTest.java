@@ -30,6 +30,8 @@ public class DatabaseHandlerTest {
         fileReader.setSubjectFile(new File("src/test/Test_table_files/subject_test_file.csv"));
         fileReader.setLecturerFile(new File("src/test/Test_table_files/lecturer_test_file.csv"));
         fileReader.setRoomFile(new File("src/test/Test_table_files/room_test_file.csv"));
+
+
     }
 
     @Test
@@ -39,8 +41,15 @@ public class DatabaseHandlerTest {
 
     @Test
     public void tearDownDatabaseAndSetBackUp() throws Exception {
+        fileReader.readFile(fileReader.getFileByTableName("subject"));
         databaseHandler.tearDownDatabaseAndSetBackUp();
         assertThat(databaseHandler.getArrayListOfTableNames().size(), is(3));
+    }
+
+    @Test
+    public void createDatabase() throws Exception {
+        databaseHandler.setDatabaseName("h2Test");
+        databaseHandler.createDatabase();
     }
 
     @Test
