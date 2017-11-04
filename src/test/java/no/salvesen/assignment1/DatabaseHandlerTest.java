@@ -7,12 +7,12 @@ import org.junit.Test;
 import static org.hamcrest.core.Is.is;
 
 import java.io.File;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
 public class DatabaseHandlerTest {
+    private DatabaseConnection databaseConnection;
     private DatabaseHandler databaseHandler;
     private FileReader fileReader;
     private ArrayList<String> foreignKeysToBeAdded;
@@ -29,10 +29,15 @@ public class DatabaseHandlerTest {
         fileReader.setLecturerFile(new File("src/test/Test_table_files/lecturer_test_file.csv"));
         fileReader.setRoomFile(new File("src/test/Test_table_files/room_test_file.csv"));
 
+        databaseHandler.setPropertyFilePath("src/files/testDatabaseLogin.properties");
+        databaseHandler.startConnection();
     }
 
     @Test
     public void tearDownDatabaseAndSetBackUp() throws Exception {
+
+        databaseHandler.tearDownDatabaseAndSetBackUp();
+
     }
 
     @Test

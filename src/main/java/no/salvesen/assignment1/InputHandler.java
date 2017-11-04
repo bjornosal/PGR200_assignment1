@@ -1,5 +1,7 @@
 package no.salvesen.assignment1;
 
+import com.mysql.jdbc.CommunicationsException;
+
 import java.io.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -15,7 +17,6 @@ public class InputHandler {
     private ExceptionHandler exceptionHandler;
     private final String defaultPropertiesFilePath = "src/files/defaultDatabaseConfig.properties";
     private final String userEnteredPropertiesFilePath = "src/files/userEnteredDatabaseLogin.properties";
-    private final String webServerPropertiesFilePath = "src/files/webServerLogin.properties";
 
     private Scanner userInput;
 
@@ -104,7 +105,7 @@ public class InputHandler {
             } catch (FileNotFoundException e) {
                 exceptionHandler.outputFileNotFoundException();
             } catch (IOException e) {
-                exceptionHandler.outputIOException("connect");
+                e.printStackTrace();
             }
         }
         try {

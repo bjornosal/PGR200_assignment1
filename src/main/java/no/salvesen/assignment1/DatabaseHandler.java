@@ -1,11 +1,10 @@
 package no.salvesen.assignment1;
 
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Properties;
 
 public class DatabaseHandler{
 
@@ -13,7 +12,6 @@ public class DatabaseHandler{
     private FileReader fileReader;
     private String propertyFilePath;
     private ArrayList<String> foreignKeysToBeAdded;
-    private String databaseName;
 
     public  DatabaseHandler()  {
         databaseConnection = new DatabaseConnection();
@@ -294,9 +292,15 @@ public class DatabaseHandler{
     public void createDatabase() throws SQLException, IOException {
         try(Connection connection = databaseConnection.getConnection()) {
             Statement stmt = connection.createStatement();
-            String query = "CREATE SCHEMA IF NOT EXISTS " + getDatabaseName() + ";";
-            System.out.println("#########");
-            System.out.println(query);
+            String query = "CREATE SCHEMA IF NOT EXISTS pgr200_assignment_1;";
+            stmt.executeUpdate(query);
+        }
+    }
+
+    public void createTestDatabase() throws SQLException, IOException {
+        try(Connection connection = databaseConnection.getConnection()) {
+            Statement stmt = connection.createStatement();
+            String query = "CREATE SCHEMA IF NOT EXISTS pgr200_assignment_1_testing;";
             stmt.executeUpdate(query);
         }
     }
@@ -359,6 +363,19 @@ public class DatabaseHandler{
         }
     }
 
+    private void getDatabaseNameFromProperties() {
+        Properties properties = new Properties();
+        InputStream input = new FileInputStream(propertyFilePath);
+
+        properties.load(input);
+
+        dataSource.setServerName(properties.getProperty("serverName"));
+        dataSource.setDatabaseName(properties.getProperty("databaseName"));
+    }
+
+    public void startConnection() throws IOException {
+        databaseConnection.databaseBuilder(getPropertyFilePath());
+    }
 
     private String getPropertyFilePath() {
         return propertyFilePath;
@@ -369,10 +386,6 @@ public class DatabaseHandler{
     }
 
 
-
-    public String getDatabaseName() {
-        return databaseName;
-    }
 
 
 }
