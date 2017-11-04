@@ -166,7 +166,7 @@ public class DatabaseHandler{
         String result = "";
         String query =  buildSelectQuery(true, tableName, columnName);
 
-        try(Connection connection = this.databaseConnection.getConnection();
+        try(Connection connection = databaseConnection.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, columnValue);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -216,7 +216,7 @@ public class DatabaseHandler{
         String result = "";
         String query =  buildSelectQuery(false, tableName, null);
 
-        try(Connection connection = this.databaseConnection.getConnection();
+        try(Connection connection = databaseConnection.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             result += resultStringBuilder(resultSet);
@@ -243,7 +243,6 @@ public class DatabaseHandler{
         try(Connection connection = this.databaseConnection.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(query.toString())) {
             ResultSet resultSet = preparedStatement.executeQuery();
-            //TODO don't do this at home kids
             while (resultSet.next()) {
                 for(int i = 0; i < fileReader.getTableColumnCount(); i++) {
                     String maxLength = resultSet.getObject(i+1).toString();
@@ -282,29 +281,22 @@ public class DatabaseHandler{
         return resultSetMetaData;
     }
 
-    private void dropTable(String tableName) throws SQLException {
+    public void dropTable(String tableName) throws SQLException {
         try(Connection connection = databaseConnection.getConnection()) {
             Statement stmt = connection.createStatement();
             stmt.executeUpdate("DROP TABLE IF EXISTS "+tableName);
         }
     }
 
-    public void createDatabase() throws SQLException, IOException {
+    private void createDatabase() throws SQLException, IOException {
         try(Connection connection = databaseConnection.getConnection()) {
             Statement stmt = connection.createStatement();
-            String query = "CREATE SCHEMA IF NOT EXISTS pgr200_assignment_1;";
+            String query = "CREATE SCHEMA IF NOT EXISTS " + getDatabaseNameFromProperties() + ";";
             stmt.executeUpdate(query);
         }
     }
 
-    public void createTestDatabase() throws SQLException, IOException {
-        try(Connection connection = databaseConnection.getConnection()) {
-            Statement stmt = connection.createStatement();
-            String query = "CREATE SCHEMA IF NOT EXISTS pgr200_assignment_1_testing;";
-            stmt.executeUpdate(query);
-        }
-    }
-//TODO made public to test
+    //TODO made public to test
     public void createTableFromMetaData(String tableName) throws FileNotFoundException, SQLException {
         fileReader.readFile(fileReader.getFileByTableName(tableName));
 
@@ -363,14 +355,13 @@ public class DatabaseHandler{
         }
     }
 
-    private void getDatabaseNameFromProperties() {
+    private String getDatabaseNameFromProperties() throws IOException {
         Properties properties = new Properties();
-        InputStream input = new FileInputStream(propertyFilePath);
+        InputStream input = new FileInputStream(getPropertyFilePath());
 
         properties.load(input);
 
-        dataSource.setServerName(properties.getProperty("serverName"));
-        dataSource.setDatabaseName(properties.getProperty("databaseName"));
+        return properties.getProperty("databaseName");
     }
 
     public void startConnection() throws IOException {

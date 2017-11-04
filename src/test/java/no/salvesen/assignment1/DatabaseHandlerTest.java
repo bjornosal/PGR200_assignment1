@@ -7,6 +7,8 @@ import org.junit.Test;
 import static org.hamcrest.core.Is.is;
 
 import java.io.File;
+import java.sql.Connection;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
@@ -35,31 +37,15 @@ public class DatabaseHandlerTest {
 
     @Test
     public void tearDownDatabaseAndSetBackUp() throws Exception {
-
         databaseHandler.tearDownDatabaseAndSetBackUp();
-
-    }
-
-    @Test
-    public void createDatabase() throws Exception {
+        assertThat(databaseHandler.getArrayListOfTableNames().size(), is(3));
     }
 
     @Test
     public void tearDownTableAndSetBackUpWithNewInformation() throws Exception {
-
+        databaseHandler.tearDownTableAndSetBackUpWithNewInformation("subject");
+        assert(databaseHandler.getAllRowsByTableName("subject").contains("Code   | Name                          | Attending Students | Teaching Form | Duration |"));
     }
 
-    @Test
-    public void getArrayListOfTableNames() throws Exception {
-
-    }
-
-    @Test
-    public void getRowsFromTableByColumnNameAndSearchColumnValue() throws Exception {
-    }
-
-    @Test
-    public void getAllRowsByTableName() throws Exception {
-    }
 
 }
