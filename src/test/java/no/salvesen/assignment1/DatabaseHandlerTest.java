@@ -7,8 +7,6 @@ import org.junit.Test;
 import static org.hamcrest.core.Is.is;
 
 import java.io.File;
-import java.sql.Connection;
-import java.sql.Statement;
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
