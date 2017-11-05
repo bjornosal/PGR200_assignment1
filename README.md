@@ -30,7 +30,7 @@ below.
 Once that is in order, just run the App class, and you follow the instructions from the program.
 
 
-### File format
+### File format requirements
 
 Description of file:
 * First line: tableName;columnCount;primaryKeys;foreignKeys;ForeignKeyReferences(Table(column))
@@ -62,3 +62,8 @@ Using the example below, the table will be as follows:
 | PGR100        | Objektorientert Programmering |                 215 |    sequential |      4.0 |           
 | PRO100        | Kreativt Webprosjekt          |                 215 |    sequential |      4.0 |          
 | PRO101        | Webprosjekt                   |                 199 |    sequential |      4.0 |          
+
+
+## Generate Javadoc Documentation
+To generate a complete javadoc documentation for the application, run the Maven plugin "javadoc"
+either through your IDE or run the command *mvn javadoc:javadoc*

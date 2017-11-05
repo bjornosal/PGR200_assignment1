@@ -32,9 +32,9 @@ public class Menu {
 
     /**
      * Builds the menu based on menu and if it should have the last options.
-     * @param menuOptions
-     * @param addMainMenuAndQuitOptions
-     * @return
+     * @param menuOptions Which menu options to set in menu.
+     * @param addMainMenuAndQuitOptions If a menu should have the two options return to main menu and quit
+     * @return Returns a finished menu, ready to be output to user.
      */
     private String menuBuilder(String[] menuOptions, boolean addMainMenuAndQuitOptions) {
 
