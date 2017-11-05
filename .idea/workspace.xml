@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="038afa83-f56f-4621-9260-50e1081a1fb9" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/README.md" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/no/salvesen/assignment1/DatabaseHandlerTest.java" afterPath="$PROJECT_DIR$/src/test/java/no/salvesen/assignment1/DatabaseHandlerTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
     </list>
     <ignored path="assignment1.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -108,8 +107,8 @@
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="187">
-                <caret line="29" column="96" lean-forward="false" selection-start-line="29" selection-start-column="96" selection-end-line="29" selection-end-column="96" />
+              <first_editor relative-caret-position="442">
+                <caret line="32" column="4" lean-forward="false" selection-start-line="32" selection-start-column="4" selection-end-line="32" selection-end-column="4" />
                 <folding />
               </first_editor>
               <second_editor />
@@ -1011,14 +1010,7 @@
       <workItem from="1509482436429" duration="882000" />
       <workItem from="1509732289215" duration="30899000" />
       <workItem from="1509824136676" duration="6564000" />
-      <workItem from="1509892338625" duration="2037000" />
-    </task>
-    <task id="LOCAL-00002" summary="Added functionality for creating database and setting up subject table if it does not already exists. More functionality needed in databaseConnector&#10;&#10;&#10;Added standard setup in other classes.">
-      <created>1506422673793</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1506422673793</updated>
+      <workItem from="1509892338625" duration="2228000" />
     </task>
     <task id="LOCAL-00003" summary="Added a lot of functionality to databasehandler for genericly creating prepared insert statements based on file input, missing some logic, and issues with connecting to database.&#10;">
       <created>1506778510459</created>
@@ -1356,7 +1348,14 @@
       <option name="project" value="LOCAL" />
       <updated>1509830575481</updated>
     </task>
-    <option name="localTasksCounter" value="51" />
+    <task id="LOCAL-00051" summary="Added readme.md file">
+      <created>1509894391585</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1509894391586</updated>
+    </task>
+    <option name="localTasksCounter" value="52" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1392,7 +1391,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="184807000" />
+    <option name="totallyTimeSpent" value="184998000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1480,7 +1479,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Search method and result getter in progress" />
     <MESSAGE value="Created helper method for formatting output correctly" />
     <MESSAGE value="Set up format help method" />
     <MESSAGE value="Formatting now dynamic" />
@@ -1505,7 +1503,8 @@
     <MESSAGE value="Consider adding mock tests to mock the private methods of a class" />
     <MESSAGE value="Added comments on most methods." />
     <MESSAGE value="Added last comments." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added last comments." />
+    <MESSAGE value="Added readme.md file" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added readme.md file" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1816,8 +1815,8 @@
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="187">
-            <caret line="29" column="96" lean-forward="false" selection-start-line="29" selection-start-column="96" selection-end-line="29" selection-end-column="96" />
+          <first_editor relative-caret-position="442">
+            <caret line="32" column="4" lean-forward="false" selection-start-line="32" selection-start-column="4" selection-end-line="32" selection-end-column="4" />
             <folding />
           </first_editor>
           <second_editor />

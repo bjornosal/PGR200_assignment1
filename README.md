@@ -1,6 +1,7 @@
-#PGR200 - Assignment 1
+# PGR200 - Assignment 1
 
-##Introduction
+## Introduction
+
 Assignment 1 for the class PGR200 at Westerdals Oslo ACT. 
 
 For this assignment we were tasked to set up a database connection through JDBC. 
@@ -19,8 +20,7 @@ change where the application will look for the file.
 As the solution is dynamic in regards to the amount of columns a table can have and what the values are,
 there is a specific format that the file has to follow, or it will be unable to parse the file correctly. 
 
-##Starting the application
-
+## Starting the application
 To get started using the application, make sure that you have your local server started. 
 There is no web alternative for the application as this is being written. 
 
@@ -30,7 +30,7 @@ below.
 Once that is in order, just run the App class, and you follow the instructions from the program.
 
 
-###File format
+### File format
 
 Description of file:
 * First line: tableName;columnCount;primaryKeys;foreignKeys;ForeignKeyReferences(Table(column))
