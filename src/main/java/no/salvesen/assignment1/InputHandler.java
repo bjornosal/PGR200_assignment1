@@ -88,7 +88,12 @@ public class InputHandler {
         }
         //Starts database with the properties chosen.
         databaseHandler.startConnection();
-
+        try {
+            databaseHandler.createDatabase();
+        } catch (SQLException e) {
+            exceptionHandler.outputDatabaseSQLException();
+            setUpProperties();
+        }
     }
 
     /**
@@ -278,4 +283,5 @@ public class InputHandler {
             }
         }
     }
+
 }

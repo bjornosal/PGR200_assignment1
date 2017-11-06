@@ -38,4 +38,8 @@ public class ExceptionHandler {
                 break;
         }
     }
+
+    public void outputDatabaseSQLException() {
+        System.out.println("ERROR:\nPlease check that database is set up prior to connecting. \n If set up, check username and password.");
+    }
 }
