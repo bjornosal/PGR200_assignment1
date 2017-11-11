@@ -1,8 +1,5 @@
 package no.salvesen.assignment1;
 
-
-import com.sun.org.apache.xpath.internal.SourceTree;
-
 import java.io.*;
 import java.sql.SQLException;
 import java.util.ArrayList;

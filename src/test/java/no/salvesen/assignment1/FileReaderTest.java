@@ -32,6 +32,6 @@ public class FileReaderTest {
         assertThat(fileReader.getColumnNames().size(), is(5));
         //Column names and primary key
         assertThat(fileReader.getColumnSQLValues().size(), is(6));
-        assertThat(fileReader.getInsertionValues().size(), is(20));
+        assertThat(fileReader.getInsertionValues().size(), is(45));
     }
 }
