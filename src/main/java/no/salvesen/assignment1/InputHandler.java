@@ -186,6 +186,10 @@ public class InputHandler {
                     break;
                 case "5":
                     System.out.println("Existing files chosen");
+                    fileReader.setSubjectFile(new File("src/files/database files/subject.csv"));
+                    fileReader.setRoomFile(new File("src/files/database files/room.csv"));
+                    fileReader.setLecturerFile(new File("src/files/database files/lecturer.csv"));
+                    fileReader.setLecturer_in_subject_file(new File("src/files/database files/lecturer_in_subject.csv"));
                     break;
                 case "6":
                     chooseTableToFillWithInformation();

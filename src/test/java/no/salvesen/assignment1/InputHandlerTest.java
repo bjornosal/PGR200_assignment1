@@ -3,6 +3,8 @@ package no.salvesen.assignment1;
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.After;
+import org.junit.Rule;
+
 
 import java.io.ByteArrayInputStream;
 
@@ -40,7 +42,6 @@ public class InputHandlerTest {
 
         InputHandler inputHandler = new InputHandler();
         inputHandler.startMenuLoop();
-
     }
 
     @After
