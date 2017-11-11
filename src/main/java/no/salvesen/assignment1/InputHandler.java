@@ -15,6 +15,7 @@ public class InputHandler {
     private ExceptionHandler exceptionHandler;
     private final String defaultPropertiesFilePath = "src/files/defaultDatabaseConfig.properties";
     private final String userEnteredPropertiesFilePath = "src/files/userEnteredDatabaseLogin.properties";
+    private boolean finished = false;
 
     private Scanner userInput;
 
@@ -103,7 +104,7 @@ public class InputHandler {
     public void startMenuLoop() {
         boolean connected = false;
 
-        while (!connected) {
+        while (!connected  && !finished) {
             try {
                 setUpProperties();
             } catch (IOException e) {
@@ -138,7 +139,7 @@ public class InputHandler {
      */
     private void showMainMenu() throws FileNotFoundException, SQLException {
         String menuChoice;
-        while(true) {
+        while(!finished) {
             System.out.println(menu.mainMenu());
             menuChoice = userInput.nextLine();
 
@@ -162,7 +163,7 @@ public class InputHandler {
      */
     private void showTableMenu() throws FileNotFoundException, SQLException {
         String menuChoice;
-        while(true) {
+        while(!finished) {
             System.out.println(menu.tableMenu());
             menuChoice = userInput.nextLine();
             String filePathMessage = "Please enter the file-path to the csv file.";
@@ -199,7 +200,9 @@ public class InputHandler {
                     showMainMenu();
                     break;
                 case "8":
-                    System.exit(0);
+                    finished = true;
+                    //TODO fix this
+//                    System.exit(0);
                     break;
                 default:
                     System.out.println("Incorrect choice, please try again.");
@@ -214,7 +217,7 @@ public class InputHandler {
      */
     private void showSearchMenu() throws SQLException, FileNotFoundException {
         String menuChoice;
-        while(true) {
+        while(!finished) {
             System.out.println(menu.searchMenu());
             menuChoice = userInput.nextLine();
 
@@ -253,7 +256,8 @@ public class InputHandler {
                     showMainMenu();
                     break;
                 case "9":
-                    System.exit(0);
+finished = true;
+                    //                    System.exit(0);
                     return;
                 default:
                     System.out.println("Incorrect choice, please try again.");
