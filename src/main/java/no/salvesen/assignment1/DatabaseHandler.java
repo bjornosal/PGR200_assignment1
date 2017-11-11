@@ -167,6 +167,7 @@ public class DatabaseHandler{
     }
 
     public String getSubjectNameAndLecturerNameBasedOnPrimaryKeys() throws SQLException, FileNotFoundException {
+        fileReader.readFile(fileReader.getFileByTableName("lecturer_in_subject"));
         String result = "";
         String query = "SELECT s.name, lec.name\n" +
                 "FROM subject as s\n" +
@@ -243,9 +244,8 @@ public class DatabaseHandler{
         result.append(getResultHeader(fileReader.getTableName()));
         while(resultSet.next()) {
             for(int i = 1; i <= getColumnCountOfTable(fileReader.getTableName()); i++) {
-                rowResult[i-1] = resultSet.getObject(i).toString();
+                rowResult[i - 1] = resultSet.getObject(i).toString();
                 if (i == getColumnCountOfTable(fileReader.getTableName())) {
-
                     result.append("\n");
                 }
             }

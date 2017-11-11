@@ -128,6 +128,7 @@ public class InputHandler {
             showMainMenu();
         } catch (SQLException e) {
             exceptionHandler.outputSQLException("createTable");
+            e.printStackTrace();
         } catch (FileNotFoundException e) {
             exceptionHandler.outputFileNotFoundException();
         }

@@ -35,12 +35,12 @@ public class DatabaseHandlerTest {
     @Test
     public void tearDownDatabaseAndSetBackUp() throws Exception {
         databaseHandler.tearDownDatabaseAndSetBackUp();
-        assertThat(databaseHandler.getArrayListOfTableNames().size(), is(3));
+        assertThat(databaseHandler.getArrayListOfTableNames().size(), is(4));
     }
 
     @Test
     public void tearDownTableAndSetBackUpWithNewInformation() throws Exception {
-        databaseHandler.tearDownTableAndSetBackUpWithNewInformation("subject");
-        assert(databaseHandler.getAllRowsByTableName("subject").contains("Code   | Name                          | Attending Students | Teaching Form | Duration |"));
+        databaseHandler.tearDownTableAndSetBackUpWithNewInformation("room");
+        assertThat(databaseHandler.getArrayListOfTableNames().size(), is(4));
     }
 }
