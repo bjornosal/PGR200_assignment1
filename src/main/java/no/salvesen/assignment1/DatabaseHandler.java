@@ -32,22 +32,26 @@ public class DatabaseHandler{
         String subjectTable = "subject";
         String roomTable = "room";
         String lecturerTable = "lecturer";
+        String lecturerInSubjectTable = "lecturer_in_subject";
 
+        dropTable(lecturerInSubjectTable);
         dropTable(subjectTable);
         dropTable(roomTable);
         dropTable(lecturerTable);
 
         createDatabase();
-
-        createTableFromMetaData(subjectTable);
+//TODO Filling and creation of tables has to be done in a specific order due to FK constraint, fix?
         createTableFromMetaData(roomTable);
         createTableFromMetaData(lecturerTable);
+        createTableFromMetaData(subjectTable);
+        createTableFromMetaData(lecturerInSubjectTable);
 
         addAllForeignKeysToTables();
 
-        fillTableFromFileByTableName(subjectTable);
         fillTableFromFileByTableName(roomTable);
         fillTableFromFileByTableName(lecturerTable);
+        fillTableFromFileByTableName(subjectTable);
+        fillTableFromFileByTableName(lecturerInSubjectTable);
 
     }
 
@@ -162,6 +166,20 @@ public class DatabaseHandler{
         }
     }
 
+    public String getSubjectNameAndLecturerNameBasedOnPrimaryKeys() throws SQLException, FileNotFoundException {
+        String result = "";
+        String query = "SELECT s.name, lec.name\n" +
+                "FROM subject as s\n" +
+                "JOIN lecturer_in_subject ON s.code = lecturer_in_subject.subject_code\n" +
+                "JOIN lecturer as lec ON lecturer_in_subject.lecturer_id = lec.employee_id;";
+
+        try (Connection connection = databaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            result += resultStringBuilder(resultSet);
+        }
+        return result;
+    }
     /**
      * Retrieves all rows from a table based on the column name.
      * Used to find a specific row based on primary keys for queries.
@@ -418,8 +436,9 @@ public class DatabaseHandler{
      * @param indexInSQLValueArrayList At which index in the ArrayList to start.
      */
     private void addForeignKeyToList(int indexInSQLValueArrayList) {
-        StringBuilder foreignKeyToBeAddedToQuery = new StringBuilder();
-        for(int i = 1; i < fileReader.getAmountOfForeignKeys() + 1; i++) {
+        StringBuilder foreignKeyToBeAddedToQuery;
+        for (int i = 1; i < fileReader.getAmountOfForeignKeys()*2; i+=2) {
+            foreignKeyToBeAddedToQuery = new StringBuilder();
             foreignKeyToBeAddedToQuery.append("ALTER TABLE ").append(fileReader.getTableName()).append("\n");
             foreignKeyToBeAddedToQuery.append("ADD FOREIGN KEY (");
             foreignKeyToBeAddedToQuery.append(fileReader.getColumnSQLValues().get(indexInSQLValueArrayList + fileReader.getAmountOfPrimaryKeys() + i));

@@ -1,6 +1,7 @@
 package no.salvesen.assignment1;
 
-import com.mysql.jdbc.CommunicationsException;
+
+import com.sun.org.apache.xpath.internal.SourceTree;
 
 import java.io.*;
 import java.sql.SQLException;
@@ -237,14 +238,17 @@ public class InputHandler {
                     break;
                 case "6":
                     System.out.println(databaseHandler.getAllRowsByTableName("room"));
-
                     break;
                 case "7":
-                    showMainMenu();
+                    System.out.println("Getting information on subjects with lecturer.");
+                    System.out.println(databaseHandler.getSubjectNameAndLecturerNameBasedOnPrimaryKeys());
                     break;
                 case "8":
-                    System.out.println("Goodbye!");
+                    showMainMenu();
+                    break;
+                case "9":
                     System.exit(0);
+                    return;
                 default:
                     System.out.println("Incorrect choice, please try again.");
             }

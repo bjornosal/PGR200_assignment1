@@ -43,6 +43,4 @@ public class DatabaseHandlerTest {
         databaseHandler.tearDownTableAndSetBackUpWithNewInformation("subject");
         assert(databaseHandler.getAllRowsByTableName("subject").contains("Code   | Name                          | Attending Students | Teaching Form | Duration |"));
     }
-
-
 }
