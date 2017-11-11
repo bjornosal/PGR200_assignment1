@@ -184,16 +184,20 @@ public class InputHandler {
                     fileReader.setLecturerFile(new File(userInput.nextLine()));
                     break;
                 case "4":
-                    System.out.println("Existing files chosen");
+                    System.out.println(filePathMessage);
+                    fileReader.setLecturer_in_subject_file(new File(userInput.nextLine()));
                     break;
                 case "5":
+                    System.out.println("Existing files chosen");
+                    break;
+                case "6":
                     chooseTableToFillWithInformation();
                     System.out.println("Cleared table and filled with information from file.");
                     break;
-                case "6":
+                case "7":
                     showMainMenu();
                     break;
-                case "7":
+                case "8":
                     System.exit(0);
                     break;
                 default:
@@ -282,6 +286,16 @@ public class InputHandler {
             chosenTable = userInput.nextLine();
             for (String tableName : tableNames) {
                 if (chosenTable.equals(tableName)) {
+                    if (chosenTable.equalsIgnoreCase("subject") || chosenTable.equalsIgnoreCase("lecturer")) {
+                        System.out.println("Lecturer_in_subject table requires this table.");
+                        System.out.println("Tear down and set it back up together with " + chosenTable + "-table ?");
+                        System.out.println("Y/N");
+                        if(userInput.nextLine().equalsIgnoreCase("Y")) {
+                            databaseHandler.tearDownTableAndSetBackUpWithNewInformation("lecturer_in_subject");
+                        } else {
+                            break;
+                        }
+                    }
                     databaseHandler.tearDownTableAndSetBackUpWithNewInformation(chosenTable);
                     return;
                 }
