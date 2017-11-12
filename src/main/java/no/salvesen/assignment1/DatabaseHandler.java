@@ -395,7 +395,7 @@ public class DatabaseHandler{
     public void dropDatabase() throws SQLException, IOException {
         try (Connection connection = databaseConnection.getConnection()) {
             Statement stmt = connection.createStatement();
-            String query = "DROP SCHEMA IF NOT EXISTS " + getDatabaseNameFromProperties() + ";";
+            String query = "DROP SCHEMA " + getDatabaseNameFromProperties() + ";";
             stmt.executeUpdate(query);
         }
     }

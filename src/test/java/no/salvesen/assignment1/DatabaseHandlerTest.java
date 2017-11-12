@@ -25,7 +25,7 @@ public class DatabaseHandlerTest {
 
     @Before
     public void setUp() throws Exception {
-        databaseHandler.setPropertyFilePath("src/files/testDatabaseLogin.properties");
+        databaseHandler.setPropertyFilePath("src/test/files/testDatabaseLogin.properties");
         databaseHandler.startConnection();
     }
 
@@ -44,6 +44,6 @@ public class DatabaseHandlerTest {
 
     @After
     public void tearDown() throws Exception {
-
+        databaseHandler.dropDatabase();
     }
 }

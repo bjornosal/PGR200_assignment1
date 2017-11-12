@@ -1,7 +1,5 @@
 package no.salvesen.assignment1;
 
-import org.junit.Assert;
-import org.junit.Assert.*;
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.After;
@@ -9,20 +7,15 @@ import org.junit.After;
 
 
 import java.io.*;
-import java.util.Arrays;
 import java.util.Properties;
 
-import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 
 public class InputHandlerTest {
 
-    private InputHandler inputHandler;
     private final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
     private final String LINE_BREAK = System.getProperty("line.separator");
-
-    private String USER_INPUT_ON_PROPERTIES_MENU;
 
     private final String USER_INPUT_ON_MAIN_MENU_TO_GO_TO_SEARCH = "1" + LINE_BREAK;
     private final String USER_INPUT_TO_SEARCH_FOR_SUBJECT = "1" + LINE_BREAK + "pgr200" + LINE_BREAK;
@@ -66,7 +59,7 @@ public class InputHandlerTest {
         String databaseUserName = properties.getProperty("databaseUser");
         String databaseUserPassword = properties.getProperty("databasePassword");
 
-        USER_INPUT_ON_PROPERTIES_MENU = "3" + LINE_BREAK + serverName + LINE_BREAK + databaseName + LINE_BREAK + databaseUserName + LINE_BREAK + databaseUserPassword + LINE_BREAK;
+        String USER_INPUT_ON_PROPERTIES_MENU = "3" + LINE_BREAK + serverName + LINE_BREAK + databaseName + LINE_BREAK + databaseUserName + LINE_BREAK + databaseUserPassword + LINE_BREAK;
 
         String allMenuOptionsSimulatedUserInput = USER_INPUT_ON_PROPERTIES_MENU + USER_INPUT_ON_MAIN_MENU_TO_GO_TO_SEARCH +
                 USER_INPUT_TO_SEARCH_FOR_SUBJECT + USER_INPUT_TO_SEARCH_FOR_ALL_SUBJECTS +
@@ -89,7 +82,7 @@ public class InputHandlerTest {
     @Test
     public void startMenuLoop() throws Exception {
 //   Source:https://stackoverflow.com/questions/23653875/how-to-simulate-multiple-user-input-for-junit
-        inputHandler = new InputHandler();
+        InputHandler inputHandler = new InputHandler();
         Menu menu = new Menu();
         inputHandler.startMenuLoop();
         String printedByApplication = outputStream.toString();
