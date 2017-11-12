@@ -33,6 +33,13 @@ public class FileReader {
         setLecturer_in_subject_file(new File("src/files/database files/lecturer_in_subject.csv"));
     }
 
+    public FileReader(String subjectPathName, String roomPathName, String lecturerPathName, String lecturerInSubjectPathName) {
+        setSubjectFile(new File(subjectPathName));
+        setRoomFile(new File(roomPathName));
+        setLecturerFile(new File(lecturerPathName));
+        setLecturer_in_subject_file(new File(lecturerInSubjectPathName));
+    }
+
     /**
      * Initializes the ArrayLists to keep all the values
      * Makes use of other methods to place information from file in corresponding ArrayLists.

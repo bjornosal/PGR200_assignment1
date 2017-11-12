@@ -1,36 +1,30 @@
 package no.salvesen.assignment1;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 
 import static org.hamcrest.core.Is.is;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
 public class DatabaseHandlerTest {
     private DatabaseHandler databaseHandler;
-    private FileReader fileReader;
-    private ArrayList<String> foreignKeysToBeAdded;
+    private final String subjectFilePathName = "src/test/Test_table_files/subject_test_file.csv";
+    private final String lecturerFilePathName = "src/test/Test_table_files/lecturer_test_file.csv";
+    private final String roomFilePathName = "src/test/Test_table_files/room_test_file.csv";
+    private final String lecturerInSubjectPathName = "src/test/Test_table_files/lecturer_in_subject_test_file.csv";
 
     public DatabaseHandlerTest() throws IOException, SQLException {
-        databaseHandler = new DatabaseHandler();
-        fileReader = new FileReader();
-        foreignKeysToBeAdded = new ArrayList<>();
+        databaseHandler = new DatabaseHandler(subjectFilePathName, roomFilePathName,lecturerFilePathName, lecturerInSubjectPathName);
     }
 
     @Before
     public void setUp() throws Exception {
-        fileReader.setSubjectFile(new File("src/test/Test_table_files/subject_test_file.csv"));
-        fileReader.setLecturerFile(new File("src/test/Test_table_files/lecturer_test_file.csv"));
-        fileReader.setRoomFile(new File("src/test/Test_table_files/room_test_file.csv"));
-
         databaseHandler.setPropertyFilePath("src/files/testDatabaseLogin.properties");
         databaseHandler.startConnection();
     }
@@ -43,7 +37,13 @@ public class DatabaseHandlerTest {
 
     @Test
     public void tearDownTableAndSetBackUpWithNewInformation() throws Exception {
+        tearDownDatabaseAndSetBackUp();
         databaseHandler.tearDownTableAndSetBackUpWithNewInformation("room");
         assertThat(databaseHandler.getArrayListOfTableNames().size(), is(4));
+    }
+
+    @After
+    public void tearDown() throws Exception {
+
     }
 }

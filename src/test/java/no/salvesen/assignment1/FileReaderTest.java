@@ -17,6 +17,7 @@ public class FileReaderTest {
     public void setUp() throws Exception {
         fileReader.setSubjectFile(new File("src/test/Test_table_files/subject_test_file.csv"));
         fileReader.setLecturerFile(new File("src/test/Test_table_files/lecturer_test_file.csv"));
+        fileReader.setLecturer_in_subject_file(new File("src/test/Test_table_files/lecturer_in_subject_test_file.csv"));
         fileReader.setRoomFile(new File("src/test/Test_table_files/room_test_file.csv"));
     }
 

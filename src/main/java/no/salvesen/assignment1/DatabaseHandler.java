@@ -17,11 +17,16 @@ public class DatabaseHandler{
         databaseConnection = new DatabaseConnection();
         fileReader  = new FileReader();
         foreignKeysToBeAdded = new ArrayList<>();
+    }
+
+    public  DatabaseHandler(String subjectPathName, String roomPathName, String lecturerPathName, String lecturerInSubjectPathName) throws IOException, SQLException {
+        databaseConnection = new DatabaseConnection();
+        fileReader  = new FileReader(subjectPathName, roomPathName, lecturerPathName, lecturerInSubjectPathName);
+        foreignKeysToBeAdded = new ArrayList<>();
 
     }
 
     private void setUpDatabase() throws IOException, SQLException {
-
         createDatabase();
         databaseConnection.setDataSourceDatabaseName(getPropertyFilePath());
     }
@@ -138,7 +143,7 @@ public class DatabaseHandler{
 
         ArrayList<String> insertionValues = fileReader.getInsertionValues();
 
-        try(Connection connection = this.databaseConnection.getConnection()) {
+        try(Connection connection = databaseConnection.getConnection()) {
             String preparedInsert = prepareInsertStatementBasedOnMetaData(tableName);
             PreparedStatement preparedStatement = connection.prepareStatement(preparedInsert);
 
