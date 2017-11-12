@@ -24,7 +24,13 @@ public class InputHandler {
         exceptionHandler = new ExceptionHandler();
 
         userInput = new Scanner(System.in);
-        databaseHandler = new DatabaseHandler();
+        try {
+            databaseHandler = new DatabaseHandler();
+        } catch (IOException e) {
+            exceptionHandler.outputIOException("fileissue");
+        } catch (SQLException e) {
+            exceptionHandler.outputSQLException("createdatabase");
+        }
         menu = new Menu();
     }
 
@@ -297,12 +303,20 @@ finished = true;
                         System.out.println("Tear down and set it back up together with " + chosenTable + "-table ?");
                         System.out.println("Y/N");
                         if(userInput.nextLine().equalsIgnoreCase("Y")) {
-                            databaseHandler.tearDownTableAndSetBackUpWithNewInformation("lecturer_in_subject");
+                            try {
+                                databaseHandler.tearDownTableAndSetBackUpWithNewInformation("lecturer_in_subject");
+                            } catch (IOException e) {
+                                exceptionHandler.outputIOException("fileissue");
+                            }
                         } else {
                             break;
                         }
                     }
-                    databaseHandler.tearDownTableAndSetBackUpWithNewInformation(chosenTable);
+                    try {
+                        databaseHandler.tearDownTableAndSetBackUpWithNewInformation(chosenTable);
+                    } catch (IOException e) {
+                        exceptionHandler.outputIOException("fileissue");
+                    }
                     return;
                 }
             }

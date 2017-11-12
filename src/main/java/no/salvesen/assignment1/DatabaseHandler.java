@@ -13,13 +13,18 @@ public class DatabaseHandler{
     private String propertyFilePath;
     private ArrayList<String> foreignKeysToBeAdded;
 
-    public  DatabaseHandler()  {
+    public  DatabaseHandler() throws IOException, SQLException {
         databaseConnection = new DatabaseConnection();
         fileReader  = new FileReader();
         foreignKeysToBeAdded = new ArrayList<>();
 
     }
 
+    private void setUpDatabase() throws IOException, SQLException {
+
+        createDatabase();
+        databaseConnection.setDataSourceDatabaseName(getPropertyFilePath());
+    }
     /**
      * Removes all existing tables and recreate them.
      * Then fills them with data from the files.
@@ -28,8 +33,7 @@ public class DatabaseHandler{
      * @throws IOException If an issue with File or InputStream.
      */
     public void tearDownDatabaseAndSetBackUp() throws SQLException, IOException {
-
-        createDatabase();
+        setUpDatabase();
 
         String subjectTable = "subject";
         String roomTable = "room";
@@ -62,7 +66,9 @@ public class DatabaseHandler{
      * @throws SQLException If unable to drop table, or unable to run query
      * @throws FileNotFoundException If unable to find the file containing table information.
      */
-    public void tearDownTableAndSetBackUpWithNewInformation(String tableName) throws SQLException, FileNotFoundException {
+    public void tearDownTableAndSetBackUpWithNewInformation(String tableName) throws SQLException, IOException {
+        setUpDatabase();
+
         dropTable(tableName);
         createTableFromMetaData(tableName);
         fillTableFromFileByTableName(tableName);
@@ -373,8 +379,6 @@ public class DatabaseHandler{
             Statement stmt = connection.createStatement();
             String query = "CREATE SCHEMA IF NOT EXISTS " + getDatabaseNameFromProperties() + ";";
             stmt.executeUpdate(query);
-            databaseConnection.setDataSourceDatabaseName(getPropertyFilePath());
-
         }
     }
 

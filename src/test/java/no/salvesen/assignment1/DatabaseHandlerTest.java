@@ -8,6 +8,8 @@ import static org.hamcrest.core.Is.is;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
@@ -17,7 +19,7 @@ public class DatabaseHandlerTest {
     private FileReader fileReader;
     private ArrayList<String> foreignKeysToBeAdded;
 
-    public DatabaseHandlerTest() throws FileNotFoundException {
+    public DatabaseHandlerTest() throws IOException, SQLException {
         databaseHandler = new DatabaseHandler();
         fileReader = new FileReader();
         foreignKeysToBeAdded = new ArrayList<>();
