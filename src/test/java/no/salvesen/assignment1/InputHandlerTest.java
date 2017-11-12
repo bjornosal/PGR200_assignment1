@@ -13,23 +13,26 @@ import static org.junit.Assert.*;
 public class InputHandlerTest {
 
     DatabaseHandler databaseHandler = new DatabaseHandler();
+    private final String lineBreak = System.getProperty("line.separator");
+    private final String userInputOnPropertiesMenu = "3" + lineBreak + "localhost" + lineBreak + "";
+
 
     @Before
     public void setUp() {
-        String simulatedUserInput = "1" + System.getProperty("line.separator") + "1" +
-                System.getProperty("line.separator") + "1" + System.getProperty("line.separator") +
-                "pgr200" + System.getProperty("line.separator") + "2" + System.getProperty("line.separator")
-                + "3" + System.getProperty("line.separator") + "Per Lauvas" + System.getProperty("line.separator")
-                + "4" + System.getProperty("line.separator") + "5" + System.getProperty("line.separator")
-                + "F101" + System.getProperty("line.separator") + "6" + System.getProperty("line.separator")
-                + "7" + System.getProperty("line.separator") + "8" + System.getProperty("line.separator")
-                + "2" + System.getProperty("line.separator") + "1" + "filepath"+System.getProperty("line.separator")
-                + "2" + System.getProperty("line.separator") + "filepath" + System.getProperty("line.separator")
-                + "filepath" + System.getProperty("line.separator") + "3" + System.getProperty("line.separator")
-                + "filepath" + System.getProperty("line.separator") + "4" + System.getProperty("line.separator")
-                + "5" + System.getProperty("line.separator") + "6" + System.getProperty("line.separator")
-                + "room" + System.getProperty("line.separator") + "6" + System.getProperty("line.separator")
-                + "subject" + System.getProperty("line.separator") + "Y" + System.getProperty("line.separator")
+        String simulatedUserInput = "1" + lineBreak + "1" +
+                lineBreak + "1" + lineBreak +
+                "pgr200" + lineBreak + "2" + lineBreak
+                + "3" + lineBreak + "Per Lauvas" + lineBreak
+                + "4" + lineBreak + "5" + lineBreak
+                + "F101" + lineBreak + "6" + lineBreak
+                + "7" + lineBreak + "8" + lineBreak
+                + "2" + lineBreak + "1" + "filepath"+lineBreak
+                + "2" + lineBreak + "filepath" + lineBreak
+                + "filepath" + lineBreak + "3" + lineBreak
+                + "filepath" + lineBreak + "4" + lineBreak
+                + "5" + lineBreak + "6" + lineBreak
+                + "room" + lineBreak + "6" + lineBreak
+                + "subject" + lineBreak + "Y" + lineBreak
                 + "8";
 
         ByteArrayInputStream in = new ByteArrayInputStream(simulatedUserInput.getBytes());

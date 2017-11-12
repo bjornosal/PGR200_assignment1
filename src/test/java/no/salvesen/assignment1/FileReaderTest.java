@@ -34,4 +34,10 @@ public class FileReaderTest {
         assertThat(fileReader.getColumnSQLValues().size(), is(6));
         assertThat(fileReader.getInsertionValues().size(), is(45));
     }
+
+    @Test
+    public void getFileByTableName() throws Exception {
+        File initializedToNull = fileReader.getFileByTableName("");
+        assertNull(initializedToNull);
+    }
 }

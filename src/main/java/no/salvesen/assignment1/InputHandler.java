@@ -90,6 +90,7 @@ public class InputHandler {
         try {
             databaseHandler.createDatabase();
         } catch (SQLException e) {
+            e.printStackTrace();
             exceptionHandler.outputDatabaseSQLException();
             setUpProperties();
         }

@@ -41,6 +41,6 @@ public class ExceptionHandler {
     }
 
     public void outputDatabaseSQLException() {
-        System.out.println("ERROR:\nPlease check that database is set up prior to connecting. \n If set up, check username and password.");
+        System.out.println("ERROR:\nPlease check that database is set up prior to connecting." + System.getProperty("line.separator")+"If set up, check username and password.");
     }
 }
