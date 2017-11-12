@@ -54,7 +54,7 @@ public class DatabaseConnection {
         try {
             properties.load(input);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("ERROR IN DATABASECONNECTION");
         }
         dataSource.setDatabaseName(properties.getProperty("databaseName"));
 
