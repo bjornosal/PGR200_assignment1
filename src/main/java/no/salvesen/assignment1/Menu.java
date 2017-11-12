@@ -115,19 +115,19 @@ public class Menu {
                 "\n";
     }
 
-    private String[] getTableChoices() {
+    public String[] getTableChoices() {
         return tableChoices;
     }
 
-    private String[] getSearchChoices() {
+    public String[] getSearchChoices() {
         return searchChoices;
     }
 
-    private String[] getMainMenuChoices() {
+    public String[] getMainMenuChoices() {
         return mainMenuChoices;
     }
 
-    private String[] getPropertiesMenuChoices() {
+    public String[] getPropertiesMenuChoices() {
         return propertiesMenuChoices;
     }
 }

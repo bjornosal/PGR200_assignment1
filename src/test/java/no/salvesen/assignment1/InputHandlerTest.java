@@ -9,9 +9,11 @@ import org.junit.After;
 
 
 import java.io.*;
+import java.util.Arrays;
 import java.util.Properties;
 
 import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertTrue;
 
 public class InputHandlerTest {
 
@@ -88,12 +90,22 @@ public class InputHandlerTest {
     public void startMenuLoop() throws Exception {
 //   Source:https://stackoverflow.com/questions/23653875/how-to-simulate-multiple-user-input-for-junit
         inputHandler = new InputHandler();
-
+        Menu menu = new Menu();
         inputHandler.startMenuLoop();
-        assertEquals(
-                "Code   | Name                        | Attending Students | Teaching Form | Duration | \n" +
-                "PGR200 | Advanced Javaprogrammering  | 65                 | sequential    | 4        |",
-                outputStream.toString().substring(985,1159));
+        String printedByApplication = outputStream.toString();
+
+        for (String menuOption : menu.getMainMenuChoices()) {
+            assertTrue(printedByApplication.contains(menuOption));
+        }
+        for (String menuOption : menu.getSearchChoices()) {
+            assertTrue(printedByApplication.contains(menuOption));
+        }
+        for (String menuOption : menu.getTableChoices()) {
+            assertTrue(printedByApplication.contains(menuOption));
+        }
+        for (String menuOption : menu.getPropertiesMenuChoices()) {
+            assertTrue(printedByApplication.contains(menuOption));
+        }
     }
 
     @After
