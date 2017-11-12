@@ -1,16 +1,22 @@
 package no.salvesen.assignment1;
 
+import org.junit.Assert;
+import org.junit.Assert.*;
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.After;
 
 
+
 import java.io.*;
 import java.util.Properties;
+
+import static junit.framework.TestCase.assertEquals;
 
 public class InputHandlerTest {
 
     private InputHandler inputHandler;
+    private final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
     private final String LINE_BREAK = System.getProperty("line.separator");
 
@@ -60,7 +66,7 @@ public class InputHandlerTest {
 
         USER_INPUT_ON_PROPERTIES_MENU = "3" + LINE_BREAK + serverName + LINE_BREAK + databaseName + LINE_BREAK + databaseUserName + LINE_BREAK + databaseUserPassword + LINE_BREAK;
 
-        String simulatedUserInput = USER_INPUT_ON_PROPERTIES_MENU + USER_INPUT_ON_MAIN_MENU_TO_GO_TO_SEARCH +
+        String allMenuOptionsSimulatedUserInput = USER_INPUT_ON_PROPERTIES_MENU + USER_INPUT_ON_MAIN_MENU_TO_GO_TO_SEARCH +
                 USER_INPUT_TO_SEARCH_FOR_SUBJECT + USER_INPUT_TO_SEARCH_FOR_ALL_SUBJECTS +
                 USER_INPUT_TO_SEARCH_FOR_LECTURER + USER_INPUT_TO_SEARCH_FOR_ALL_LECTURERS +
                 USER_INPUT_TO_SEARCH_FOR_A_ROOM + USER_INPUT_TO_SEARCH_FOR_ALL_ROOMS +
@@ -71,8 +77,11 @@ public class InputHandlerTest {
                 USER_INPUT_TO_FILL_TABLE_WITH_INFORMATION_FROM_FILES + USER_INPUT_TO_RETURN_TO_MAIN_MENU_FROM_UPDATE_TABLE_MENU +
                 USER_INPUT_TO_GO_TO_SEARCH_MENU_AND_EXIT;
 
-        ByteArrayInputStream in = new ByteArrayInputStream(simulatedUserInput.getBytes());
+        ByteArrayInputStream in = new ByteArrayInputStream(allMenuOptionsSimulatedUserInput.getBytes());
+
         System.setIn(in);
+        System.setOut(new PrintStream(outputStream));
+
     }
 
     @Test
@@ -81,6 +90,10 @@ public class InputHandlerTest {
         inputHandler = new InputHandler();
 
         inputHandler.startMenuLoop();
+        assertEquals(
+                "Code   | Name                        | Attending Students | Teaching Form | Duration | \n" +
+                "PGR200 | Advanced Javaprogrammering  | 65                 | sequential    | 4        |",
+                outputStream.toString().substring(985,1159));
     }
 
     @After

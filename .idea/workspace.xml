@@ -4,6 +4,7 @@
     <list default="true" id="038afa83-f56f-4621-9260-50e1081a1fb9" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/files/userEnteredDatabaseLogin.properties" afterPath="$PROJECT_DIR$/src/files/userEnteredDatabaseLogin.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/DatabaseHandler.java" afterPath="$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/DatabaseHandler.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/no/salvesen/assignment1/InputHandlerTest.java" afterPath="$PROJECT_DIR$/src/test/java/no/salvesen/assignment1/InputHandlerTest.java" />
     </list>
     <ignored path="assignment1.iws" />
@@ -56,11 +57,11 @@
     <splitter split-orientation="horizontal" split-proportion="0.79615706">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="DatabaseHandlerTest.java" pinned="false" current-in-tab="true">
+          <file leaf-file-name="DatabaseHandlerTest.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/test/java/no/salvesen/assignment1/DatabaseHandlerTest.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="204">
-                  <caret line="33" column="28" lean-forward="false" selection-start-line="33" selection-start-column="28" selection-end-line="33" selection-end-column="28" />
+                <state relative-caret-position="425">
+                  <caret line="46" column="0" lean-forward="true" selection-start-line="46" selection-start-column="0" selection-end-line="46" selection-end-column="0" />
                   <folding>
                     <element signature="imports" expanded="true" />
                   </folding>
@@ -107,29 +108,32 @@
           <file leaf-file-name="DatabaseHandler.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/DatabaseHandler.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="177">
-                  <caret line="382" column="0" lean-forward="false" selection-start-line="382" selection-start-column="0" selection-end-line="382" selection-end-column="0" />
+                <state relative-caret-position="280">
+                  <caret line="399" column="9" lean-forward="true" selection-start-line="399" selection-start-column="9" selection-end-line="399" selection-end-column="9" />
                   <folding>
                     <element signature="imports" expanded="true" />
-                    <marker date="1510489922893" expanded="true" signature="7106:7357" ph="SELECT s.nam... subject" />
-                    <marker date="1510489922893" expanded="true" signature="15108:15122" ph="SELECT * FRO... missingValue" />
-                    <marker date="1510489922893" expanded="true" signature="15872:15893" ph="DROP TABLE I... " />
-                    <marker date="1510489922893" expanded="true" signature="16376:16404" ph="CREATE SCHEM... IF" />
-                    <marker date="1510489922893" expanded="false" signature="21887:21898" ph=" { " />
-                    <marker date="1510489922893" expanded="false" signature="21922:21928" ph=" }" />
-                    <marker date="1510489922893" expanded="false" signature="21993:22004" ph=" { " />
-                    <marker date="1510489922893" expanded="false" signature="22045:22051" ph=" }" />
+                    <marker date="1510496886756" expanded="true" signature="7106:7357" ph="SELECT s.nam... subject" />
+                    <marker date="1510496886756" expanded="true" signature="15108:15122" ph="SELECT * FRO... missingValue" />
+                    <marker date="1510496886756" expanded="true" signature="15872:15893" ph="DROP TABLE I... " />
+                    <marker date="1510496886756" expanded="true" signature="16376:16404" ph="CREATE SCHEM... IF" />
+                    <marker date="1510496886756" expanded="true" signature="16833:16859" ph="DROP SCHEMA " />
+                    <marker date="1510496886756" expanded="false" signature="22343:22354" ph=" { " />
+                    <marker date="1510496886756" expanded="false" signature="22378:22384" ph=" }" />
+                    <marker date="1510496886756" expanded="false" signature="22449:22460" ph=" { " />
+                    <marker date="1510496886756" expanded="false" signature="22501:22507" ph=" }" />
                   </folding>
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="InputHandlerTest.java" pinned="false" current-in-tab="false">
+          <file leaf-file-name="InputHandlerTest.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/test/java/no/salvesen/assignment1/InputHandlerTest.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="394">
-                  <caret line="84" column="0" lean-forward="true" selection-start-line="84" selection-start-column="0" selection-end-line="84" selection-end-column="0" />
-                  <folding />
+                <state relative-caret-position="377">
+                  <caret line="96" column="5" lean-forward="true" selection-start-line="96" selection-start-column="5" selection-end-line="96" selection-end-column="5" />
+                  <folding>
+                    <element signature="imports" expanded="true" />
+                  </folding>
                 </state>
               </provider>
             </entry>
@@ -208,10 +212,10 @@
                   <caret line="10" column="26" lean-forward="false" selection-start-line="23" selection-start-column="54" selection-end-line="23" selection-end-column="66" />
                   <folding>
                     <element signature="imports" expanded="true" />
-                    <marker date="1510489922893" expanded="true" signature="7106:7357" ph="SELECT s.nam... subject" />
-                    <marker date="1510489922893" expanded="true" signature="15108:15122" ph="SELECT * FRO... missingValue" />
-                    <marker date="1510489922893" expanded="true" signature="15872:15893" ph="DROP TABLE I... " />
-                    <marker date="1510489922893" expanded="true" signature="16376:16404" ph="CREATE SCHEM... IF" />
+                    <marker date="1510496886756" expanded="true" signature="7106:7357" ph="SELECT s.nam... subject" />
+                    <marker date="1510496886756" expanded="true" signature="15108:15122" ph="SELECT * FRO... missingValue" />
+                    <marker date="1510496886756" expanded="true" signature="15872:15893" ph="DROP TABLE I... " />
+                    <marker date="1510496886756" expanded="true" signature="16376:16404" ph="CREATE SCHEM... IF" />
                   </folding>
                 </state>
               </provider>
@@ -328,10 +332,10 @@
         <option value="$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/ExceptionHandler.java" />
         <option value="$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/FileReader.java" />
         <option value="$PROJECT_DIR$/src/test/java/no/salvesen/assignment1/FileReaderTest.java" />
-        <option value="$PROJECT_DIR$/src/test/java/no/salvesen/assignment1/DatabaseHandlerTest.java" />
-        <option value="$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/DatabaseHandler.java" />
         <option value="$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/DatabaseConnection.java" />
         <option value="$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/InputHandler.java" />
+        <option value="$PROJECT_DIR$/src/test/java/no/salvesen/assignment1/DatabaseHandlerTest.java" />
+        <option value="$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/DatabaseHandler.java" />
         <option value="$PROJECT_DIR$/src/test/java/no/salvesen/assignment1/InputHandlerTest.java" />
       </list>
     </option>
@@ -383,8 +387,8 @@
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-8" />
-    <option name="width" value="1931" />
-    <option name="height" value="1047" />
+    <option name="width" value="1932" />
+    <option name="height" value="1056" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectReloadState">
@@ -1163,14 +1167,7 @@
       <workItem from="1510407155545" duration="16309000" />
       <workItem from="1510427203756" duration="2618000" />
       <workItem from="1510434097295" duration="62000" />
-      <workItem from="1510479535702" duration="15192000" />
-    </task>
-    <task id="LOCAL-00017" summary="Same possibilites as in assignment two now implemented">
-      <created>1509111822220</created>
-      <option name="number" value="00017" />
-      <option name="presentableId" value="LOCAL-00017" />
-      <option name="project" value="LOCAL" />
-      <updated>1509111822220</updated>
+      <workItem from="1510479535702" duration="18050000" />
     </task>
     <task id="LOCAL-00018" summary="Set up file format in subject file. Started on class FileReader which will handle the parsing and managing of tableInformation">
       <created>1509115142935</created>
@@ -1508,43 +1505,50 @@
       <option name="project" value="LOCAL" />
       <updated>1510495499475</updated>
     </task>
-    <option name="localTasksCounter" value="66" />
+    <task id="LOCAL-00066" summary="Final fixes on InputHandler tests.">
+      <created>1510495871605</created>
+      <option name="number" value="00066" />
+      <option name="presentableId" value="LOCAL-00066" />
+      <option name="project" value="LOCAL" />
+      <updated>1510495871605</updated>
+    </task>
+    <option name="localTasksCounter" value="67" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="InputHandlerTest - 2017.11.12 at 14h 47m 45s.xml">
-      <configuration name="InputHandlerTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="InputHandlerTest - 2017.11.12 at 14h 48m 14s.xml">
-      <configuration name="InputHandlerTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="InputHandlerTest - 2017.11.12 at 14h 48m 23s.xml">
-      <configuration name="InputHandlerTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="InputHandlerTest - 2017.11.12 at 14h 48m 45s.xml">
-      <configuration name="InputHandlerTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="InputHandlerTest - 2017.11.12 at 14h 49m 19s.xml">
-      <configuration name="InputHandlerTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="InputHandlerTest - 2017.11.12 at 14h 49m 51s.xml">
-      <configuration name="InputHandlerTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="InputHandlerTest_startMenuLoop - 2017.11.12 at 15h 05m 44s.xml">
+    <history-entry file="InputHandlerTest_startMenuLoop - 2017.11.12 at 16h 05m 15s.xml">
       <configuration name="InputHandlerTest.startMenuLoop" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="InputHandlerTest_startMenuLoop - 2017.11.12 at 15h 07m 05s.xml">
+    <history-entry file="InputHandlerTest_startMenuLoop - 2017.11.12 at 16h 05m 37s.xml">
       <configuration name="InputHandlerTest.startMenuLoop" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="InputHandlerTest_startMenuLoop - 2017.11.12 at 15h 07m 12s.xml">
+    <history-entry file="InputHandlerTest_startMenuLoop - 2017.11.12 at 16h 05m 55s.xml">
       <configuration name="InputHandlerTest.startMenuLoop" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="InputHandlerTest_startMenuLoop - 2017.11.12 at 15h 07m 56s.xml">
+    <history-entry file="InputHandlerTest_startMenuLoop - 2017.11.12 at 16h 06m 28s.xml">
+      <configuration name="InputHandlerTest.startMenuLoop" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="InputHandlerTest_startMenuLoop - 2017.11.12 at 16h 06m 49s.xml">
+      <configuration name="InputHandlerTest.startMenuLoop" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="InputHandlerTest_startMenuLoop - 2017.11.12 at 16h 07m 21s.xml">
+      <configuration name="InputHandlerTest.startMenuLoop" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="InputHandlerTest_startMenuLoop - 2017.11.12 at 16h 07m 33s.xml">
+      <configuration name="InputHandlerTest.startMenuLoop" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="InputHandlerTest_startMenuLoop - 2017.11.12 at 16h 07m 57s.xml">
+      <configuration name="InputHandlerTest.startMenuLoop" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="InputHandlerTest_startMenuLoop - 2017.11.12 at 16h 08m 15s.xml">
+      <configuration name="InputHandlerTest.startMenuLoop" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="InputHandlerTest_startMenuLoop - 2017.11.12 at 16h 08m 33s.xml">
       <configuration name="InputHandlerTest.startMenuLoop" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="230053000" />
+    <option name="totallyTimeSpent" value="232911000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1561,14 +1565,14 @@
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32982087" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.55426764" sideWeight="0.4445629" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.55426764" sideWeight="0.4099147" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.35827187" sideWeight="0.45628998" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.35827187" sideWeight="0.4968017" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32995737" sideWeight="0.4897681" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.18018967" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.35827187" sideWeight="0.54371" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.35827187" sideWeight="0.50319827" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32995737" sideWeight="0.5102319" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32982087" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -1920,24 +1924,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/DatabaseHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="177">
-          <caret line="382" column="0" lean-forward="false" selection-start-line="382" selection-start-column="0" selection-end-line="382" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <marker date="1510489922893" expanded="true" signature="7106:7357" ph="SELECT s.nam... subject" />
-            <marker date="1510489922893" expanded="true" signature="15108:15122" ph="SELECT * FRO... missingValue" />
-            <marker date="1510489922893" expanded="true" signature="15872:15893" ph="DROP TABLE I... " />
-            <marker date="1510489922893" expanded="true" signature="16376:16404" ph="CREATE SCHEM... IF" />
-            <marker date="1510489922893" expanded="false" signature="21887:21898" ph=" { " />
-            <marker date="1510489922893" expanded="false" signature="21922:21928" ph=" }" />
-            <marker date="1510489922893" expanded="false" signature="21993:22004" ph=" { " />
-            <marker date="1510489922893" expanded="false" signature="22045:22051" ph=" }" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/InputHandler.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
@@ -1956,18 +1942,39 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/no/salvesen/assignment1/InputHandlerTest.java">
+    <entry file="file://$PROJECT_DIR$/src/test/java/no/salvesen/assignment1/DatabaseHandlerTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="394">
-          <caret line="84" column="0" lean-forward="true" selection-start-line="84" selection-start-column="0" selection-end-line="84" selection-end-column="0" />
-          <folding />
+        <state relative-caret-position="425">
+          <caret line="46" column="0" lean-forward="true" selection-start-line="46" selection-start-column="0" selection-end-line="46" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/no/salvesen/assignment1/DatabaseHandlerTest.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/DatabaseHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="33" column="28" lean-forward="false" selection-start-line="33" selection-start-column="28" selection-end-line="33" selection-end-column="28" />
+        <state relative-caret-position="280">
+          <caret line="399" column="9" lean-forward="true" selection-start-line="399" selection-start-column="9" selection-end-line="399" selection-end-column="9" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <marker date="1510496886756" expanded="true" signature="7106:7357" ph="SELECT s.nam... subject" />
+            <marker date="1510496886756" expanded="true" signature="15108:15122" ph="SELECT * FRO... missingValue" />
+            <marker date="1510496886756" expanded="true" signature="15872:15893" ph="DROP TABLE I... " />
+            <marker date="1510496886756" expanded="true" signature="16376:16404" ph="CREATE SCHEM... IF" />
+            <marker date="1510496886756" expanded="true" signature="16833:16859" ph="DROP SCHEMA " />
+            <marker date="1510496886756" expanded="false" signature="22343:22354" ph=" { " />
+            <marker date="1510496886756" expanded="false" signature="22378:22384" ph=" }" />
+            <marker date="1510496886756" expanded="false" signature="22449:22460" ph=" { " />
+            <marker date="1510496886756" expanded="false" signature="22501:22507" ph=" }" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/no/salvesen/assignment1/InputHandlerTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="377">
+          <caret line="96" column="5" lean-forward="true" selection-start-line="96" selection-start-column="5" selection-end-line="96" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

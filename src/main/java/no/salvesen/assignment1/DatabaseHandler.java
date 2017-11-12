@@ -388,6 +388,19 @@ public class DatabaseHandler{
     }
 
     /**
+     * Used to drop the schema
+     * @throws SQLException
+     * @throws IOException
+     */
+    public void dropDatabase() throws SQLException, IOException {
+        try (Connection connection = databaseConnection.getConnection()) {
+            Statement stmt = connection.createStatement();
+            String query = "DROP SCHEMA IF NOT EXISTS " + getDatabaseNameFromProperties() + ";";
+            stmt.executeUpdate(query);
+        }
+    }
+
+    /**
      * Creates a table in the database if it does not exist, based on MetaData from corresponding table file.
      * @param tableName Which table to create.
      * @throws FileNotFoundException If unable to locate table file.
@@ -498,6 +511,7 @@ public class DatabaseHandler{
     public void startConnection() throws IOException {
         databaseConnection.initializeProperties(getPropertyFilePath());
     }
+
 
     private String getPropertyFilePath() {
         return propertyFilePath;
