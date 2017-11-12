@@ -29,6 +29,8 @@ public class DatabaseHandler{
      */
     public void tearDownDatabaseAndSetBackUp() throws SQLException, IOException {
 
+        createDatabase();
+
         String subjectTable = "subject";
         String roomTable = "room";
         String lecturerTable = "lecturer";
@@ -39,7 +41,6 @@ public class DatabaseHandler{
         dropTable(roomTable);
         dropTable(lecturerTable);
 
-        createDatabase();
 //TODO Filling and creation of tables has to be done in a specific order due to FK constraint, fix?
         createTableFromMetaData(roomTable);
         createTableFromMetaData(lecturerTable);
@@ -372,6 +373,8 @@ public class DatabaseHandler{
             Statement stmt = connection.createStatement();
             String query = "CREATE SCHEMA IF NOT EXISTS " + getDatabaseNameFromProperties() + ";";
             stmt.executeUpdate(query);
+            databaseConnection.setDataSourceDatabaseName(getPropertyFilePath());
+
         }
     }
 

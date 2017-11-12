@@ -12,7 +12,6 @@ import static org.junit.Assert.*;
 
 public class InputHandlerTest {
 
-    DatabaseHandler databaseHandler = new DatabaseHandler();
     private final String lineBreak = System.getProperty("line.separator");
     private final String userInputOnPropertiesMenu = "3" + lineBreak + "localhost" + lineBreak + "";
 
