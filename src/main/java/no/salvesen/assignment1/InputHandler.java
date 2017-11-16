@@ -29,10 +29,9 @@ public class InputHandler {
         try {
             databaseHandler = new DatabaseHandler(propertiesHandler);
         } catch (IOException e) {
-            //TODO fix
-            e.printStackTrace();
+            exceptionHandler.outputIOException("fileissue");
         } catch (SQLException e) {
-            e.printStackTrace();
+            exceptionHandler.outputSQLException("connect");
         }
         userInput = new Scanner(System.in);
     }
@@ -119,16 +118,13 @@ public class InputHandler {
             } catch (FileNotFoundException e) {
                 exceptionHandler.outputFileNotFoundException();
             } catch (IOException e) {
-                //TODO fix
-                e.printStackTrace();
+                exceptionHandler.outputIOException("connect");
             }
 
             try {
                 showMainMenu();
             } catch (SQLException e) {
                 exceptionHandler.outputSQLException("createTable");
-                //TODO fix
-                e.printStackTrace();
             } catch (FileNotFoundException e) {
                 exceptionHandler.outputFileNotFoundException();
             }
@@ -204,8 +200,6 @@ public class InputHandler {
                     break;
                 case "8":
                     finished = true;
-                    //TODO fix this
-//                    System.exit(0);
                     break;
                 default:
                     System.out.println("Incorrect choice, please try again.");
@@ -260,7 +254,6 @@ public class InputHandler {
                     break;
                 case "9":
                     finished = true;
-                    //                    System.exit(0);
                     return;
                 default:
                     System.out.println("Incorrect choice, please try again.");

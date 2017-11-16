@@ -36,21 +36,11 @@ public class DatabaseConnection {
         return dataSource.getConnection();
     }
 
-    public void setDataSourceDatabaseName() {
+    public void setDataSourceDatabaseName() throws IOException {
         Properties properties = new Properties();
-        InputStream input = null;
-        try {
-            input = new FileInputStream(propertiesHandler.getPropertyFilePath());
-        } catch (FileNotFoundException e) {
-            //TODO Fix
-            e.printStackTrace();
-        }
+        InputStream input = new FileInputStream(propertiesHandler.getPropertyFilePath());
+        properties.load(input);
 
-        try {
-            properties.load(input);
-        } catch (IOException e) {
-            System.out.println("ERROR IN DATABASECONNECTION");
-        }
         dataSource.setDatabaseName(properties.getProperty("databaseName"));
     }
 
