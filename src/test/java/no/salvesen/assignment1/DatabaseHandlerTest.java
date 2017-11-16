@@ -29,7 +29,6 @@ public class DatabaseHandlerTest {
     @Before
     public void setUp() throws Exception {
         propertiesHandler.setPropertyFilePath("src/test/files/testDatabaseLogin.properties");
-
         databaseHandler.startConnection();
         databaseHandler.setUpDatabase();
 

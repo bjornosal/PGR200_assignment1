@@ -83,6 +83,7 @@ public class InputHandlerTest {
         InputHandler inputHandler = new InputHandler();
         Menu menu = new Menu();
         inputHandler.startMenuLoop();
+
         String printedByApplication = outputStream.toString();
 
         for (String menuOption : menu.getMainMenuChoices()) {

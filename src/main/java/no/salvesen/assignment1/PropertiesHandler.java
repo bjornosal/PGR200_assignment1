@@ -12,10 +12,8 @@ public class PropertiesHandler {
 
     private String propertyFilePath;
 
-    private boolean isSessionFile;
 
     public PropertiesHandler() {
-        isSessionFile = false;
     }
 
     public void initializeProperties(MysqlDataSource dataSource) throws IOException {

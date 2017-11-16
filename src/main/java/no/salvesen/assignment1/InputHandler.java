@@ -15,8 +15,8 @@ public class InputHandler {
     private ExceptionHandler exceptionHandler;
     private PropertiesHandler propertiesHandler;
 
-    private final String defaultPropertiesFilePath = "src/files/defaultDatabaseConfig.properties";
-    private final String userEnteredPropertiesFilePath = "src/files/userEnteredDatabaseLogin.properties";
+    private final String DEFAULT_PROPERTIES_FILEPATH = "src/files/defaultDatabaseConfig.properties";
+    private final String USER_ENTERED_PROPERTIES_FILEPATH = "src/files/userEnteredDatabaseLogin.properties";
     private boolean finished = false;
 
     private Scanner userInput;
@@ -43,10 +43,9 @@ public class InputHandler {
      * @throws IOException If unable to find the file.
      */
     private void setUpProperties() throws IOException, SQLException {
-        boolean finished = false;
         String menuChoice;
-
-        while (!finished) {
+        boolean setUp = false;
+        while (!setUp) {
             Properties properties = new Properties();
             System.out.println(menu.propertiesMenu());
             menuChoice = userInput.nextLine();
@@ -54,17 +53,26 @@ public class InputHandler {
 
                 //Use default properties
                 case "1":
-                    propertiesHandler.setPropertyFilePath(defaultPropertiesFilePath);
-                    finished = true;
+                    if(!isDefaultDatabaseLoginPropertiesFileIsEmpty()) {
+                        setUserProperties(properties);
+                    } else {
+                        propertiesHandler.setPropertyFilePath(DEFAULT_PROPERTIES_FILEPATH);
+                        setUp = true;
+                    }
                     break;
                 //use properties previously set by user
                 case "2":
-                    propertiesHandler.setPropertyFilePath(userEnteredPropertiesFilePath);
-                    finished = true;
+                    if(!isDefaultDatabaseLoginPropertiesFileIsEmpty()) {
+                        setUserProperties(properties);
+                    } else {
+                        propertiesHandler.setPropertyFilePath(DEFAULT_PROPERTIES_FILEPATH);
+                        setUp = true;
+                    }
                     break;
                 //Enter new properties
                 case "3":
                     setUserProperties(properties);
+                    setUp = true;
                     break;
                 default:
                     System.out.println("Incorrect choice, please try again.");
@@ -95,13 +103,13 @@ public class InputHandler {
     public void startMenuLoop() {
         boolean connected = false;
 
-        while (!connected  && !finished) {
+        while (!connected && !finished) {
             try {
                 setUpProperties();
             } catch (IOException e) {
                 exceptionHandler.outputIOException("writeprop");
             } catch (SQLException e) {
-                e.printStackTrace();
+                exceptionHandler.outputIOException("createdatabase");
             }
             try {
                 databaseHandler.tearDownDatabaseAndSetBackUp();
@@ -111,16 +119,19 @@ public class InputHandler {
             } catch (FileNotFoundException e) {
                 exceptionHandler.outputFileNotFoundException();
             } catch (IOException e) {
+                //TODO fix
                 e.printStackTrace();
             }
-        }
-        try {
-            showMainMenu();
-        } catch (SQLException e) {
-            exceptionHandler.outputSQLException("createTable");
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            exceptionHandler.outputFileNotFoundException();
+
+            try {
+                showMainMenu();
+            } catch (SQLException e) {
+                exceptionHandler.outputSQLException("createTable");
+                //TODO fix
+                e.printStackTrace();
+            } catch (FileNotFoundException e) {
+                exceptionHandler.outputFileNotFoundException();
+            }
         }
     }
 
@@ -309,8 +320,13 @@ public class InputHandler {
     }
 
     private boolean isDefaultDatabaseLoginPropertiesFileIsEmpty() {
-        File defaultDatabaseLogin = new File("src/files/defaultDatabaseLogin.properties");
+        File defaultDatabaseLogin = new File(DEFAULT_PROPERTIES_FILEPATH);
         return defaultDatabaseLogin.length() > 0;
+    }
+
+    private boolean isUserEnteredDatabaseLoginPropertiesFileEmpty(){
+        File userEnteredDatabaseLogin = new File(USER_ENTERED_PROPERTIES_FILEPATH);
+        return userEnteredDatabaseLogin.length() > 0;
     }
 
     private void checkAndSetNewDatabaseName() throws IOException, SQLException {
@@ -342,13 +358,21 @@ public class InputHandler {
         properties.setProperty("databaseName", databaseName);
         properties.setProperty("databaseUser", databaseUser);
         properties.setProperty("databasePassword", databasePassword);
-        File userEnteredProperties = new File(userEnteredPropertiesFilePath);
 
-        try(FileOutputStream fileOut = new FileOutputStream(userEnteredProperties)) {
+        File typeOfLogin;
+
+        System.out.println("Use these properties as default? Y/N");
+        if(userInput.nextLine().equalsIgnoreCase("Y")) {
+            typeOfLogin = new File(DEFAULT_PROPERTIES_FILEPATH);
+        } else {
+            typeOfLogin = new File(USER_ENTERED_PROPERTIES_FILEPATH);
+        }
+
+        try(FileOutputStream fileOut = new FileOutputStream(typeOfLogin)) {
             properties.store(fileOut, "Added by user");
             System.out.println("Property file set up. Attempting to connect.\n");
-            propertiesHandler.setPropertyFilePath(userEnteredPropertiesFilePath);
-            finished = true;
+            propertiesHandler.setPropertyFilePath(USER_ENTERED_PROPERTIES_FILEPATH);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
