@@ -10,28 +10,22 @@ import java.util.Properties;
 public class DatabaseConnection {
 
     private MysqlDataSource dataSource;
+    private PropertiesHandler propertiesHandler;
 
-    public DatabaseConnection() {
+    public DatabaseConnection(PropertiesHandler propertiesHandler) {
         dataSource = new MysqlDataSource();
+        this.propertiesHandler = propertiesHandler;
     }
 
     /**
      * Sets up the properties for the datasource.
      *
-     * @param propertyFilePath Filepath to a properties file.
-     * @throws IOException If no file is found or unable to load the inputstream.
+     * @throws IOException If no file is found or unable to load the InputStream.
      */
-    public void initializeProperties(String propertyFilePath) throws IOException {
-        Properties properties = new Properties();
-        InputStream input = new FileInputStream(propertyFilePath);
-
-        properties.load(input);
-
-        dataSource.setServerName(properties.getProperty("serverName"));
-//        dataSource.setDatabaseName(properties.getProperty("databaseName"));
-        dataSource.setUser(properties.getProperty("databaseUser"));
-        dataSource.setPassword(properties.getProperty("databasePassword"));
+    public void initializeProperties() throws IOException {
+        propertiesHandler.initializeProperties(dataSource);
     }
+
 
     /**
      * Returns a connection to the database.
@@ -42,11 +36,11 @@ public class DatabaseConnection {
         return dataSource.getConnection();
     }
 
-    public void setDataSourceDatabaseName(String propertyFilePath) {
+    public void setDataSourceDatabaseName() {
         Properties properties = new Properties();
         InputStream input = null;
         try {
-            input = new FileInputStream(propertyFilePath);
+            input = new FileInputStream(propertiesHandler.getPropertyFilePath());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -57,6 +51,9 @@ public class DatabaseConnection {
             System.out.println("ERROR IN DATABASECONNECTION");
         }
         dataSource.setDatabaseName(properties.getProperty("databaseName"));
+    }
 
+    public MysqlDataSource getDataSource() {
+        return dataSource;
     }
 }

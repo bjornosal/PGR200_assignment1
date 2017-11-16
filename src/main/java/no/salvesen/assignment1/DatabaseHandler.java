@@ -1,34 +1,57 @@
 package no.salvesen.assignment1;
 
-
 import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Properties;
 
 public class DatabaseHandler{
 
     private DatabaseConnection databaseConnection;
     private FileReader fileReader;
-    private String propertyFilePath;
     private ArrayList<String> foreignKeysToBeAdded;
+    private PropertiesHandler propertiesHandler;
+    private PrintFormatHandler printFormatHandler;
 
-    public  DatabaseHandler() throws IOException, SQLException {
-        databaseConnection = new DatabaseConnection();
+    /**
+     * Instantiates a new Database handler.
+     *
+     * @throws IOException  the io exception
+     * @throws SQLException the sql exception
+     */
+    public  DatabaseHandler(PropertiesHandler propertiesHandler) throws IOException, SQLException {
         fileReader  = new FileReader();
+        printFormatHandler = new PrintFormatHandler(fileReader);
+        this.propertiesHandler = propertiesHandler;
+        databaseConnection = new DatabaseConnection(propertiesHandler);
         foreignKeysToBeAdded = new ArrayList<>();
     }
 
+    /**
+     * Instantiates a new Database handler.
+     *
+     * @param subjectPathName           the subject path name
+     * @param roomPathName              the room path name
+     * @param lecturerPathName          the lecturer path name
+     * @param lecturerInSubjectPathName the lecturer in subject path name
+     * @throws IOException  the io exception
+     * @throws SQLException the sql exception
+     */
     public  DatabaseHandler(String subjectPathName, String roomPathName, String lecturerPathName, String lecturerInSubjectPathName) throws IOException, SQLException {
-        databaseConnection = new DatabaseConnection();
+        databaseConnection = new DatabaseConnection(propertiesHandler);
         fileReader  = new FileReader(subjectPathName, roomPathName, lecturerPathName, lecturerInSubjectPathName);
         foreignKeysToBeAdded = new ArrayList<>();
 
     }
 
-    private void setUpDatabase() throws IOException, SQLException {
+    /**
+     * Sets up database.
+     *
+     * @throws IOException  the io exception
+     * @throws SQLException the sql exception
+     */
+    public void setUpDatabase() throws IOException, SQLException {
         createDatabase();
-        databaseConnection.setDataSourceDatabaseName(getPropertyFilePath());
+        databaseConnection.setDataSourceDatabaseName();
     }
     /**
      * Removes all existing tables and recreate them.
@@ -50,7 +73,6 @@ public class DatabaseHandler{
         dropTable(roomTable);
         dropTable(lecturerTable);
 
-//TODO Filling and creation of tables has to be done in a specific order due to FK constraint, fix?
         createTableFromMetaData(roomTable);
         createTableFromMetaData(lecturerTable);
         createTableFromMetaData(subjectTable);
@@ -174,10 +196,16 @@ public class DatabaseHandler{
                 statement.addBatch(foreignKeyQuery);
             }
             statement.executeBatch();
-
         }
     }
 
+    /**
+     * Gets subject name and lecturer name based on primary keys.
+     *
+     * @return the subject name and lecturer name based on primary keys
+     * @throws SQLException          the sql exception
+     * @throws FileNotFoundException the file not found exception
+     */
     public String getSubjectNameAndLecturerNameBasedOnPrimaryKeys() throws SQLException, FileNotFoundException {
         fileReader.readFile(fileReader.getFileByTableName("lecturer_in_subject"));
         String result = "";
@@ -189,7 +217,7 @@ public class DatabaseHandler{
         try (Connection connection = databaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             ResultSet resultSet = preparedStatement.executeQuery();
-            result += resultStringBuilder(resultSet);
+            result += printFormatHandler.resultStringBuilder(resultSet, getColumnCountOfTable(fileReader.getTableName()), getMaxLengthOfColumnsByTableName());
         }
         return result;
     }
@@ -212,7 +240,8 @@ public class DatabaseHandler{
             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, columnValue);
             ResultSet resultSet = preparedStatement.executeQuery();
-            result += resultStringBuilder(resultSet);
+
+            result += printFormatHandler.resultStringBuilder(resultSet, getColumnCountOfTable(fileReader.getTableName()), getMaxLengthOfColumnsByTableName());
         }
         return result;
     }
@@ -243,28 +272,6 @@ public class DatabaseHandler{
         return searchQuery.toString();
     }
 
-    /**
-     * Dynamic creation of result based on information from table file and ResultSet
-     * @param resultSet ResultSet for the query.
-     * @return A prepared string to print out.
-     * @throws SQLException If unable to get column count, or build a ResultHeader based on file.
-     * @throws FileNotFoundException If unable to find file.
-     */
-    private String resultStringBuilder(ResultSet resultSet) throws SQLException, FileNotFoundException {
-        String[] rowResult = new String[getColumnCountOfTable(fileReader.getTableName())];
-        StringBuilder result = new StringBuilder();
-        result.append(getResultHeader(fileReader.getTableName()));
-        while(resultSet.next()) {
-            for(int i = 1; i <= getColumnCountOfTable(fileReader.getTableName()); i++) {
-                rowResult[i - 1] = resultSet.getObject(i).toString();
-                if (i == getColumnCountOfTable(fileReader.getTableName())) {
-                    result.append("\n");
-                }
-            }
-            result.append(String.format(getResultFormat(),rowResult));
-        }
-        return result.toString();
-    }
 
     /**
      * Gets all rows based on table name
@@ -281,24 +288,9 @@ public class DatabaseHandler{
         try(Connection connection = databaseConnection.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             ResultSet resultSet = preparedStatement.executeQuery();
-            result += resultStringBuilder(resultSet);
+            result += printFormatHandler.resultStringBuilder(resultSet, getColumnCountOfTable(fileReader.getTableName()), getMaxLengthOfColumnsByTableName());
         }
         return result;
-    }
-
-    /**
-     * Creates a format for the result to be printed out on based on the MetaData.
-     * @return String ready for a String.Format print.
-     * @throws SQLException If unable to get connection.
-     */
-    private String getResultFormat() throws SQLException {
-        StringBuilder resultFormat = new StringBuilder();
-        ArrayList<String> maxLengthOfColumn = getMaxLengthOfColumnsByTableName();
-        for(int i = 0; i < fileReader.getTableColumnCount(); i++) {
-            resultFormat.append("%-").append(maxLengthOfColumn.get(i)).append("s | ");
-        }
-
-        return resultFormat.toString();
     }
 
     /**
@@ -333,7 +325,6 @@ public class DatabaseHandler{
      */
     private String createMaxLengthSelect() {
         StringBuilder query = new StringBuilder("SELECT ");
-        //Build bigger select and run that query, take all results into an array
         for(int i = 0; i < fileReader.getTableColumnCount(); i++) {
             query.append("max(length(").append(fileReader.getColumnNames().get(i)).append("))");
             if(i < fileReader.getTableColumnCount()-1) {
@@ -380,24 +371,44 @@ public class DatabaseHandler{
      * @throws IOException If unable to get access to the properties file.
      */
     public void createDatabase() throws SQLException, IOException {
-        try(Connection connection = databaseConnection.getConnection()) {
+        try (Connection connection = databaseConnection.getConnection()) {
             Statement stmt = connection.createStatement();
-            String query = "CREATE SCHEMA IF NOT EXISTS " + getDatabaseNameFromProperties() + ";";
+            String query = "CREATE SCHEMA IF NOT EXISTS " + propertiesHandler.getDatabaseNameFromProperties() + ";";
             stmt.executeUpdate(query);
         }
     }
+
 
     /**
      * Used to drop the schema
      * @throws SQLException
      * @throws IOException
      */
-    public void dropDatabase() throws SQLException, IOException {
+    protected void dropDatabase() throws SQLException, IOException {
         try (Connection connection = databaseConnection.getConnection()) {
             Statement stmt = connection.createStatement();
-            String query = "DROP SCHEMA " + getDatabaseNameFromProperties() + ";";
+            String query = "DROP SCHEMA " + propertiesHandler.getDatabaseNameFromProperties() + ";";
             stmt.executeUpdate(query);
         }
+    }
+
+    /**
+     * Does database exist boolean.
+     *
+     * @return the boolean
+     * @throws SQLException the sql exception
+     * @throws IOException  the io exception
+     */
+    protected boolean databaseExists() throws SQLException, IOException {
+        try(Connection connection = databaseConnection.getConnection()) {
+            ResultSet resultSet = connection.getMetaData().getCatalogs();
+            while(resultSet.next()) {
+                if(resultSet.getString(1).equalsIgnoreCase(propertiesHandler.getDatabaseNameFromProperties())){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**
@@ -475,53 +486,10 @@ public class DatabaseHandler{
     }
 
     /**
-     * Gets the header to be put at top of results that are printed.
-     * @param tableName Which table to get result for.
-     * @return String A String to be added to a print.
-     * @throws FileNotFoundException If unable to find file.
-     * @throws SQLException If unable to get connection.
-     */
-    private String getResultHeader(String tableName) throws FileNotFoundException, SQLException {
-        fileReader.readFile(fileReader.getFileByTableName(tableName));
-        String[] columnDisplayNames = new String[fileReader.getTableColumnCount()];
-        for (int i = 0; i < columnDisplayNames.length; i++) {
-            columnDisplayNames[i] = fileReader.getDisplayNames().get(i);
-        }
-        return String.format(getResultFormat(), columnDisplayNames);
-    }
-
-    /**
-     * Gets the database name from the properties file.
-     * @return String Database name
-     * @throws IOException If unable to find properties file.
-     */
-    private String getDatabaseNameFromProperties() throws IOException {
-        Properties properties = new Properties();
-        InputStream input = new FileInputStream(getPropertyFilePath());
-
-        properties.load(input);
-
-        return properties.getProperty("databaseName");
-    }
-
-    /**
      * Initializes the database with the properties file.
      * @throws IOException If unable to find file.
      */
     public void startConnection() throws IOException {
-        databaseConnection.initializeProperties(getPropertyFilePath());
+        databaseConnection.initializeProperties();
     }
-
-
-    private String getPropertyFilePath() {
-        return propertyFilePath;
-    }
-
-    protected void setPropertyFilePath(String propertyFilePath) {
-        this.propertyFilePath = propertyFilePath;
-    }
-
-
-
-
 }

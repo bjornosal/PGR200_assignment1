@@ -33,6 +33,14 @@ public class FileReader {
         setLecturer_in_subject_file(new File("src/files/database files/lecturer_in_subject.csv"));
     }
 
+    /**
+     * Instantiates a new File reader.
+     *
+     * @param subjectPathName           the subject path name
+     * @param roomPathName              the room path name
+     * @param lecturerPathName          the lecturer path name
+     * @param lecturerInSubjectPathName the lecturer in subject path name
+     */
     public FileReader(String subjectPathName, String roomPathName, String lecturerPathName, String lecturerInSubjectPathName) {
         setSubjectFile(new File(subjectPathName));
         setRoomFile(new File(roomPathName));

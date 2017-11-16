@@ -14,6 +14,7 @@ import static org.junit.Assert.*;
 
 public class DatabaseHandlerTest {
     private DatabaseHandler databaseHandler;
+    private PropertiesHandler propertiesHandler;
     private final String subjectFilePathName = "src/test/Test_table_files/subject_test_file.csv";
     private final String lecturerFilePathName = "src/test/Test_table_files/lecturer_test_file.csv";
     private final String roomFilePathName = "src/test/Test_table_files/room_test_file.csv";
@@ -21,12 +22,17 @@ public class DatabaseHandlerTest {
 
     public DatabaseHandlerTest() throws IOException, SQLException {
         databaseHandler = new DatabaseHandler(subjectFilePathName, roomFilePathName,lecturerFilePathName, lecturerInSubjectPathName);
+        propertiesHandler = new PropertiesHandler();
     }
 
     @Before
     public void setUp() throws Exception {
-        databaseHandler.setPropertyFilePath("src/test/files/testDatabaseLogin.properties");
+        propertiesHandler.setPropertyFilePath("src/test/files/testDatabaseLogin.properties");
+
         databaseHandler.startConnection();
+        databaseHandler.setUpDatabase();
+
+
     }
 
     @Test

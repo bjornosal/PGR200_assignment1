@@ -13,6 +13,8 @@ public class InputHandler {
     private DatabaseHandler databaseHandler;
     private FileReader fileReader;
     private ExceptionHandler exceptionHandler;
+    private PropertiesHandler propertiesHandler;
+
     private final String defaultPropertiesFilePath = "src/files/defaultDatabaseConfig.properties";
     private final String userEnteredPropertiesFilePath = "src/files/userEnteredDatabaseLogin.properties";
     private boolean finished = false;
@@ -22,16 +24,17 @@ public class InputHandler {
     public InputHandler()  {
         fileReader = new FileReader();
         exceptionHandler = new ExceptionHandler();
-
-        userInput = new Scanner(System.in);
-        try {
-            databaseHandler = new DatabaseHandler();
-        } catch (IOException e) {
-            exceptionHandler.outputIOException("fileissue");
-        } catch (SQLException e) {
-            exceptionHandler.outputSQLException("createdatabase");
-        }
         menu = new Menu();
+        propertiesHandler = new PropertiesHandler();
+        try {
+            databaseHandler = new DatabaseHandler(propertiesHandler);
+        } catch (IOException e) {
+            //TODO fix
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        userInput = new Scanner(System.in);
     }
 
 
@@ -51,12 +54,12 @@ public class InputHandler {
 
                 //Use default properties
                 case "1":
-                    databaseHandler.setPropertyFilePath(defaultPropertiesFilePath);
+                    propertiesHandler.setPropertyFilePath(defaultPropertiesFilePath);
                     finished = true;
                     break;
                 //use properties previously set by user
                 case "2":
-                    databaseHandler.setPropertyFilePath(userEnteredPropertiesFilePath);
+                    propertiesHandler.setPropertyFilePath(userEnteredPropertiesFilePath);
                     finished = true;
                     break;
                 //Enter new properties
@@ -80,7 +83,7 @@ public class InputHandler {
                     try(FileOutputStream fileOut = new FileOutputStream(userEnteredProperties)) {
                         properties.store(fileOut, "Added by user");
                         System.out.println("Property file set up. Attempting to connect.\n");
-                        databaseHandler.setPropertyFilePath(userEnteredPropertiesFilePath);
+                        propertiesHandler.setPropertyFilePath(userEnteredPropertiesFilePath);
                         finished = true;
                     }
                     break;
@@ -114,9 +117,8 @@ public class InputHandler {
             try {
                 setUpProperties();
             } catch (IOException e) {
-                exceptionHandler.outputIOException("WriteProp");
+                exceptionHandler.outputIOException("writeprop");
             }
-
             try {
                 databaseHandler.tearDownDatabaseAndSetBackUp();
                 connected = true;
@@ -262,7 +264,7 @@ public class InputHandler {
                     showMainMenu();
                     break;
                 case "9":
-finished = true;
+                    finished = true;
                     //                    System.exit(0);
                     return;
                 default:
@@ -321,5 +323,4 @@ finished = true;
             }
         }
     }
-
 }

@@ -21,6 +21,7 @@ public class FileReaderTest {
         fileReader.setRoomFile(new File("src/test/Test_table_files/room_test_file.csv"));
     }
 
+
     /**
      * Asserts that the readFile method works as intended
      * by checking that all fields is the correct size according to the file.
