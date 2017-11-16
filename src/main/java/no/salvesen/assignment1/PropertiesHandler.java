@@ -8,14 +8,26 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+/**
+ * The type Properties handler.
+ */
 public class PropertiesHandler {
 
     private String propertyFilePath;
 
 
+    /**
+     * Instantiates a new Properties handler.
+     */
     public PropertiesHandler() {
     }
 
+    /**
+     * Initialize properties.
+     *
+     * @param dataSource the data source
+     * @throws IOException the io exception
+     */
     public void initializeProperties(MysqlDataSource dataSource) throws IOException {
         Properties properties = new Properties();
 
@@ -28,14 +40,13 @@ public class PropertiesHandler {
             dataSource.setPassword(properties.getProperty("databasePassword"));
         }
     }
-    public String getPropertyFilePath() {
-        return propertyFilePath;
-    }
 
-    public void setPropertyFilePath(String propertyFilePath) {
-        this.propertyFilePath = propertyFilePath;
-    }
-
+    /**
+     * Gets database name from properties.
+     *
+     * @return the database name from properties
+     * @throws IOException the io exception
+     */
     public String getDatabaseNameFromProperties() throws IOException {
         Properties properties = new Properties();
         try (InputStream input = new FileInputStream(propertyFilePath)) {
@@ -44,6 +55,12 @@ public class PropertiesHandler {
         }
     }
 
+    /**
+     * Sets database name in properties.
+     *
+     * @param databaseName the database name
+     * @throws IOException the io exception
+     */
     protected void setDatabaseNameInProperties(String databaseName) throws IOException {
         Properties properties = new Properties();
         try(InputStream input = new FileInputStream(propertyFilePath);
@@ -52,5 +69,23 @@ public class PropertiesHandler {
             properties.setProperty("databaseName", databaseName);
             properties.store(fileOut, "Redefined by user");
         }
+    }
+
+    /**
+     * Gets property file path.
+     *
+     * @return the property file path
+     */
+    public String getPropertyFilePath() {
+        return propertyFilePath;
+    }
+
+    /**
+     * Sets property file path.
+     *
+     * @param propertyFilePath the property file path
+     */
+    public void setPropertyFilePath(String propertyFilePath) {
+        this.propertyFilePath = propertyFilePath;
     }
 }

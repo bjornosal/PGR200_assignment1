@@ -54,7 +54,7 @@ public class DatabaseConnection {
         dataSource.setDatabaseName(properties.getProperty("databaseName"));
     }
 
-    public MysqlDataSource getDataSource() {
+    private MysqlDataSource getDataSource() {
         return dataSource;
     }
 }

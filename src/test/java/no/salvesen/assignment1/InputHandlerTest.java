@@ -52,6 +52,7 @@ public class InputHandlerTest {
             e.printStackTrace();
         }
 
+        //Source:https://stackoverflow.com/questions/23653875/how-to-simulate-multiple-user-input-for-junit
         String serverName = properties.getProperty("serverName");
         String databaseName = properties.getProperty("databaseName");
         String databaseUserName = properties.getProperty("databaseUser");
@@ -79,7 +80,6 @@ public class InputHandlerTest {
 
     @Test
     public void startMenuLoop() throws Exception {
-//   Source:https://stackoverflow.com/questions/23653875/how-to-simulate-multiple-user-input-for-junit
         InputHandler inputHandler = new InputHandler();
         Menu menu = new Menu();
         inputHandler.startMenuLoop();

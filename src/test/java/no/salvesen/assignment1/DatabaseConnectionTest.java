@@ -7,8 +7,8 @@ import static org.junit.Assert.*;
 
 public class DatabaseConnectionTest {
 
-    PropertiesHandler propertiesHandler;
-    DatabaseConnection databaseConnection;
+    private PropertiesHandler propertiesHandler;
+    private DatabaseConnection databaseConnection;
 
     @Before
     public void setUp() throws Exception {
@@ -20,7 +20,8 @@ public class DatabaseConnectionTest {
 
     @Test
     public void initializeProperties() throws Exception {
-
+        databaseConnection.initializeProperties();
+        assertEquals(propertiesHandler.getDatabaseNameFromProperties(), "pgr200_assignment_1_salvesen_testing");
     }
 
     @Test
@@ -30,7 +31,7 @@ public class DatabaseConnectionTest {
 
     @Test
     public void setDataSourceDatabaseName() throws Exception {
-
+        databaseConnection.setDataSourceDatabaseName();
+        assertEquals(propertiesHandler.getDatabaseNameFromProperties(), "pgr200_assignment_1_salvesen_testing");
     }
-
 }
