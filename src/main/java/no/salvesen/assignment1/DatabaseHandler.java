@@ -257,8 +257,7 @@ public class DatabaseHandler{
     private String buildSelectQuery(boolean isSpecifiedSearch, String tableName, String columnName) {
         StringBuilder searchQuery = new StringBuilder();
         searchQuery.append("SELECT ");
-        for(int i = 0; i < fileReader.getTableColumnCount(); i++)
-        {
+        for(int i = 0; i < fileReader.getTableColumnCount(); i++) {
             searchQuery.append(fileReader.getColumnNames().get(i));
             if(i < fileReader.getTableColumnCount() - 1) {
                 searchQuery.append(", ");
