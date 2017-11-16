@@ -23,7 +23,7 @@ public class DatabaseConnection {
      * @throws IOException If no file is found or unable to load the InputStream.
      */
     public void initializeProperties() throws IOException {
-        propertiesHandler.initializeProperties(dataSource);
+        propertiesHandler.initializeProperties(getDataSource());
     }
 
 
@@ -42,6 +42,7 @@ public class DatabaseConnection {
         try {
             input = new FileInputStream(propertiesHandler.getPropertyFilePath());
         } catch (FileNotFoundException e) {
+            //TODO Fix
             e.printStackTrace();
         }
 

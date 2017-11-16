@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import static org.junit.Assert.*;
 
 public class DatabaseHandlerTest {
+    private InputHandler inputHandler;
     private DatabaseHandler databaseHandler;
     private PropertiesHandler propertiesHandler;
     private final String subjectFilePathName = "src/test/Test_table_files/subject_test_file.csv";
@@ -21,8 +22,8 @@ public class DatabaseHandlerTest {
     private final String lecturerInSubjectPathName = "src/test/Test_table_files/lecturer_in_subject_test_file.csv";
 
     public DatabaseHandlerTest() throws IOException, SQLException {
-        databaseHandler = new DatabaseHandler(subjectFilePathName, roomFilePathName,lecturerFilePathName, lecturerInSubjectPathName);
         propertiesHandler = new PropertiesHandler();
+        databaseHandler = new DatabaseHandler(propertiesHandler);
     }
 
     @Before

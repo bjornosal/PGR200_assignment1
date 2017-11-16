@@ -42,7 +42,7 @@ public class InputHandler {
      * Loop for choices regarding which properties to use to connect to a database.
      * @throws IOException If unable to find the file.
      */
-    private void setUpProperties() throws IOException {
+    private void setUpProperties() throws IOException, SQLException {
         boolean finished = false;
         String menuChoice;
 
@@ -64,38 +64,18 @@ public class InputHandler {
                     break;
                 //Enter new properties
                 case "3":
-                    System.out.println("Server name: ");
-                    String serverName = userInput.nextLine();
-                    System.out.println("Database name: ");
-                    String databaseName = userInput.nextLine();
-                    System.out.println("Username: ");
-                    String databaseUser = userInput.nextLine();
-                    System.out.println("Password: ");
-                    String databasePassword = userInput.nextLine();
-
-                    //Filling property file
-                    properties.setProperty("serverName", serverName);
-                    properties.setProperty("databaseName", databaseName);
-                    properties.setProperty("databaseUser", databaseUser);
-                    properties.setProperty("databasePassword", databasePassword);
-                    File userEnteredProperties = new File(userEnteredPropertiesFilePath);
-
-                    try(FileOutputStream fileOut = new FileOutputStream(userEnteredProperties)) {
-                        properties.store(fileOut, "Added by user");
-                        System.out.println("Property file set up. Attempting to connect.\n");
-                        propertiesHandler.setPropertyFilePath(userEnteredPropertiesFilePath);
-                        finished = true;
-                    }
+                    setUserProperties(properties);
                     break;
-
                 default:
                     System.out.println("Incorrect choice, please try again.");
                     break;
 
             }
         }
-        //Starts database with the properties chosen.
         databaseHandler.startConnection();
+
+        checkAndSetNewDatabaseName();
+
         try {
             databaseHandler.createDatabase();
         } catch (SQLException e) {
@@ -103,6 +83,8 @@ public class InputHandler {
             setUpProperties();
         }
     }
+
+
 
     /**
      * Starting the loop to put the customer in, which in turn starts the corresponding loops.
@@ -118,6 +100,8 @@ public class InputHandler {
                 setUpProperties();
             } catch (IOException e) {
                 exceptionHandler.outputIOException("writeprop");
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
             try {
                 databaseHandler.tearDownDatabaseAndSetBackUp();
@@ -323,4 +307,52 @@ public class InputHandler {
             }
         }
     }
+
+    private boolean isDefaultDatabaseLoginPropertiesFileIsEmpty() {
+        File defaultDatabaseLogin = new File("src/files/defaultDatabaseLogin.properties");
+        return defaultDatabaseLogin.length() > 0;
+    }
+
+    private void checkAndSetNewDatabaseName() throws IOException, SQLException {
+        while(databaseHandler.databaseExists()) {
+            System.out.println("Database with that name already exists.");
+            System.out.println("Create new database? - if not, will overwrite. Y/N");
+            if(userInput.nextLine().equalsIgnoreCase("y")) {
+                System.out.println("Database name:");
+                String databaseName = userInput.nextLine();
+                propertiesHandler.setDatabaseNameInProperties(databaseName);
+            } else {
+                break;
+            }
+        }
+    }
+
+    private void setUserProperties(Properties properties) {
+        System.out.println("Server name: ");
+        String serverName = userInput.nextLine();
+        System.out.println("Database name: ");
+        String databaseName = userInput.nextLine();
+        System.out.println("Username: ");
+        String databaseUser = userInput.nextLine();
+        System.out.println("Password: ");
+        String databasePassword = userInput.nextLine();
+
+        //Filling property file
+        properties.setProperty("serverName", serverName);
+        properties.setProperty("databaseName", databaseName);
+        properties.setProperty("databaseUser", databaseUser);
+        properties.setProperty("databasePassword", databasePassword);
+        File userEnteredProperties = new File(userEnteredPropertiesFilePath);
+
+        try(FileOutputStream fileOut = new FileOutputStream(userEnteredProperties)) {
+            properties.store(fileOut, "Added by user");
+            System.out.println("Property file set up. Attempting to connect.\n");
+            propertiesHandler.setPropertyFilePath(userEnteredPropertiesFilePath);
+            finished = true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }

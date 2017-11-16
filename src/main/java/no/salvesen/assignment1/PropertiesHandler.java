@@ -55,20 +55,4 @@ public class PropertiesHandler {
             properties.store(fileOut, "Redefined by user");
         }
     }
-
-    public void waitUntilFileIsClosed() {
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            System.out.println("Wait was interrupted.");
-        }
-    }
-
-    public void setSessionFile(boolean isSessionFile) {
-        this.isSessionFile = isSessionFile;
-    }
-
-    public boolean isSessionFile() {
-        return isSessionFile;
-    }
 }

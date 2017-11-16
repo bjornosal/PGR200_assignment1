@@ -23,6 +23,7 @@ public class DatabaseHandler{
         printFormatHandler = new PrintFormatHandler(fileReader);
         this.propertiesHandler = propertiesHandler;
         databaseConnection = new DatabaseConnection(propertiesHandler);
+
         foreignKeysToBeAdded = new ArrayList<>();
     }
 
