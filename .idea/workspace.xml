@@ -3,9 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="038afa83-f56f-4621-9260-50e1081a1fb9" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/files/userEnteredDatabaseLogin.properties" afterPath="$PROJECT_DIR$/src/files/userEnteredDatabaseLogin.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/InputHandler.java" afterPath="$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/InputHandler.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/DatabaseHandler.java" afterPath="$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/DatabaseHandler.java" />
     </list>
     <ignored path="assignment1.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -96,11 +94,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="InputHandler.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="InputHandler.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/InputHandler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="400">
-              <caret line="313" column="24" lean-forward="true" selection-start-line="313" selection-start-column="24" selection-end-line="313" selection-end-column="24" />
+            <state relative-caret-position="196">
+              <caret line="292" column="39" lean-forward="true" selection-start-line="292" selection-start-column="39" selection-end-line="292" selection-end-column="39" />
               <folding />
             </state>
           </provider>
@@ -116,18 +114,18 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DatabaseHandler.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="DatabaseHandler.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/DatabaseHandler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="328">
-              <caret line="477" column="0" lean-forward="false" selection-start-line="477" selection-start-column="0" selection-end-line="477" selection-end-column="0" />
+            <state relative-caret-position="179">
+              <caret line="237" column="25" lean-forward="false" selection-start-line="237" selection-start-column="16" selection-end-line="237" selection-end-column="25" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <marker date="1510919989528" expanded="true" signature="7773:8024" ph="SELECT s.nam... subject" />
-                <marker date="1510919989528" expanded="true" signature="14244:14258" ph="SELECT * FRO... missingValue" />
-                <marker date="1510919989528" expanded="true" signature="15008:15029" ph="DROP TABLE I... " />
-                <marker date="1510919989528" expanded="true" signature="15513:15541" ph="CREATE SCHEM... IF" />
-                <marker date="1510919989528" expanded="true" signature="15991:16003" ph="DROP SCHEMA " />
+                <marker date="1510929540958" expanded="true" signature="7773:8024" ph="SELECT s.nam... subject" />
+                <marker date="1510929540958" expanded="true" signature="14552:14566" ph="SELECT * FRO... missingValue" />
+                <marker date="1510929540958" expanded="true" signature="15316:15337" ph="DROP TABLE I... " />
+                <marker date="1510929540958" expanded="true" signature="15821:15849" ph="CREATE SCHEM... IF" />
+                <marker date="1510929540958" expanded="true" signature="16299:16311" ph="DROP SCHEMA " />
               </folding>
             </state>
           </provider>
@@ -166,9 +164,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>createDatabase</find>
-      <find>propertyFile</find>
-      <find>createtest</find>
       <find>dropTable</find>
       <find>getrowsFrom</find>
       <find>setLec</find>
@@ -196,6 +191,9 @@
       <find>scanner</find>
       <find>System.exi</find>
       <find>tearDown</find>
+      <find>tableMenu</find>
+      <find>getResult</find>
+      <find>result +=</find>
     </findStrings>
     <replaceStrings>
       <replace>lineBreak</replace>
@@ -260,12 +258,12 @@
         <option value="$PROJECT_DIR$/src/test/Test_table_files/room_test_file.csv" />
         <option value="$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/ExceptionHandler.java" />
         <option value="$PROJECT_DIR$/src/files/database files/room.csv" />
-        <option value="$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/DatabaseHandler.java" />
         <option value="$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/PropertiesHandler.java" />
         <option value="$PROJECT_DIR$/src/test/java/no/salvesen/assignment1/InputHandlerTest.java" />
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/src/files/userEnteredDatabaseLogin.properties" />
         <option value="$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/InputHandler.java" />
+        <option value="$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/DatabaseHandler.java" />
       </list>
     </option>
   </component>
@@ -1123,14 +1121,7 @@
       <workItem from="1510479535702" duration="26515000" />
       <workItem from="1510828524552" duration="13964000" />
       <workItem from="1510843603371" duration="5303000" />
-      <workItem from="1510915371232" duration="9527000" />
-    </task>
-    <task id="LOCAL-00032" summary="Solution fully dynamic in creation, filling of, and printing of tables">
-      <created>1509275550237</created>
-      <option name="number" value="00032" />
-      <option name="presentableId" value="LOCAL-00032" />
-      <option name="project" value="LOCAL" />
-      <updated>1509275550237</updated>
+      <workItem from="1510915371232" duration="10964000" />
     </task>
     <task id="LOCAL-00033" summary="Foreign key implementation finished, should in theory work. Databases with working foreign keys has to be added to test properly">
       <created>1509280903628</created>
@@ -1468,7 +1459,14 @@
       <option name="project" value="LOCAL" />
       <updated>1510920704780</updated>
     </task>
-    <option name="localTasksCounter" value="81" />
+    <task id="LOCAL-00081" summary="Minor fix to logic in tablesearch menu - option 6 &quot;Fille a table with information from file.&quot;">
+      <created>1510928001684</created>
+      <option name="number" value="00081" />
+      <option name="presentableId" value="LOCAL-00081" />
+      <option name="project" value="LOCAL" />
+      <updated>1510928001684</updated>
+    </task>
+    <option name="localTasksCounter" value="82" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1504,7 +1502,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="270170000" />
+    <option name="totallyTimeSpent" value="271607000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1594,7 +1592,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Added link table with two primary keys. Fixed foreign key method. Changed database files and test files." />
     <MESSAGE value="Fixed issue when printing more than once, due to filereader issue-" />
     <MESSAGE value="Added check if table is required by linktable when dropping." />
     <MESSAGE value="Added hackish way of simulating userinput" />
@@ -1619,7 +1616,8 @@
     <MESSAGE value="Fixed issue where application would start the loop even if there was an error in the information-files." />
     <MESSAGE value="Added fix for something" />
     <MESSAGE value="Got coverage to 70% instead of 69% :(" />
-    <option name="LAST_COMMIT_MESSAGE" value="Got coverage to 70% instead of 69% :(" />
+    <MESSAGE value="Minor fix to logic in tablesearch menu - option 6 &quot;Fille a table with information from file.&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="Minor fix to logic in tablesearch menu - option 6 &quot;Fille a table with information from file.&quot;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1933,21 +1931,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/DatabaseHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="328">
-          <caret line="477" column="0" lean-forward="false" selection-start-line="477" selection-start-column="0" selection-end-line="477" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <marker date="1510919989528" expanded="true" signature="7773:8024" ph="SELECT s.nam... subject" />
-            <marker date="1510919989528" expanded="true" signature="14244:14258" ph="SELECT * FRO... missingValue" />
-            <marker date="1510919989528" expanded="true" signature="15008:15029" ph="DROP TABLE I... " />
-            <marker date="1510919989528" expanded="true" signature="15513:15541" ph="CREATE SCHEM... IF" />
-            <marker date="1510919989528" expanded="true" signature="15991:16003" ph="DROP SCHEMA " />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
@@ -1979,9 +1962,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/InputHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="400">
-          <caret line="313" column="24" lean-forward="true" selection-start-line="313" selection-start-column="24" selection-end-line="313" selection-end-column="24" />
+        <state relative-caret-position="196">
+          <caret line="292" column="39" lean-forward="true" selection-start-line="292" selection-start-column="39" selection-end-line="292" selection-end-column="39" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/DatabaseHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="179">
+          <caret line="237" column="25" lean-forward="false" selection-start-line="237" selection-start-column="16" selection-end-line="237" selection-end-column="25" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <marker date="1510929540958" expanded="true" signature="7773:8024" ph="SELECT s.nam... subject" />
+            <marker date="1510929540958" expanded="true" signature="14552:14566" ph="SELECT * FRO... missingValue" />
+            <marker date="1510929540958" expanded="true" signature="15316:15337" ph="DROP TABLE I... " />
+            <marker date="1510929540958" expanded="true" signature="15821:15849" ph="CREATE SCHEM... IF" />
+            <marker date="1510929540958" expanded="true" signature="16299:16311" ph="DROP SCHEMA " />
+          </folding>
         </state>
       </provider>
     </entry>

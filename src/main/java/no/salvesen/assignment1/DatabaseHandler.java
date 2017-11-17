@@ -234,8 +234,11 @@ public class DatabaseHandler{
             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, columnValue);
             ResultSet resultSet = preparedStatement.executeQuery();
-
-            result += printFormatHandler.resultStringBuilder(resultSet, getColumnCountOfTable(fileReader.getTableName()), getMaxLengthOfColumnsByTableName());
+            if (resultSet.next()) {
+                result += printFormatHandler.resultStringBuilder(resultSet, getColumnCountOfTable(fileReader.getTableName()), getMaxLengthOfColumnsByTableName());
+            } else {
+                System.out.println("No results were found. Please try again.");
+            }
         }
         return result;
     }
@@ -280,7 +283,11 @@ public class DatabaseHandler{
         try(Connection connection = databaseConnection.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             ResultSet resultSet = preparedStatement.executeQuery();
-            result += printFormatHandler.resultStringBuilder(resultSet, getColumnCountOfTable(fileReader.getTableName()), getMaxLengthOfColumnsByTableName());
+            if(resultSet.next()) {
+                result += printFormatHandler.resultStringBuilder(resultSet, getColumnCountOfTable(fileReader.getTableName()), getMaxLengthOfColumnsByTableName());
+            } else {
+                System.out.println("No results were found. Please try again.");
+            }
         }
         return result;
     }
