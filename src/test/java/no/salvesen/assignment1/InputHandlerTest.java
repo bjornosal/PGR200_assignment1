@@ -51,7 +51,7 @@ public class InputHandlerTest {
         String databaseUserName = properties.getProperty("databaseUser");
         String databaseUserPassword = properties.getProperty("databasePassword");
 
-        String USER_INPUT_ON_PROPERTIES_MENU = "3" + LINE_BREAK + serverName + LINE_BREAK + databaseName + LINE_BREAK + databaseUserName + LINE_BREAK + databaseUserPassword + LINE_BREAK;
+        String USER_INPUT_ON_PROPERTIES_MENU = "3" + LINE_BREAK + serverName + LINE_BREAK + databaseName + LINE_BREAK + databaseUserName + LINE_BREAK + databaseUserPassword + LINE_BREAK + "N" + LINE_BREAK;
 
         String allMenuOptionsSimulatedUserInput = USER_INPUT_ON_PROPERTIES_MENU + USER_INPUT_ON_MAIN_MENU_TO_GO_TO_SEARCH +
                 USER_INPUT_TO_SEARCH_FOR_SUBJECT + USER_INPUT_TO_SEARCH_FOR_ALL_SUBJECTS +

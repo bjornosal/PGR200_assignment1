@@ -15,7 +15,6 @@ public class PropertiesHandler {
 
     private String propertyFilePath;
 
-
     /**
      * Instantiates a new Properties handler.
      */
