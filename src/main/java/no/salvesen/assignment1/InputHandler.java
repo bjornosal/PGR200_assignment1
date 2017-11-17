@@ -289,7 +289,9 @@ public class InputHandler {
         while (true) {
             System.out.println("Possible tables are: ");
             printAllTableNames();
+            System.out.println("Write table name to choose, \nor \'return\' to return to main menu.");
             chosenTable = userInput.nextLine();
+
             for (String tableName : tableNames) {
                 if (chosenTable.equals(tableName)) {
                     if (chosenTable.equalsIgnoreCase("subject") || chosenTable.equalsIgnoreCase("lecturer")) {
@@ -313,6 +315,9 @@ public class InputHandler {
                     }
                     return;
                 }
+            }
+            if(chosenTable.equalsIgnoreCase("return")) {
+                return;
             }
         }
     }

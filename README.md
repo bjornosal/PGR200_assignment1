@@ -64,6 +64,13 @@ Using the example below, the table will be as follows:
 | PRO101        | Webprosjekt                   |                 199 |    sequential |      4.0 |          
 
 
-## Generate Javadoc Documentation
+### Generate Javadoc Documentation
 To generate a complete javadoc documentation for the application, run the Maven plugin "javadoc"
-either through your IDE or run the command *mvn javadoc:javadoc*
+either through your IDE or run the command *__mvn javadoc:javadoc__*
+
+
+### Generate Code Coverage Report
+
+To generate a coverage report for the application; run the following maven command: 
+*__mvn clean test jacoco:prepare-agent jacoco:report.__* This should generate a file under target/site/jacoco named index.html.
+Open the file in any browser and go through the coverage report. 
