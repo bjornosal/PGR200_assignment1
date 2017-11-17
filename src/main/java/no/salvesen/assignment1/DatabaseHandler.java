@@ -38,23 +38,6 @@ public class DatabaseHandler{
     }
 
     /**
-     * Instantiates a new Database handler.
-     *
-     * @param subjectPathName           the subject path name
-     * @param roomPathName              the room path name
-     * @param lecturerPathName          the lecturer path name
-     * @param lecturerInSubjectPathName the lecturer in subject path name
-     * @throws IOException  the io exception
-     * @throws SQLException the sql exception
-     */
-    public  DatabaseHandler(String subjectPathName, String roomPathName, String lecturerPathName, String lecturerInSubjectPathName) throws IOException, SQLException {
-        databaseConnection = new DatabaseConnection(propertiesHandler);
-        fileReader  = new FileReader(subjectPathName, roomPathName, lecturerPathName, lecturerInSubjectPathName);
-        foreignKeysToBeAdded = new ArrayList<>();
-
-    }
-
-    /**
      * Sets up database.
      *
      * @throws IOException  the io exception
@@ -141,7 +124,6 @@ public class DatabaseHandler{
     private int getColumnCountOfTable(String tableName) throws SQLException {
         return getResultSetMetaDataForEntireTable(tableName).getColumnCount();
     }
-
 
     /**
      * Creates a String that can be used for a prepared statement.
@@ -232,6 +214,7 @@ public class DatabaseHandler{
         }
         return result;
     }
+
     /**
      * Retrieves all rows from a table based on the column name.
      * Used to find a specific row based on primary keys for queries.
@@ -281,7 +264,6 @@ public class DatabaseHandler{
 
         return searchQuery.toString();
     }
-
 
     /**
      * Gets all rows based on table name
@@ -387,7 +369,6 @@ public class DatabaseHandler{
             stmt.executeUpdate(query);
         }
     }
-
 
     /**
      * Used to drop the schema

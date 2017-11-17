@@ -1,5 +1,7 @@
 package no.salvesen.assignment1;
 
+import com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException;
+
 import java.io.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -113,6 +115,8 @@ public class InputHandler {
             try {
                 databaseHandler.tearDownDatabaseAndSetBackUp();
                 connected = true;
+            } catch(MySQLSyntaxErrorException e) {
+                exceptionHandler.outputSQLException("informationfile");
             } catch (SQLException e) {
                 exceptionHandler.outputSQLException("connect");
             } catch (FileNotFoundException e) {

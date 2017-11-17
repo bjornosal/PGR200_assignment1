@@ -42,6 +42,9 @@ public class ExceptionHandler {
             case "createdatabase":
                 System.out.println("There was an issue with the database.");
                 break;
+            case "informationfile":
+                System.out.println("There was an issue with the information in a table file.");
+                break;
         }
     }
 
