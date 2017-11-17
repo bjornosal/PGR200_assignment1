@@ -4,6 +4,8 @@
     <list default="true" id="038afa83-f56f-4621-9260-50e1081a1fb9" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/DatabaseHandler.java" afterPath="$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/DatabaseHandler.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/FileReader.java" afterPath="$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/FileReader.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/InputHandler.java" afterPath="$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/InputHandler.java" />
     </list>
     <ignored path="assignment1.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -60,18 +62,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="TestSuite.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/java/no/salvesen/assignment1/TestSuite.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="20" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="DatabaseHandlerTest.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/java/no/salvesen/assignment1/DatabaseHandlerTest.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -94,12 +84,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="InputHandler.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="InputHandler.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/InputHandler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="196">
-              <caret line="292" column="39" lean-forward="true" selection-start-line="292" selection-start-column="39" selection-end-line="292" selection-end-column="39" />
+            <state relative-caret-position="137">
+              <caret line="176" column="78" lean-forward="false" selection-start-line="176" selection-start-column="78" selection-end-line="176" selection-end-column="78" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="FileReader.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/FileReader.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-1934">
+              <caret line="34" column="0" lean-forward="true" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
+              <folding>
+                <element signature="method#setLecturer_in_subject_file#0;class#FileReader#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -114,18 +116,40 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DatabaseHandler.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="DatabaseHandler.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/DatabaseHandler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="179">
-              <caret line="237" column="25" lean-forward="false" selection-start-line="237" selection-start-column="16" selection-end-line="237" selection-end-column="25" />
+            <state relative-caret-position="249">
+              <caret line="87" column="48" lean-forward="true" selection-start-line="87" selection-start-column="48" selection-end-line="87" selection-end-column="48" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <marker date="1510929540958" expanded="true" signature="7773:8024" ph="SELECT s.nam... subject" />
-                <marker date="1510929540958" expanded="true" signature="14552:14566" ph="SELECT * FRO... missingValue" />
-                <marker date="1510929540958" expanded="true" signature="15316:15337" ph="DROP TABLE I... " />
-                <marker date="1510929540958" expanded="true" signature="15821:15849" ph="CREATE SCHEM... IF" />
-                <marker date="1510929540958" expanded="true" signature="16299:16311" ph="DROP SCHEMA " />
+                <marker date="1510930949310" expanded="true" signature="7498:7749" ph="SELECT s.nam... subject" />
+                <marker date="1510930949310" expanded="true" signature="14277:14291" ph="SELECT * FRO... missingValue" />
+                <marker date="1510930949310" expanded="true" signature="15041:15062" ph="DROP TABLE I... " />
+                <marker date="1510930949310" expanded="true" signature="15546:15574" ph="CREATE SCHEM... IF" />
+                <marker date="1510930949310" expanded="true" signature="16024:16036" ph="DROP SCHEMA " />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="subject_test_file.csv" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/Test_table_files/subject_test_file.csv">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="204">
+              <caret line="12" column="18" lean-forward="false" selection-start-line="12" selection-start-column="18" selection-end-line="12" selection-end-column="18" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="InputHandlerTest.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/java/no/salvesen/assignment1/InputHandlerTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="289">
+              <caret line="65" column="0" lean-forward="true" selection-start-line="65" selection-start-column="0" selection-end-line="65" selection-end-column="0" />
+              <folding>
+                <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -164,8 +188,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>dropTable</find>
-      <find>getrowsFrom</find>
       <find>setLec</find>
       <find>createData</find>
       <find>teardown</find>
@@ -191,9 +213,11 @@
       <find>scanner</find>
       <find>System.exi</find>
       <find>tearDown</find>
-      <find>tableMenu</find>
       <find>getResult</find>
       <find>result +=</find>
+      <find>getSubject</find>
+      <find>tableMenu</find>
+      <find>filereader</find>
     </findStrings>
     <replaceStrings>
       <replace>lineBreak</replace>
@@ -242,7 +266,6 @@
         <option value="$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/App.java" />
         <option value="$PROJECT_DIR$/src/files/database files/subject.csv" />
         <option value="$PROJECT_DIR$/src/test/java/no/salvesen/assignment1/FileReaderTest.java" />
-        <option value="$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/FileReader.java" />
         <option value="$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/PrintFormatHandler.java" />
         <option value="$PROJECT_DIR$/src/files/defaultDatabaseConfig.properties" />
         <option value="$PROJECT_DIR$/src/test/files/testDatabaseLogin.properties" />
@@ -262,8 +285,9 @@
         <option value="$PROJECT_DIR$/src/test/java/no/salvesen/assignment1/InputHandlerTest.java" />
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/src/files/userEnteredDatabaseLogin.properties" />
-        <option value="$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/InputHandler.java" />
+        <option value="$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/FileReader.java" />
         <option value="$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/DatabaseHandler.java" />
+        <option value="$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/InputHandler.java" />
       </list>
     </option>
   </component>
@@ -1121,14 +1145,7 @@
       <workItem from="1510479535702" duration="26515000" />
       <workItem from="1510828524552" duration="13964000" />
       <workItem from="1510843603371" duration="5303000" />
-      <workItem from="1510915371232" duration="10964000" />
-    </task>
-    <task id="LOCAL-00033" summary="Foreign key implementation finished, should in theory work. Databases with working foreign keys has to be added to test properly">
-      <created>1509280903628</created>
-      <option name="number" value="00033" />
-      <option name="presentableId" value="LOCAL-00033" />
-      <option name="project" value="LOCAL" />
-      <updated>1509280903628</updated>
+      <workItem from="1510915371232" duration="12364000" />
     </task>
     <task id="LOCAL-00034" summary="Added menu choice for refilling table with information">
       <created>1509284789928</created>
@@ -1466,7 +1483,14 @@
       <option name="project" value="LOCAL" />
       <updated>1510928001684</updated>
     </task>
-    <option name="localTasksCounter" value="82" />
+    <task id="LOCAL-00082" summary="Added minor fix when no results are found.">
+      <created>1510929592815</created>
+      <option name="number" value="00082" />
+      <option name="presentableId" value="LOCAL-00082" />
+      <option name="project" value="LOCAL" />
+      <updated>1510929592816</updated>
+    </task>
+    <option name="localTasksCounter" value="83" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1502,7 +1526,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="271607000" />
+    <option name="totallyTimeSpent" value="273007000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1524,10 +1548,10 @@
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.14752372" sideWeight="0.14179105" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.34861407" sideWeight="0.7833876" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25479743" sideWeight="0.7814815" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.18018967" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.35300317" sideWeight="0.85820895" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.34861407" sideWeight="0.21661238" order="9" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.43097997" sideWeight="0.85820895" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25479743" sideWeight="0.21851853" order="9" side_tool="true" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32982087" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -1592,7 +1616,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Fixed issue when printing more than once, due to filereader issue-" />
     <MESSAGE value="Added check if table is required by linktable when dropping." />
     <MESSAGE value="Added hackish way of simulating userinput" />
     <MESSAGE value="Added dependency dependency, which solved my dependency issues/warnings." />
@@ -1617,7 +1640,8 @@
     <MESSAGE value="Added fix for something" />
     <MESSAGE value="Got coverage to 70% instead of 69% :(" />
     <MESSAGE value="Minor fix to logic in tablesearch menu - option 6 &quot;Fille a table with information from file.&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="Minor fix to logic in tablesearch menu - option 6 &quot;Fille a table with information from file.&quot;" />
+    <MESSAGE value="Added minor fix when no results are found." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added minor fix when no results are found." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1673,13 +1697,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
           <caret line="4" column="31" lean-forward="false" selection-start-line="4" selection-start-column="31" selection-end-line="4" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/Test_table_files/subject_test_file.csv">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="12" column="18" lean-forward="false" selection-start-line="12" selection-start-column="18" selection-end-line="12" selection-end-column="18" />
         </state>
       </provider>
     </entry>
@@ -1887,16 +1904,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/FileReader.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="18">
-          <caret line="57" column="19" lean-forward="false" selection-start-line="57" selection-start-column="19" selection-end-line="57" selection-end-column="19" />
-          <folding>
-            <element signature="method#setLecturer_in_subject_file#0;class#FileReader#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/ExceptionHandler.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="375">
@@ -1918,16 +1925,6 @@
         <state relative-caret-position="115">
           <caret line="16" column="0" lean-forward="false" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/no/salvesen/assignment1/InputHandlerTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-349">
-          <caret line="49" column="69" lean-forward="true" selection-start-line="49" selection-start-column="69" selection-end-line="49" selection-end-column="69" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1960,26 +1957,54 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/InputHandler.java">
+    <entry file="file://$PROJECT_DIR$/src/test/Test_table_files/subject_test_file.csv">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="196">
-          <caret line="292" column="39" lean-forward="true" selection-start-line="292" selection-start-column="39" selection-end-line="292" selection-end-column="39" />
+        <state relative-caret-position="204">
+          <caret line="12" column="18" lean-forward="false" selection-start-line="12" selection-start-column="18" selection-end-line="12" selection-end-column="18" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/no/salvesen/assignment1/InputHandlerTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="65" column="0" lean-forward="true" selection-start-line="65" selection-start-column="0" selection-end-line="65" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/FileReader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1934">
+          <caret line="34" column="0" lean-forward="true" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
+          <folding>
+            <element signature="method#setLecturer_in_subject_file#0;class#FileReader#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/DatabaseHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="179">
-          <caret line="237" column="25" lean-forward="false" selection-start-line="237" selection-start-column="16" selection-end-line="237" selection-end-column="25" />
+        <state relative-caret-position="249">
+          <caret line="87" column="48" lean-forward="true" selection-start-line="87" selection-start-column="48" selection-end-line="87" selection-end-column="48" />
           <folding>
             <element signature="imports" expanded="true" />
-            <marker date="1510929540958" expanded="true" signature="7773:8024" ph="SELECT s.nam... subject" />
-            <marker date="1510929540958" expanded="true" signature="14552:14566" ph="SELECT * FRO... missingValue" />
-            <marker date="1510929540958" expanded="true" signature="15316:15337" ph="DROP TABLE I... " />
-            <marker date="1510929540958" expanded="true" signature="15821:15849" ph="CREATE SCHEM... IF" />
-            <marker date="1510929540958" expanded="true" signature="16299:16311" ph="DROP SCHEMA " />
+            <marker date="1510930949310" expanded="true" signature="7498:7749" ph="SELECT s.nam... subject" />
+            <marker date="1510930949310" expanded="true" signature="14277:14291" ph="SELECT * FRO... missingValue" />
+            <marker date="1510930949310" expanded="true" signature="15041:15062" ph="DROP TABLE I... " />
+            <marker date="1510930949310" expanded="true" signature="15546:15574" ph="CREATE SCHEM... IF" />
+            <marker date="1510930949310" expanded="true" signature="16024:16036" ph="DROP SCHEMA " />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/no/salvesen/assignment1/InputHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="137">
+          <caret line="176" column="78" lean-forward="false" selection-start-line="176" selection-start-column="78" selection-end-line="176" selection-end-column="78" />
+          <folding />
         </state>
       </provider>
     </entry>

@@ -29,7 +29,7 @@ public class InputHandler {
         menu = new Menu();
         propertiesHandler = new PropertiesHandler();
         try {
-            databaseHandler = new DatabaseHandler(propertiesHandler);
+            databaseHandler = new DatabaseHandler(propertiesHandler, fileReader);
         } catch (IOException e) {
             exceptionHandler.outputIOException("fileissue");
         } catch (SQLException e) {
@@ -103,7 +103,6 @@ public class InputHandler {
      */
     public void startMenuLoop() {
         boolean connected = false;
-        boolean isDatabaseSetUp = false;
         while (!connected && !finished) {
             try {
                 setUpProperties();
@@ -170,23 +169,23 @@ public class InputHandler {
         while(!finished) {
             System.out.println(menu.tableMenu());
             menuChoice = userInput.nextLine();
-            String filePathMessage = "Please enter the file-path to the csv file.";
+            final String FILE_PATH_MESSAGE = "Please enter the file-path to the csv file.";
 
             switch(menuChoice) {
                 case "1":
-                    System.out.println(filePathMessage);
+                    System.out.println(FILE_PATH_MESSAGE);
                     fileReader.setSubjectFile(new File(userInput.nextLine()));
                     break;
                 case "2":
-                    System.out.println(filePathMessage);
+                    System.out.println(FILE_PATH_MESSAGE);
                     fileReader.setRoomFile(new File(userInput.nextLine()));
                     break;
                 case "3":
-                    System.out.println(filePathMessage);
+                    System.out.println(FILE_PATH_MESSAGE);
                     fileReader.setLecturerFile(new File(userInput.nextLine()));
                     break;
                 case "4":
-                    System.out.println(filePathMessage);
+                    System.out.println(FILE_PATH_MESSAGE);
                     fileReader.setLecturer_in_subject_file(new File(userInput.nextLine()));
                     break;
                 case "5":

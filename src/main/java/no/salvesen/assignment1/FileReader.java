@@ -34,21 +34,6 @@ public class FileReader {
     }
 
     /**
-     * Instantiates a new File reader.
-     *
-     * @param subjectPathName           the subject path name
-     * @param roomPathName              the room path name
-     * @param lecturerPathName          the lecturer path name
-     * @param lecturerInSubjectPathName the lecturer in subject path name
-     */
-    public FileReader(String subjectPathName, String roomPathName, String lecturerPathName, String lecturerInSubjectPathName) {
-        setSubjectFile(new File(subjectPathName));
-        setRoomFile(new File(roomPathName));
-        setLecturerFile(new File(lecturerPathName));
-        setLecturer_in_subject_file(new File(lecturerInSubjectPathName));
-    }
-
-    /**
      * Initializes the ArrayLists to keep all the values
      * Makes use of other methods to place information from file in corresponding ArrayLists.
      *

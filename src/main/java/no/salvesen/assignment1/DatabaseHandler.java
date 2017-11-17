@@ -12,25 +12,18 @@ public class DatabaseHandler{
     private PropertiesHandler propertiesHandler;
     private PrintFormatHandler printFormatHandler;
 
+
     /**
      * Instantiates a new Database handler.
      *
+     * @param propertiesHandler the properties handler
+     * @param fileReader        the filereader
      * @throws IOException  the io exception
      * @throws SQLException the sql exception
      */
-    public DatabaseHandler(PropertiesHandler propertiesHandler) throws IOException, SQLException {
-        fileReader  = new FileReader();
-        printFormatHandler = new PrintFormatHandler(fileReader);
-        this.propertiesHandler = propertiesHandler;
-        databaseConnection = new DatabaseConnection(propertiesHandler);
-
-        foreignKeysToBeAdded = new ArrayList<>();
-    }
-
-
-    public DatabaseHandler(PropertiesHandler propertiesHandler, FileReader filereader) throws IOException, SQLException {
-        fileReader  = filereader;
-        printFormatHandler = new PrintFormatHandler(fileReader);
+    public DatabaseHandler(PropertiesHandler propertiesHandler, FileReader fileReader) throws IOException, SQLException {
+        this.fileReader = fileReader;
+        printFormatHandler = new PrintFormatHandler(this.fileReader);
         this.propertiesHandler = propertiesHandler;
         databaseConnection = new DatabaseConnection(propertiesHandler);
 
