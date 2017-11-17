@@ -35,22 +35,15 @@ public class InputHandlerTest {
     private final String USER_INPUT_TO_RETURN_TO_MAIN_MENU_FROM_UPDATE_TABLE_MENU = "7" + LINE_BREAK;
     private final String USER_INPUT_TO_GO_TO_SEARCH_MENU_AND_EXIT = "1" + LINE_BREAK + "9" + LINE_BREAK;
 
-
-    public InputHandlerTest() throws FileNotFoundException {
+    public InputHandlerTest() throws Exception {
     }
 
-
-
     @Before
-    public void setUp() throws FileNotFoundException {
+    public void setUp() throws Exception {
         Properties properties = new Properties();
         InputStream input = new FileInputStream("src/test/files/testDatabaseLogin.properties");
 
-        try {
-            properties.load(input);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        properties.load(input);
 
         //Source:https://stackoverflow.com/questions/23653875/how-to-simulate-multiple-user-input-for-junit
         String serverName = properties.getProperty("serverName");
@@ -75,7 +68,6 @@ public class InputHandlerTest {
 
         System.setIn(in);
         System.setOut(new PrintStream(outputStream));
-
     }
 
     @Test

@@ -21,7 +21,7 @@ public class InputHandler {
 
     private Scanner userInput;
 
-    public InputHandler()  {
+    public InputHandler() {
         fileReader = new FileReader();
         exceptionHandler = new ExceptionHandler();
         menu = new Menu();
@@ -39,20 +39,21 @@ public class InputHandler {
 
     /**
      * Loop for choices regarding which properties to use to connect to a database.
+     *
      * @throws IOException If unable to find the file.
      */
-    private void setUpProperties() throws IOException, SQLException {
+    private void setUpProperties() throws SQLException, IOException {
         String menuChoice;
         boolean setUp = false;
         while (!setUp) {
             Properties properties = new Properties();
             System.out.println(menu.propertiesMenu());
             menuChoice = userInput.nextLine();
-            switch(menuChoice) {
+            switch (menuChoice) {
 
                 //Use default properties
                 case "1":
-                    if(!isDefaultDatabaseLoginPropertiesFileIsEmpty()) {
+                    if (!isDefaultDatabaseLoginPropertiesFileIsEmpty()) {
                         setUserProperties(properties);
                     } else {
                         propertiesHandler.setPropertyFilePath(DEFAULT_PROPERTIES_FILEPATH);
@@ -61,7 +62,7 @@ public class InputHandler {
                     break;
                 //use properties previously set by user
                 case "2":
-                    if(!isDefaultDatabaseLoginPropertiesFileIsEmpty()) {
+                    if (!isDefaultDatabaseLoginPropertiesFileIsEmpty()) {
                         setUserProperties(properties);
                     } else {
                         propertiesHandler.setPropertyFilePath(DEFAULT_PROPERTIES_FILEPATH);
@@ -92,23 +93,22 @@ public class InputHandler {
     }
 
 
-
     /**
      * Starting the loop to put the customer in, which in turn starts the corresponding loops.
      * This causes the customer to be able to go back and forth to whichever menu he wants.
-     *
+     * <p>
      * Has the responsibility of catching all the exceptions and printing them to the user.
      */
     public void startMenuLoop() {
         boolean connected = false;
-
+        boolean isDatabaseSetUp = false;
         while (!connected && !finished) {
             try {
                 setUpProperties();
             } catch (IOException e) {
                 exceptionHandler.outputIOException("writeprop");
             } catch (SQLException e) {
-                exceptionHandler.outputIOException("createdatabase");
+                exceptionHandler.outputIOException("connect");
             }
             try {
                 databaseHandler.tearDownDatabaseAndSetBackUp();
@@ -120,16 +120,17 @@ public class InputHandler {
             } catch (IOException e) {
                 exceptionHandler.outputIOException("connect");
             }
-
-            try {
-                showMainMenu();
-            } catch (SQLException e) {
-                exceptionHandler.outputSQLException("createTable");
-            } catch (FileNotFoundException e) {
-                exceptionHandler.outputFileNotFoundException();
-            }
+        }
+        try {
+            showMainMenu();
+        } catch (SQLException e) {
+            exceptionHandler.outputSQLException("createTable");
+        } catch (FileNotFoundException e) {
+            exceptionHandler.outputFileNotFoundException();
         }
     }
+
+
 
     /**
      * Starting loop for the main menu.

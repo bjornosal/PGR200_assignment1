@@ -34,7 +34,7 @@ public class ExceptionHandler {
     public void outputSQLException(String errorLocation) {
         switch(errorLocation.toLowerCase()) {
             case "connect":
-                System.out.println("There was an issue connecting to the database with the properties-file. \nPlease try again.");
+                System.out.println("There was an issue with properties-file, or with information file. \nPlease double-check and try again.");
                 break;
             case "createTable":
                 System.out.println("There was an issue with information in the file.");
