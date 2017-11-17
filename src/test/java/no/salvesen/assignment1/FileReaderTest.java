@@ -41,5 +41,8 @@ public class FileReaderTest {
     public void getFileByTableName() throws Exception {
         File initializedToNull = fileReader.getFileByTableName("");
         assertNull(initializedToNull);
+
+        File subjectFile = fileReader.getFileByTableName("subject");
+        assertEquals(subjectFile.getPath(), "src\\test\\Test_table_files\\subject_test_file.csv");
     }
 }

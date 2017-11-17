@@ -54,7 +54,6 @@ public class FileReader {
         readInsertValuesFromFile(fileParser);
     }
 
-
     /*
      * Description of file:
      * First line: tableName;columnCount;primaryKeys;foreignKeys;
@@ -75,7 +74,6 @@ public class FileReader {
         setTableColumnCount(fileParser.nextInt());
         setAmountOfPrimaryKeys(fileParser.nextInt());
         setAmountOfForeignKeys(fileParser.nextInt());
-
 
         for(int i = 0; i < getTableColumnCount(); i++) {
             columnNames.add(fileParser.next());

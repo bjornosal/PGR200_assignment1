@@ -31,15 +31,16 @@ public class DatabaseHandler{
     }
 
     /**
-     * Sets up database.
+     * Sets up the database and gives the database name to the datasource.
      *
      * @throws IOException  the io exception
      * @throws SQLException the sql exception
      */
     public void setUpDatabase() throws IOException, SQLException {
         createDatabase();
-        databaseConnection.setDataSourceDatabaseName();
+        databaseConnection.setDatabaseNameForDatasource();
     }
+
     /**
      * Removes all existing tables and recreate them.
      * Then fills them with data from the files.
@@ -89,33 +90,65 @@ public class DatabaseHandler{
     }
 
     /**
-     * Creates a list of all the table names in the database
-     * @return ArrayList containing table names.
-     * @throws SQLException If unable to get a connection.
+     * Creates a table in the database if it does not exist, based on MetaData from corresponding table file.
+     * @param tableName Which table to create.
+     * @throws FileNotFoundException If unable to locate table file.
+     * @throws SQLException If unable to connect to the database.
      */
-    public ArrayList<String> getArrayListOfTableNames() throws SQLException {
+    private void createTableFromMetaData(String tableName) throws FileNotFoundException, SQLException {
+        fileReader.readFile(fileReader.getFileByTableName(tableName));
 
-        ArrayList<String> tableNames = new ArrayList<>();
+        StringBuilder createTableQuery = new StringBuilder("CREATE TABLE IF NOT EXISTS " + fileReader.getTableName() + "(\n");
 
         try(Connection connection = databaseConnection.getConnection()) {
-            DatabaseMetaData databaseMetaData = connection.getMetaData();
-            ResultSet rs = databaseMetaData.getTables(null, null, "%", null);
-            while (rs.next()) {
-                tableNames.add(rs.getString(3));
+            Statement statement = connection.createStatement();
+            for(int i = 0; i < fileReader.getTableColumnCount(); i++) {
+                createTableQuery.append(fileReader.getColumnNames().get(i));
+                createTableQuery.append(" ");
+                createTableQuery.append(fileReader.getColumnSQLValues().get(i));
+
+                if(i < fileReader.getTableColumnCount() - 1) {
+                    createTableQuery.append(",\n");
+                }
+
+                if(i == fileReader.getTableColumnCount() - 1) {
+                    if(fileReader.getAmountOfPrimaryKeys() > 0) {
+                        createTableQuery.append(",\n");
+                        createTableQuery.append(addPrimaryKeyToQuery(i));
+                    }
+                    if(fileReader.getAmountOfForeignKeys() > 0) {
+                        addForeignKeyToList(i);
+                    }
+                }
             }
+            createTableQuery.append(");");
+            statement.executeUpdate(createTableQuery.toString());
         }
-        return tableNames;
     }
 
-
     /**
-     * Gets the column count from the ResultSetMetaData
-     * @param tableName Which table to get column count for.
-     * @return Integer Amount of columns.
-     * @throws SQLException If unable to get a connection
+     * Builds a select query, based on parameters.
+     * @param isSpecifiedSearch Boolean, if true, adds a WHERE clause to the query with parameter to be filled.
+     * @param tableName Which table to search.
+     * @param columnName Which column to search.
+     * @return String A string ready to be set as a prepared statement.
      */
-    private int getColumnCountOfTable(String tableName) throws SQLException {
-        return getResultSetMetaDataForEntireTable(tableName).getColumnCount();
+    private String buildSelectQuery(boolean isSpecifiedSearch, String tableName, String columnName) {
+        StringBuilder searchQuery = new StringBuilder();
+        searchQuery.append("SELECT ");
+        for(int i = 0; i < fileReader.getTableColumnCount(); i++) {
+            searchQuery.append(fileReader.getColumnNames().get(i));
+            if(i < fileReader.getTableColumnCount() - 1) {
+                searchQuery.append(", ");
+            }
+        }
+        searchQuery.append("\n").append("FROM ").append(tableName);
+        if(isSpecifiedSearch) {
+            searchQuery.append("\n").append("WHERE ").append(columnName).append(" = ?");
+        }
+        searchQuery.append(";");
+
+        return searchQuery.toString();
     }
 
     /**
@@ -234,31 +267,6 @@ public class DatabaseHandler{
             }
         }
         return result;
-    }
-
-    /**
-     * Builds a select query, based on parameters.
-     * @param isSpecifiedSearch Boolean, if true, adds a WHERE clause to the query with parameter to be filled.
-     * @param tableName Which table to search.
-     * @param columnName Which column to search.
-     * @return String A string ready to be set as a prepared statement.
-     */
-    private String buildSelectQuery(boolean isSpecifiedSearch, String tableName, String columnName) {
-        StringBuilder searchQuery = new StringBuilder();
-        searchQuery.append("SELECT ");
-        for(int i = 0; i < fileReader.getTableColumnCount(); i++) {
-            searchQuery.append(fileReader.getColumnNames().get(i));
-            if(i < fileReader.getTableColumnCount() - 1) {
-                searchQuery.append(", ");
-            }
-        }
-        searchQuery.append("\n").append("FROM ").append(tableName);
-        if(isSpecifiedSearch) {
-            searchQuery.append("\n").append("WHERE ").append(columnName).append(" = ?");
-        }
-        searchQuery.append(";");
-
-        return searchQuery.toString();
     }
 
     /**
@@ -403,40 +411,32 @@ public class DatabaseHandler{
     }
 
     /**
-     * Creates a table in the database if it does not exist, based on MetaData from corresponding table file.
-     * @param tableName Which table to create.
-     * @throws FileNotFoundException If unable to locate table file.
-     * @throws SQLException If unable to connect to the database.
+     * Gets the column count from the ResultSetMetaData
+     * @param tableName Which table to get column count for.
+     * @return Integer Amount of columns.
+     * @throws SQLException If unable to get a connection
      */
-    private void createTableFromMetaData(String tableName) throws FileNotFoundException, SQLException {
-        fileReader.readFile(fileReader.getFileByTableName(tableName));
+    private int getColumnCountOfTable(String tableName) throws SQLException {
+        return getResultSetMetaDataForEntireTable(tableName).getColumnCount();
+    }
 
-        StringBuilder createTableQuery = new StringBuilder("CREATE TABLE IF NOT EXISTS " + fileReader.getTableName() + "(\n");
+    /**
+     * Creates a list of all the table names in the database
+     * @return ArrayList containing table names.
+     * @throws SQLException If unable to get a connection.
+     */
+    public ArrayList<String> getArrayListOfTableNames() throws SQLException {
+
+        ArrayList<String> tableNames = new ArrayList<>();
 
         try(Connection connection = databaseConnection.getConnection()) {
-            Statement statement = connection.createStatement();
-            for(int i = 0; i < fileReader.getTableColumnCount(); i++) {
-                createTableQuery.append(fileReader.getColumnNames().get(i));
-                createTableQuery.append(" ");
-                createTableQuery.append(fileReader.getColumnSQLValues().get(i));
-
-                if(i < fileReader.getTableColumnCount() - 1) {
-                    createTableQuery.append(",\n");
-                }
-
-                if(i == fileReader.getTableColumnCount() - 1) {
-                    if(fileReader.getAmountOfPrimaryKeys() > 0) {
-                        createTableQuery.append(",\n");
-                        createTableQuery.append(addPrimaryKeyToQuery(i));
-                    }
-                    if(fileReader.getAmountOfForeignKeys() > 0) {
-                        addForeignKeyToList(i);
-                    }
-                }
+            DatabaseMetaData databaseMetaData = connection.getMetaData();
+            ResultSet rs = databaseMetaData.getTables(null, null, "%", null);
+            while (rs.next()) {
+                tableNames.add(rs.getString(3));
             }
-            createTableQuery.append(");");
-            statement.executeUpdate(createTableQuery.toString());
         }
+        return tableNames;
     }
 
     /**

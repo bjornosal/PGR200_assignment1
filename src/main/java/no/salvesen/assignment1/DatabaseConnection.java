@@ -12,31 +12,41 @@ public class DatabaseConnection {
     private MysqlDataSource dataSource;
     private PropertiesHandler propertiesHandler;
 
+    /**
+     * Instantiates a new Database connection.
+     *
+     * @param propertiesHandler the properties handler
+     */
     public DatabaseConnection(PropertiesHandler propertiesHandler) {
         dataSource = new MysqlDataSource();
         this.propertiesHandler = propertiesHandler;
     }
 
     /**
-     * Sets up the properties for the datasource.
+     * Gets connection.
      *
-     * @throws IOException If no file is found or unable to load the InputStream.
-     */
-    public void initializeProperties() throws IOException {
-        propertiesHandler.initializeProperties(getDataSource());
-    }
-
-
-    /**
-     * Returns a connection to the database.
-     * @return A MysqlDataSource Connection.
-     * @throws SQLException If unable to get a connection.
+     * @return the connection
+     * @throws SQLException the sql exception
      */
     public Connection getConnection() throws SQLException {
         return dataSource.getConnection();
     }
 
-    public void setDataSourceDatabaseName() throws IOException {
+    /**
+     * Initialize properties.
+     *
+     * @throws IOException the io exception
+     */
+    public void initializeProperties() throws IOException {
+        propertiesHandler.initializeProperties(getDataSource());
+    }
+
+    /**
+     * Sets database name for datasource.
+     *
+     * @throws IOException the io exception
+     */
+    public void setDatabaseNameForDatasource() throws IOException {
         Properties properties = new Properties();
         InputStream input = new FileInputStream(propertiesHandler.getPropertyFilePath());
         properties.load(input);

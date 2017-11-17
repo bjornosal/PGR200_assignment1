@@ -31,7 +31,7 @@ public class DatabaseConnectionTest {
 
     @Test
     public void setDataSourceDatabaseName() throws Exception {
-        databaseConnection.setDataSourceDatabaseName();
+        databaseConnection.setDatabaseNameForDatasource();
         assertEquals(propertiesHandler.getDatabaseNameFromProperties(), "pgr200_assignment_1_salvesen_testing");
     }
 }

@@ -38,7 +38,6 @@ public class InputHandler {
         userInput = new Scanner(System.in);
     }
 
-
     /**
      * Loop for choices regarding which properties to use to connect to a database.
      *
@@ -56,6 +55,7 @@ public class InputHandler {
                 //Use default properties
                 case "1":
                     if (!isDefaultDatabaseLoginPropertiesFileIsEmpty()) {
+                        System.out.println("Default login has not been set. \nPlease provide login information before continuing");
                         setUserProperties(properties);
                     } else {
                         propertiesHandler.setPropertyFilePath(DEFAULT_PROPERTIES_FILEPATH);
@@ -64,10 +64,11 @@ public class InputHandler {
                     break;
                 //use properties previously set by user
                 case "2":
-                    if (!isDefaultDatabaseLoginPropertiesFileIsEmpty()) {
+                    if (!isUserEnteredDatabaseLoginPropertiesFileEmpty()) {
+                        System.out.println("No login has not been set by user previously. \nPlease provide login information before continuing");
                         setUserProperties(properties);
                     } else {
-                        propertiesHandler.setPropertyFilePath(DEFAULT_PROPERTIES_FILEPATH);
+                        propertiesHandler.setPropertyFilePath(USER_ENTERED_PROPERTIES_FILEPATH);
                         setUp = true;
                     }
                     break;
@@ -132,8 +133,6 @@ public class InputHandler {
             exceptionHandler.outputFileNotFoundException();
         }
     }
-
-
 
     /**
      * Starting loop for the main menu.
@@ -235,11 +234,9 @@ public class InputHandler {
                     System.out.println("Please enter name of lecturer: ");
                     String lecturer = userInput.nextLine();
                     System.out.println(databaseHandler.getRowsFromTableByColumnNameAndSearchColumnValue("lecturer","name",lecturer));
-
                     break;
                 case "4":
                     System.out.println(databaseHandler.getAllRowsByTableName("lecturer"));
-
                     break;
                 case "5":
                     System.out.println("Please enter name of room: ");
@@ -262,7 +259,6 @@ public class InputHandler {
                 default:
                     System.out.println("Incorrect choice, please try again.");
             }
-
         }
     }
 
@@ -331,6 +327,12 @@ public class InputHandler {
         return userEnteredDatabaseLogin.length() > 0;
     }
 
+
+    /**
+     *
+     * @throws IOException the io exception
+     * @throws SQLException the sql exception
+     */
     private void checkAndSetNewDatabaseName() throws IOException, SQLException {
         while(databaseHandler.databaseExists()) {
             System.out.println("Database with that name already exists.");
@@ -355,7 +357,6 @@ public class InputHandler {
         System.out.println("Password: ");
         String databasePassword = userInput.nextLine();
 
-        //Filling property file
         properties.setProperty("serverName", serverName);
         properties.setProperty("databaseName", databaseName);
         properties.setProperty("databaseUser", databaseUser);
@@ -376,9 +377,7 @@ public class InputHandler {
             propertiesHandler.setPropertyFilePath(USER_ENTERED_PROPERTIES_FILEPATH);
 
         } catch (IOException e) {
-            e.printStackTrace();
+            exceptionHandler.outputIOException("writeprop");
         }
     }
-
-
 }
