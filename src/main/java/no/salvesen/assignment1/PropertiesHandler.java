@@ -27,7 +27,7 @@ public class PropertiesHandler {
      * @param dataSource the data source
      * @throws IOException the io exception
      */
-    public void initializeProperties(MysqlDataSource dataSource) throws IOException {
+    public void assignPropertiesToDatasource(MysqlDataSource dataSource) throws IOException {
         Properties properties = new Properties();
 
         try (InputStream input = new FileInputStream(propertyFilePath)) {
@@ -62,11 +62,27 @@ public class PropertiesHandler {
      */
     protected void setDatabaseNameInProperties(String databaseName) throws IOException {
         Properties properties = new Properties();
+        String currentServerName;
+        String currentUser;
+        String currentPassword;
+
+        try(InputStream input = new FileInputStream(propertyFilePath)) {
+            properties.load(input);
+            currentServerName = properties.getProperty("serverName");
+            currentUser = properties.getProperty("databaseUser");
+            currentPassword = properties.getProperty("databasePassword");
+        }
+
         try(InputStream input = new FileInputStream(propertyFilePath);
             FileOutputStream fileOut = new FileOutputStream(propertyFilePath)) {
             properties.load(input);
+
             properties.setProperty("databaseName", databaseName);
-            properties.store(fileOut, "Redefined by user");
+            properties.setProperty("serverName", currentServerName);
+            properties.setProperty("databaseUser",currentUser);
+            properties.setProperty("databasePassword",currentPassword);
+
+            properties.store(fileOut, "Added by user.");
         }
     }
 

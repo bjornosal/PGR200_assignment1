@@ -38,7 +38,7 @@ public class DatabaseConnection {
      * @throws IOException the io exception
      */
     public void initializeProperties() throws IOException {
-        propertiesHandler.initializeProperties(getDataSource());
+        propertiesHandler.assignPropertiesToDatasource(getDataSource());
     }
 
     /**
