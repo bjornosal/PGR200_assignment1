@@ -66,7 +66,7 @@ Using the example below, the table will be as follows:
 
 ### Generate Javadoc Documentation
 To generate a complete javadoc documentation for the application, run the Maven plugin "javadoc"
-either through your IDE or run the command *__mvn javadoc:javadoc__*
+either through your IDE or run the command *__mvn javadoc:javadoc javadoc:aggregate__*
 
 
 ### Generate Code Coverage Report
@@ -74,3 +74,7 @@ either through your IDE or run the command *__mvn javadoc:javadoc__*
 To generate a coverage report for the application; run the following maven command: 
 *__mvn clean test jacoco:prepare-agent jacoco:report.__* This should generate a file under target/site/jacoco named index.html.
 Open the file in any browser and go through the coverage report. 
+
+#### Testing
+Prior to testing, check the testDatabaseLogin.properties file. 
+Make sure that the information is correct to be able to test.

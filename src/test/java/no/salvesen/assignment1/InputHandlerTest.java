@@ -30,8 +30,8 @@ public class InputHandlerTest {
     private final String USER_INPUT_TO_ADD_NEW_FILEPATH_FOR_ROOM_FILE = "2" + LINE_BREAK + "src/test/Test_table_files/room_test_file.csv" + LINE_BREAK;
     private final String USER_INPUT_TO_ADD_NEW_FILEPATH_FOR_LECTURER_FILE = "3" + LINE_BREAK + "src/test/Test_table_files/lecturer_test_file.csv" + LINE_BREAK;
     private final String USER_INPUT_TO_ADD_NEW_FILEPATH_FOR_LECTURER_IN_SUBJECT_FILE = "4" + LINE_BREAK + "src/test/Test_table_files/lecturer_in_subject_test_file.csv" + LINE_BREAK;
-    private final String USER_INPUT_TO_USE_EXISTING_FILES_IN_FILES_FOLDER = "5" + LINE_BREAK;
-    private final String USER_INPUT_TO_FILL_TABLE_WITH_INFORMATION_FROM_FILES = "6" + LINE_BREAK + "subject" + LINE_BREAK + "Y" + LINE_BREAK;
+    private final String USER_INPUT_TO_USE_EXISTING_FILES_IN_FILES_FOLDER = "6" + LINE_BREAK;
+    private final String USER_INPUT_TO_FILL_TABLE_WITH_INFORMATION_FROM_FILES = "5" + LINE_BREAK + "subject" + LINE_BREAK + "Y" + LINE_BREAK;
     private final String USER_INPUT_TO_RETURN_TO_MAIN_MENU_FROM_UPDATE_TABLE_MENU = "7" + LINE_BREAK;
     private final String USER_INPUT_TO_GO_TO_SEARCH_MENU_AND_EXIT = "1" + LINE_BREAK + "9" + LINE_BREAK;
 
@@ -41,6 +41,10 @@ public class InputHandlerTest {
     @Before
     public void setUp() throws Exception {
         Properties properties = new Properties();
+
+        /**
+         * Properties file needs to be updated prior to testing.
+         */
         InputStream input = new FileInputStream("src/test/files/testDatabaseLogin.properties");
 
         properties.load(input);
@@ -51,7 +55,7 @@ public class InputHandlerTest {
         String databaseUserName = properties.getProperty("databaseUser");
         String databaseUserPassword = properties.getProperty("databasePassword");
 
-        String USER_INPUT_ON_PROPERTIES_MENU = "3" + LINE_BREAK + serverName + LINE_BREAK + databaseName + LINE_BREAK + databaseUserName + LINE_BREAK + databaseUserPassword + LINE_BREAK + "N" + LINE_BREAK;
+        String USER_INPUT_ON_PROPERTIES_MENU = "3" + LINE_BREAK + serverName + LINE_BREAK + databaseName + LINE_BREAK + databaseUserName + LINE_BREAK + databaseUserPassword + LINE_BREAK + "N" + LINE_BREAK + "Y" + LINE_BREAK;
 
         String allMenuOptionsSimulatedUserInput = USER_INPUT_ON_PROPERTIES_MENU + USER_INPUT_ON_MAIN_MENU_TO_GO_TO_SEARCH +
                 USER_INPUT_TO_SEARCH_FOR_SUBJECT + USER_INPUT_TO_SEARCH_FOR_ALL_SUBJECTS +

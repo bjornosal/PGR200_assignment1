@@ -48,8 +48,8 @@ public class InputHandler {
      */
     private void setUpProperties() throws SQLException, IOException {
         String menuChoice;
-        boolean setUp = false;
-        while (!setUp) {
+        boolean propertiesIsSetUp = false;
+        while (!propertiesIsSetUp) {
             Properties properties = new Properties();
             System.out.println(menu.propertiesMenu());
             menuChoice = userInput.nextLine();
@@ -60,9 +60,10 @@ public class InputHandler {
                     if (!isDefaultDatabaseLoginPropertiesFileIsEmpty()) {
                         System.out.println("Default login has not been set. \nPlease provide login information before continuing");
                         setUserProperties(properties);
+                        propertiesIsSetUp = true;
                     } else {
                         propertiesHandler.setPropertyFilePath(DEFAULT_PROPERTIES_FILEPATH);
-                        setUp = true;
+                        propertiesIsSetUp = true;
                     }
                     break;
                 //use properties previously set by user
@@ -70,15 +71,16 @@ public class InputHandler {
                     if (!isUserEnteredDatabaseLoginPropertiesFileEmpty()) {
                         System.out.println("No login has not been set by user previously. \nPlease provide login information before continuing");
                         setUserProperties(properties);
+                        propertiesIsSetUp = true;
                     } else {
                         propertiesHandler.setPropertyFilePath(USER_ENTERED_PROPERTIES_FILEPATH);
-                        setUp = true;
+                        propertiesIsSetUp = true;
                     }
                     break;
                 //Enter new properties
                 case "3":
                     setUserProperties(properties);
-                    setUp = true;
+                    propertiesIsSetUp = true;
                     break;
                 default:
                     System.out.println("Incorrect choice, please try again.");
@@ -113,7 +115,8 @@ public class InputHandler {
             } catch (IOException e) {
                 exceptionHandler.outputIOException("writeprop");
             } catch (SQLException e) {
-                exceptionHandler.outputIOException("fileissue");
+                exceptionHandler.outputSQLException("createdatabase");
+                e.printStackTrace();
             }
             try {
                 databaseHandler.tearDownDatabaseAndSetBackUp();

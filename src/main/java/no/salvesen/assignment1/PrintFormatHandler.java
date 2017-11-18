@@ -13,7 +13,6 @@ public class PrintFormatHandler {
         this.fileReader = fileReader;
     }
 
-
     /**
      * Dynamic creation of result based on information from table file and ResultSet
      *
