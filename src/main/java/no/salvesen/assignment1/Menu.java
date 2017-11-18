@@ -88,8 +88,8 @@ public class Menu {
         tableChoices[1] = "Add new filepath for \'room\' table information";
         tableChoices[2] = "Add new filepath for \'lecturer\' table information";
         tableChoices[3] = "Add new filepath for \'lecturer_in_subject\' table information";
-        tableChoices[4] = "Use existing files in files folder";
-        tableChoices[5] = "Fill a table with information from file.";
+        tableChoices[4] = "Fill a table with information from file.";
+        tableChoices[5] = "Recreate database with default files in folder";
     }
 
     /**

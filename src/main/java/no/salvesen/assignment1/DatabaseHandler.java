@@ -260,7 +260,7 @@ public class DatabaseHandler{
             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, columnValue);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
+            if (resultSet.isBeforeFirst()) {
                 result += printFormatHandler.resultStringBuilder(resultSet, getColumnCountOfTable(fileReader.getTableName()), getMaxLengthOfColumnsByTableName());
             } else {
                 System.out.println("No results were found. Please try again.");
@@ -284,10 +284,10 @@ public class DatabaseHandler{
         try(Connection connection = databaseConnection.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             ResultSet resultSet = preparedStatement.executeQuery();
-            if(resultSet.next()) {
+            if(resultSet.isBeforeFirst()) {
                 result += printFormatHandler.resultStringBuilder(resultSet, getColumnCountOfTable(fileReader.getTableName()), getMaxLengthOfColumnsByTableName());
             } else {
-                System.out.println("No results were found. Please try again.");
+                return "No results were found. Please try again.";
             }
         }
         return result;

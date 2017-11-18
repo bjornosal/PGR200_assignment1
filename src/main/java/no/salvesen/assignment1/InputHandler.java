@@ -23,6 +23,9 @@ public class InputHandler {
 
     private Scanner userInput;
 
+    /**
+     * Instantiates a new Input handler.
+     */
     public InputHandler() {
         fileReader = new FileReader();
         exceptionHandler = new ExceptionHandler();
@@ -110,7 +113,7 @@ public class InputHandler {
             } catch (IOException e) {
                 exceptionHandler.outputIOException("writeprop");
             } catch (SQLException e) {
-                exceptionHandler.outputIOException("connect");
+                exceptionHandler.outputIOException("fileissue");
             }
             try {
                 databaseHandler.tearDownDatabaseAndSetBackUp();
@@ -131,6 +134,8 @@ public class InputHandler {
             exceptionHandler.outputSQLException("createTable");
         } catch (FileNotFoundException e) {
             exceptionHandler.outputFileNotFoundException();
+        } catch (IOException e) {
+            exceptionHandler.outputIOException("connect");
         }
     }
 
@@ -139,7 +144,7 @@ public class InputHandler {
      * @throws FileNotFoundException If unable to find file.
      * @throws SQLException If unable to get connection.
      */
-    private void showMainMenu() throws FileNotFoundException, SQLException {
+    private void showMainMenu() throws IOException, SQLException {
         String menuChoice;
         while(!finished) {
             System.out.println(menu.mainMenu());
@@ -163,7 +168,7 @@ public class InputHandler {
      * @throws FileNotFoundException If unable to find the file.
      * @throws SQLException If unable to get connection.
      */
-    private void showTableMenu() throws FileNotFoundException, SQLException {
+    private void showTableMenu() throws IOException, SQLException {
         String menuChoice;
         while(!finished) {
             System.out.println(menu.tableMenu());
@@ -188,15 +193,17 @@ public class InputHandler {
                     fileReader.setLecturer_in_subject_file(new File(userInput.nextLine()));
                     break;
                 case "5":
+                    chooseTableToFillWithInformation();
+                    System.out.println("Cleared table and filled with information from file.");
+                    break;
+                case "6":
                     System.out.println("Existing files chosen");
                     fileReader.setSubjectFile(new File("src/files/database files/subject.csv"));
                     fileReader.setRoomFile(new File("src/files/database files/room.csv"));
                     fileReader.setLecturerFile(new File("src/files/database files/lecturer.csv"));
                     fileReader.setLecturer_in_subject_file(new File("src/files/database files/lecturer_in_subject.csv"));
-                    break;
-                case "6":
-                    chooseTableToFillWithInformation();
-                    System.out.println("Cleared table and filled with information from file.");
+                    databaseHandler.tearDownDatabaseAndSetBackUp();
+                    System.out.println("Set up database to default.");
                     break;
                 case "7":
                     showMainMenu();
@@ -215,7 +222,7 @@ public class InputHandler {
      * @throws SQLException If unable to get connection.
      * @throws FileNotFoundException If unable to find the file.
      */
-    private void showSearchMenu() throws SQLException, FileNotFoundException {
+    private void showSearchMenu() throws SQLException, IOException {
         String menuChoice;
         while(!finished) {
             System.out.println(menu.searchMenu());
@@ -336,8 +343,8 @@ public class InputHandler {
     private void checkAndSetNewDatabaseName() throws IOException, SQLException {
         while(databaseHandler.databaseExists()) {
             System.out.println("Database with that name already exists.");
-            System.out.println("Create new database? - if not, will overwrite. Y/N");
-            if(userInput.nextLine().equalsIgnoreCase("y")) {
+            System.out.println("Overwrite current database with new information? (Y/N)");
+            if(userInput.nextLine().equalsIgnoreCase("n")) {
                 System.out.println("Database name:");
                 String databaseName = userInput.nextLine();
                 propertiesHandler.setDatabaseNameInProperties(databaseName);
