@@ -116,7 +116,6 @@ public class InputHandler {
                 exceptionHandler.outputIOException("writeprop");
             } catch (SQLException e) {
                 exceptionHandler.outputSQLException("createdatabase");
-                e.printStackTrace();
             }
             try {
                 databaseHandler.tearDownDatabaseAndSetBackUp();
@@ -384,7 +383,7 @@ public class InputHandler {
         try(FileOutputStream fileOut = new FileOutputStream(typeOfLogin)) {
             properties.store(fileOut, "Added by user");
             System.out.println("Property file set up. Attempting to connect.\n");
-            propertiesHandler.setPropertyFilePath(USER_ENTERED_PROPERTIES_FILEPATH);
+            propertiesHandler.setPropertyFilePath(typeOfLogin.getPath());
 
         } catch (IOException e) {
             exceptionHandler.outputIOException("writeprop");
